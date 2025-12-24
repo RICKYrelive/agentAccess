@@ -11,6 +11,7 @@
       @go-to-home="goToHome"
       @start-chat-with-agent="startChatWithAgent"
       @select-recent-conversation="selectRecentConversation"
+      @open-agent-in-editor="openAgentInEditor"
     />
 
     <!-- Main Content Area - Independent Scroll -->
@@ -47,6 +48,21 @@
       <WorkflowCanvas
         v-else-if="activeView === 'workflow'"
         class="flex-1 h-full overflow-hidden"
+      />
+
+      <!-- My Agents Page View -->
+      <MyAgentsPage
+        v-else-if="activeView === 'my-agents'"
+        class="flex-1 h-full overflow-hidden"
+        @create-new-agent="handleCreateNewAgent"
+        @edit-agent="handleEditAgent"
+      />
+
+      <!-- Team Agents Page View -->
+      <TeamAgentsPage
+        v-else-if="activeView === 'team-agents'"
+        class="flex-1 h-full overflow-hidden"
+        @edit-agent="handleEditAgent"
       />
     </div>
 
@@ -88,6 +104,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useChatStore } from '@/stores/chat'
 import { useWorkflowStore } from '@/stores/workflow'
+import { useAgentsStore } from '@/stores/agents'
 import { storeToRefs } from 'pinia'
 import SidebarNavigation from './SidebarNavigation.vue'
 import ContentArea from './ContentArea.vue'
@@ -98,8 +115,10 @@ import NodeConfigPanel from '../workflow/NodeConfigPanel.vue'
 import ChatInterface from '../chat/ChatInterface.vue'
 import HomePage from '../home/HomePage.vue'
 import UserSettingsDialog from '../settings/UserSettingsDialog.vue'
+import MyAgentsPage from '../my-agents/MyAgentsPage.vue'
+import TeamAgentsPage from '../team-agents/TeamAgentsPage.vue'
 
-const activeView = ref<'home' | 'workflow'>('home')
+const activeView = ref<'home' | 'workflow' | 'my-agents' | 'team-agents'>('home')
 const showSettingsPanel = ref(false)
 const showUserSettingsDialog = ref(false)
 const showChatInterface = ref(false)
@@ -230,6 +249,27 @@ const clearWorkflowNodeSelection = () => {
 
 const updateWorkflowNode = (nodeId: string, updates: any) => {
   workflowStore.updateNode(nodeId, updates)
+}
+
+// Create new agent from My Agents page
+const handleCreateNewAgent = () => {
+  // Create a new workflow and switch to workflow editor
+  workflowStore.createWorkflow('新Agent')
+  activeView.value = 'workflow'
+}
+
+// Edit agent from My Agents page
+const handleEditAgent = (agentId: string) => {
+  // Load the agent and switch to workflow editor
+  workflowStore.loadAgent(agentId)
+  const agentsStore = useAgentsStore()
+  agentsStore.markAgentAsUsed(agentId)
+  activeView.value = 'workflow'
+}
+
+// Open agent in editor from sidebar recent agents
+const openAgentInEditor = (agentId: string) => {
+  handleEditAgent(agentId)
 }
 
 // Make method available to child components

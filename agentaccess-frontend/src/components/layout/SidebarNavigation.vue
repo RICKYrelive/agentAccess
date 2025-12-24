@@ -86,14 +86,18 @@
         </div>
       </div>
 
-      <!-- Separator -->
+      <!-- My Agents Section (New) -->
       <div class="border-t border-gray-100 my-2"></div>
 
-      <!-- Agent Management -->
       <div class="space-y-1 pb-4">
         <button
-          @click="toggleMyAgents"
-          class="w-full text-left px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-gray-900 flex items-center justify-between"
+          @click="handleMyAgentsClick"
+          :class="[
+            'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center justify-between transition-colors',
+            activeView === 'my-agents'
+              ? 'bg-primary-100 text-primary-700'
+              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+          ]"
         >
           <div class="flex items-center space-x-3">
             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,6 +111,7 @@
             <span>我的Agent</span>
           </div>
           <svg
+            v-if="recentAgents.length > 0"
             class="w-4 h-4 text-gray-400 transform transition-transform"
             :class="{ 'rotate-90': isMyAgentsOpen }"
             fill="none"
@@ -122,40 +127,36 @@
           </svg>
         </button>
 
-        <!-- My Agent Items -->
-        <div v-if="isMyAgentsOpen" class="mt-1 ml-8 space-y-1">
-          <!-- Saved Workflow Agents -->
+        <!-- Recent Agent Shortcuts -->
+        <div v-if="recentAgents.length > 0 && isMyAgentsOpen" class="mt-1 ml-8 space-y-1">
           <div
-            v-for="agent in savedAgents"
+            v-for="agent in recentAgents"
             :key="agent.id"
-            class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer flex items-center justify-between group"
-            @click="loadAgent(agent.id)"
+            class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer flex items-center space-x-2"
+            @click="openAgentInEditor(agent.id)"
+            :title="agent.name"
           >
-            <span class="flex items-center space-x-2">
-              <svg class="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-              </svg>
-              <span>{{ agent.name }}</span>
-            </span>
-            <span class="text-xs text-gray-400 opacity-0 group-hover:opacity-100">编辑</span>
-          </div>
-          <!-- Legacy Agents -->
-          <div
-            v-for="agent in myAgents"
-            :key="agent.id"
-            class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer"
-            @click="startChatWithAgent(agent)"
-          >
-            {{ agent.name }}
-          </div>
-          <div v-if="savedAgents.length === 0 && myAgents.length === 0" class="px-3 py-2 text-sm text-gray-400">
-            暂无保存的 Agent
+            <svg class="w-4 h-4 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            </svg>
+            <span class="truncate">{{ agent.name }}</span>
           </div>
         </div>
+      </div>
 
+      <!-- Separator -->
+      <div class="border-t border-gray-100 my-2"></div>
+
+      <!-- Team Agents -->
+      <div class="space-y-1 pb-4">
         <button
-          @click="toggleTeamAgents"
-          class="w-full text-left px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-gray-900 flex items-center justify-between mt-1"
+          @click="handleTeamAgentsClick"
+          :class="[
+            'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center justify-between transition-colors',
+            activeView === 'team-agents'
+              ? 'bg-primary-100 text-primary-700'
+              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+          ]"
         >
           <div class="flex items-center space-x-3">
             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -169,6 +170,7 @@
             <span>团队Agent</span>
           </div>
           <svg
+            v-if="myTeams.length > 0"
             class="w-4 h-4 text-gray-400 transform transition-transform"
             :class="{ 'rotate-90': isTeamAgentsOpen }"
             fill="none"
@@ -184,15 +186,19 @@
           </svg>
         </button>
 
-        <!-- Team Agent Items -->
-        <div v-if="isTeamAgentsOpen" class="mt-1 ml-8 space-y-1">
+        <!-- Team Items (my teams) -->
+        <div v-if="myTeams.length > 0 && isTeamAgentsOpen" class="mt-1 ml-8 space-y-1">
           <div
-            v-for="agent in teamAgents"
-            :key="agent.id"
-            class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer"
-            @click="startChatWithAgent(agent)"
+            v-for="team in myTeams"
+            :key="team.id"
+            class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer flex items-center space-x-2"
+            :title="team.description || team.name"
           >
-            {{ agent.name }}
+            <svg class="w-4 h-4 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span class="truncate">{{ team.name }}</span>
+            <span v-if="isTeamAdmin(team.id)" class="text-xs bg-primary-100 text-primary-700 px-1 rounded" title="管理员">管理员</span>
           </div>
         </div>
       </div>
@@ -386,24 +392,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { User } from '@/types'
+import type { User, ExtendedAgent } from '@/types'
 import { useAgentsStore } from '@/stores/agents'
 import { useWorkflowStore } from '@/stores/workflow'
+import { useChatStore } from '@/stores/chat'
+import { useTeamsStore } from '@/stores/teams'
 
 interface Props {
-  activeView: 'home' | 'workflow'
+  activeView: 'home' | 'workflow' | 'my-agents' | 'team-agents'
   isShowingHome: boolean
 }
 
 interface Emits {
-  (e: 'view-change', view: 'home' | 'workflow'): void
+  (e: 'view-change', view: 'home' | 'workflow' | 'my-agents' | 'team-agents'): void
   (e: 'open-user-settings'): void
   (e: 'start-new-conversation'): void
   (e: 'go-to-home'): void
   (e: 'start-chat-with-agent', agent: any): void
   (e: 'select-recent-conversation', conversation: any): void
+  (e: 'open-agent-in-editor', agentId: string): void
 }
 
 const props = defineProps<Props>()
@@ -411,17 +420,28 @@ const emit = defineEmits<Emits>()
 
 const agentsStore = useAgentsStore()
 const { myAgents, teamAgents } = storeToRefs(agentsStore)
+const { getRecentAgents, markAgentAsUsed } = agentsStore
 
 const workflowStore = useWorkflowStore()
-const { fastgptConnected, workflows } = storeToRefs(workflowStore)
+const { fastgptConnected } = storeToRefs(workflowStore)
 
-// Get saved agents from workflow store
-const savedAgents = computed(() => workflows.value)
+const chatStore = useChatStore()
+const { conversations } = storeToRefs(chatStore)
+
+const teamsStore = useTeamsStore()
+const { myTeams } = storeToRefs(teamsStore)
+const { isTeamAdmin } = teamsStore
+
+// Get recent agents
+const recentAgents = computed(() => getRecentAgents(3))
+
+// Get recent conversations from store (limit to 10)
+const recentConversations = computed(() => conversations.value.slice(0, 10))
 
 const isKnowledgeBaseOpen = ref(false)
 const isRecentConversationsOpen = ref(false)
-const isMyAgentsOpen = ref(false)
 const isTeamAgentsOpen = ref(false)
+const isMyAgentsOpen = ref(false)
 const showUserMenu = ref(false)
 
 const user: User = {
@@ -435,61 +455,7 @@ const knowledgeBases = [
   { id: '3', name: '产品安装知识库' },
 ]
 
-// Recent conversations (shared with HomePage)
-const recentConversations = [
-  {
-    id: 'conv-1',
-    title: '帮我生成一个PPT',
-    messages: [
-      { role: 'user', content: '帮我生成一个PPT' },
-      { role: 'assistant', content: '好的，我可以帮您生成PPT。请告诉我PPT的主题是什么？' },
-      { role: 'user', content: '关于人工智能发展趋势' },
-      { role: 'assistant', content: '明白了！我将为您创建一个关于人工智能发展趋势的PPT。我已经为您生成了演示文稿，包含以下内容：\n\n1. 人工智能发展历程\n2. 当前主流AI技术\n3. 未来发展趋势\n4. 行业应用案例\n\n您可以通过以下链接下载PPT：https://example.com/download/ppt-ai-trends.pptx' }
-    ]
-  },
-  {
-    id: 'conv-2',
-    title: '给我设置一个明天8点的会议提醒',
-    messages: [
-      { role: 'user', content: '给我设置一个明天8点的会议提醒' },
-      { role: 'assistant', content: '好的，我已经为您设置了明天上午8点的会议提醒。提醒内容：\n\n📅 时间：明天 8:00 AM\n⏰ 提醒：会议提醒\n\n我会准时提醒您参加会议。需要我添加会议备注吗？' }
-    ]
-  },
-  {
-    id: 'conv-3',
-    title: '写一封产品介绍邮件',
-    messages: [
-      { role: 'user', content: '写一封产品介绍邮件' },
-      { role: 'assistant', content: '好的，以下是一封产品介绍邮件的草稿：\n\n主题：全新智能产品介绍\n\n尊敬的客户，\n\n您好！我们很高兴向您介绍我们最新推出的智能产品...\n\n请告诉我您想介绍什么产品，我可以帮您定制更具体的内容。' }
-    ]
-  },
-  {
-    id: 'conv-4',
-    title: '分析这个数据报表',
-    messages: [
-      { role: 'user', content: '分析这个数据报表' },
-      { role: 'assistant', content: '我看到您上传了数据报表。让我来帮您分析一下...\n\n根据报表数据，我发现了以下几个关键趋势：\n1. 销售额比去年同期增长了25%\n2. 用户活跃度提升了15%\n3. 新用户转化率达到了8%\n\n需要我深入分析某个特定指标吗？' }
-    ]
-  },
-  {
-    id: 'conv-5',
-    title: '翻译这段文字到英文',
-    messages: [
-      { role: 'user', content: '翻译这段文字到英文' },
-      { role: 'assistant', content: '请提供您需要翻译的文字内容，我会帮您翻译成地道的英文。' }
-    ]
-  },
-  {
-    id: 'conv-6',
-    title: '推荐一些技术书籍',
-    messages: [
-      { role: 'user', content: '推荐一些技术书籍' },
-      { role: 'assistant', content: '根据当前技术趋势，我推荐以下几本经典技术书籍：\n\n1. 《代码整洁之道》- Robert C. Martin\n2. 《设计模式》- GoF\n3. 《深入理解计算机系统》- Randal E. Bryant\n4. 《算法导论》- Thomas H. Cormen\n\n您对哪个领域更感兴趣？我可以提供更具体的推荐。' }
-    ]
-  }
-]
-
-const switchToView = (view: 'home' | 'workflow') => {
+const switchToView = (view: 'home' | 'workflow' | 'my-agents' | 'team-agents') => {
   emit('view-change', view)
 }
 
@@ -503,6 +469,13 @@ const goToHome = () => {
   emit('go-to-home')
 }
 
+const openAgentInEditor = (agentId: string) => {
+  // Mark agent as used
+  markAgentAsUsed(agentId)
+  // Emit event to load agent in workflow editor
+  emit('open-agent-in-editor', agentId)
+}
+
 const toggleKnowledgeBase = () => {
   isKnowledgeBaseOpen.value = !isKnowledgeBaseOpen.value
 }
@@ -511,23 +484,24 @@ const toggleRecentConversations = () => {
   isRecentConversationsOpen.value = !isRecentConversationsOpen.value
 }
 
-const toggleMyAgents = () => {
-  isMyAgentsOpen.value = !isMyAgentsOpen.value
-}
-
 const toggleTeamAgents = () => {
   isTeamAgentsOpen.value = !isTeamAgentsOpen.value
 }
 
-const startChatWithAgent = (agent: any) => {
-  emit('start-chat-with-agent', agent)
+const handleMyAgentsClick = () => {
+  // Always switch to my-agents view
+  switchToView('my-agents')
+  // Submenu will auto-expand via watch
 }
 
-const loadAgent = (agentId: string) => {
-  // Load the agent in workflow store
-  workflowStore.loadAgent(agentId)
-  // Switch to workflow view
-  switchToView('workflow')
+const handleTeamAgentsClick = () => {
+  // Always switch to team-agents view
+  switchToView('team-agents')
+  // Submenu will auto-expand via watch
+}
+
+const startChatWithAgent = (agent: any) => {
+  emit('start-chat-with-agent', agent)
 }
 
 const selectRecentConversation = (conversation: any) => {
@@ -558,11 +532,22 @@ const handleClickOutside = (event: MouseEvent) => {
   }
 }
 
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
+// Watch activeView to auto-expand/collapse my-agents and team-agents submenus
+watch(() => props.activeView, (newView) => {
+  if (newView === 'my-agents') {
+    // Auto-expand when entering my-agents view
+    isMyAgentsOpen.value = true
+  } else {
+    // Auto-collapse when leaving my-agents view
+    isMyAgentsOpen.value = false
+  }
 
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
+  if (newView === 'team-agents') {
+    // Auto-expand when entering team-agents view
+    isTeamAgentsOpen.value = true
+  } else {
+    // Auto-collapse when leaving team-agents view
+    isTeamAgentsOpen.value = false
+  }
 })
 </script>

@@ -1,0 +1,463 @@
+import { ref, computed } from 'vue'
+import { defineStore } from 'pinia'
+import type { Workflow, WorkflowNode, WorkflowConnection, WorkflowTest } from '@/types/workflow'
+import { createFastGPTService, getFastGPTService, type FastGPTService } from '@/services/fastgpt'
+import type { FastGPTConfig } from '@/types/fastgpt'
+
+export const useWorkflowStore = defineStore('workflow', () => {
+  // State
+  const workflows = ref<Workflow[]>([])
+  const currentWorkflow = ref<Workflow | null>(null)
+  const selectedNodeId = ref<string | null>(null)
+  const isRunning = ref(false)
+  const testResults = ref<WorkflowTest[]>([])
+
+  // FastGPT Integration State
+  const fastgptConnected = ref(false)
+  const fastgptApiUrl = ref('')
+  const fastgptApiKey = ref('')
+  const fastgptWorkflows = ref<string[]>([])
+  const fastgptConnectionError = ref<string | null>(null)
+  const syncStatus = ref<'idle' | 'syncing' | 'synced' | 'error'>('idle')
+  const useFastGPTExecution = ref(false)
+
+  // Computed
+  const currentNodes = computed(() => currentWorkflow.value?.nodes || [])
+  const currentConnections = computed(() => currentWorkflow.value?.connections || [])
+
+  // Actions
+  const createWorkflow = (name: string) => {
+    const workflow: Workflow = {
+      id: `workflow-${Date.now()}`,
+      name,
+      nodes: [
+        {
+          id: 'start',
+          type: 'start',
+          position: { x: 100, y: 100 },
+          configuration: {},
+          status: 'idle'
+        }
+      ],
+      connections: [],
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      createdBy: 'current-user'
+    }
+
+    workflows.value.push(workflow)
+    currentWorkflow.value = workflow
+    return workflow
+  }
+
+  const addNode = (type: WorkflowNode['type'], position: { x: number; y: number }) => {
+    if (!currentWorkflow.value) {
+      createWorkflow('默认工作流')
+    }
+
+    const node: WorkflowNode = {
+      id: `node-${Date.now()}`,
+      type,
+      position,
+      configuration: getDefaultNodeConfig(type),
+      status: 'idle'
+    }
+
+    // Use spread to trigger reactivity
+    if (currentWorkflow.value) {
+      currentWorkflow.value.nodes = [...currentWorkflow.value.nodes, node]
+      currentWorkflow.value.updatedAt = new Date()
+    }
+
+    return node
+  }
+
+  const updateNode = (nodeId: string, updates: Partial<WorkflowNode>) => {
+    if (!currentWorkflow.value) return
+
+    const nodeIndex = currentWorkflow.value.nodes.findIndex(n => n.id === nodeId)
+    if (nodeIndex === -1) return
+
+    const existingNode = currentWorkflow.value.nodes[nodeIndex]
+    if (existingNode) {
+      currentWorkflow.value.nodes[nodeIndex] = {
+        id: existingNode.id,
+        type: updates.type ?? existingNode.type,
+        position: updates.position ?? existingNode.position,
+        configuration: { ...existingNode.configuration, ...updates.configuration },
+        status: updates.status ?? existingNode.status,
+        result: updates.result ?? existingNode.result
+      }
+      currentWorkflow.value.updatedAt = new Date()
+    }
+  }
+
+  const deleteNode = (nodeId: string) => {
+    if (!currentWorkflow.value) return
+
+    // Remove connections related to this node
+    currentWorkflow.value.connections = currentWorkflow.value.connections.filter(
+      conn => conn.sourceNodeId !== nodeId && conn.targetNodeId !== nodeId
+    )
+
+    // Remove the node
+    currentWorkflow.value.nodes = currentWorkflow.value.nodes.filter(n => n.id !== nodeId)
+    currentWorkflow.value.updatedAt = new Date()
+
+    // Clear selection if this node was selected
+    if (selectedNodeId.value === nodeId) {
+      selectedNodeId.value = null
+    }
+  }
+
+  const addConnection = (sourceNodeId: string, targetNodeId: string) => {
+    if (!currentWorkflow.value) return
+
+    // Check if connection already exists
+    const existingConnection = currentWorkflow.value.connections.find(
+      conn => conn.sourceNodeId === sourceNodeId && conn.targetNodeId === targetNodeId
+    )
+
+    if (existingConnection) return
+
+    const connection: WorkflowConnection = {
+      id: `conn-${Date.now()}`,
+      sourceNodeId,
+      targetNodeId,
+      sourceOutput: 'output',
+      targetInput: 'input'
+    }
+
+    // Use spread to trigger reactivity
+    currentWorkflow.value.connections = [...currentWorkflow.value.connections, connection]
+    currentWorkflow.value.updatedAt = new Date()
+  }
+
+  const deleteConnection = (connectionId: string) => {
+    if (!currentWorkflow.value) return
+
+    currentWorkflow.value.connections = currentWorkflow.value.connections.filter(
+      conn => conn.id !== connectionId
+    )
+    currentWorkflow.value.updatedAt = new Date()
+  }
+
+  const selectNode = (nodeId: string | null) => {
+    selectedNodeId.value = nodeId
+  }
+
+  const getSelectedNode = () => {
+    if (!selectedNodeId.value || !currentWorkflow.value) return null
+    return currentWorkflow.value.nodes.find(n => n.id === selectedNodeId.value) || null
+  }
+
+  /**
+   * Connect to FastGPT server
+   */
+  const connectToFastGPT = async (apiUrl: string, apiKey: string) => {
+    fastgptApiUrl.value = apiUrl
+    fastgptApiKey.value = apiKey
+    fastgptConnectionError.value = null
+
+    try {
+      const config: FastGPTConfig = { apiUrl, apiKey }
+      const service = createFastGPTService(config)
+      await service.authenticate()
+      fastgptConnected.value = true
+    } catch (error) {
+      fastgptConnected.value = false
+      fastgptConnectionError.value = error instanceof Error ? error.message : 'Connection failed'
+      throw error
+    }
+  }
+
+  /**
+   * Disconnect from FastGPT
+   */
+  const disconnectFromFastGPT = () => {
+    fastgptConnected.value = false
+    fastgptApiUrl.value = ''
+    fastgptApiKey.value = ''
+    fastgptWorkflows.value = []
+    fastgptConnectionError.value = null
+    useFastGPTExecution.value = false
+  }
+
+  /**
+   * Sync current workflow to FastGPT
+   */
+  const syncWorkflowToFastGPT = async () => {
+    if (!currentWorkflow.value || !fastgptConnected.value) {
+      throw new Error('No workflow to sync or not connected to FastGPT')
+    }
+
+    syncStatus.value = 'syncing'
+
+    try {
+      const service = getFastGPTService()
+      if (!service) throw new Error('FastGPT service not initialized')
+
+      // Check if workflow already exists on FastGPT
+      if (fastgptWorkflows.value.includes(currentWorkflow.value.id)) {
+        await service.updateWorkflow(currentWorkflow.value.id, currentWorkflow.value)
+      } else {
+        const fastgptId = await service.createWorkflow(currentWorkflow.value)
+        // Store the FastGPT workflow ID
+        currentWorkflow.value.fastgptId = fastgptId
+        fastgptWorkflows.value.push(currentWorkflow.value.id)
+      }
+
+      syncStatus.value = 'synced'
+    } catch (error) {
+      syncStatus.value = 'error'
+      throw error
+    }
+  }
+
+  /**
+   * Load workflow from FastGPT
+   */
+  const loadWorkflowFromFastGPT = async (fastgptWorkflowId: string) => {
+    if (!fastgptConnected.value) {
+      throw new Error('Not connected to FastGPT')
+    }
+
+    try {
+      const service = getFastGPTService()
+      if (!service) throw new Error('FastGPT service not initialized')
+
+      const fastgptWorkflow = await service.getWorkflow(fastgptWorkflowId)
+      const workflow = service.convertFromFastGPTFormat(fastgptWorkflow)
+
+      workflows.value.push(workflow)
+      currentWorkflow.value = workflow
+      fastgptWorkflows.value.push(workflow.id)
+
+      return workflow
+    } catch (error) {
+      throw error
+    }
+  }
+
+  /**
+   * Run workflow - uses FastGPT if connected, otherwise falls back to mock
+   */
+  const runWorkflow = async (input: string): Promise<WorkflowTest> => {
+    if (!currentWorkflow.value) {
+      throw new Error('No workflow selected')
+    }
+
+    isRunning.value = true
+
+    const test: WorkflowTest = {
+      id: `test-${Date.now()}`,
+      workflowId: currentWorkflow.value.id,
+      input,
+      expectedOutput: undefined,
+      actualOutput: undefined,
+      status: 'running',
+      executionTime: undefined,
+      referencedMaterials: [],
+      createdAt: new Date(),
+      runAt: new Date()
+    }
+
+    const startTime = Date.now()
+
+    try {
+      // Try to run on FastGPT if connected and enabled
+      if (fastgptConnected.value && useFastGPTExecution.value) {
+        const service = getFastGPTService()
+        if (service && currentWorkflow.value.fastgptId) {
+          const result = await service.runWorkflow(currentWorkflow.value.fastgptId, input)
+
+          test.status = result.status === 'completed' ? 'passed' : 'failed'
+          test.actualOutput = result.output
+          test.executionTime = result.executionTime || Date.now() - startTime
+          test.referencedMaterials = result.referencedMaterials?.map(m => ({
+            id: m.id,
+            title: m.title,
+            content: m.content,
+            source: m.source,
+            relevanceScore: m.relevanceScore || 0
+          })) || []
+
+          isRunning.value = false
+          testResults.value.push(test)
+          return test
+        }
+      }
+
+      // Fallback to mock execution
+      await new Promise(resolve => setTimeout(resolve, 2000))
+
+      test.status = 'passed'
+      test.actualOutput = 'This is a simulated workflow execution result'
+      test.executionTime = Date.now() - startTime
+      test.referencedMaterials = [
+        {
+          id: '1',
+          title: 'Sample Reference',
+          content: 'This is a referenced material from the knowledge base',
+          source: 'Knowledge Base',
+          relevanceScore: 0.95
+        }
+      ]
+    } catch (error) {
+      test.status = 'failed'
+      test.actualOutput = error instanceof Error ? error.message : 'Unknown error'
+    } finally {
+      isRunning.value = false
+      testResults.value.push(test)
+    }
+
+    return test
+  }
+
+  const validateWorkflow = () => {
+    if (!currentWorkflow.value) {
+      return { valid: false, errors: ['No workflow selected'] }
+    }
+
+    const errors: string[] = []
+
+    // Check if there's at least a start node
+    const hasStartNode = currentWorkflow.value.nodes.some(n => n.type === 'start')
+    if (!hasStartNode) {
+      errors.push('Workflow must have a start node')
+    }
+
+    // Check for disconnected nodes (except start node)
+    const connectedNodeIds = new Set<string>()
+    currentWorkflow.value.connections.forEach(conn => {
+      connectedNodeIds.add(conn.sourceNodeId)
+      connectedNodeIds.add(conn.targetNodeId)
+    })
+
+    currentWorkflow.value.nodes.forEach(node => {
+      if (node.type !== 'start' && !connectedNodeIds.has(node.id)) {
+        errors.push(`Node "${node.type}" is disconnected`)
+      }
+    })
+
+    return {
+      valid: errors.length === 0,
+      errors
+    }
+  }
+
+  return {
+    // State
+    workflows,
+    currentWorkflow,
+    selectedNodeId,
+    isRunning,
+    testResults,
+
+    // FastGPT State
+    fastgptConnected,
+    fastgptApiUrl,
+    fastgptApiKey,
+    fastgptWorkflows,
+    fastgptConnectionError,
+    syncStatus,
+    useFastGPTExecution,
+
+    // Computed
+    currentNodes,
+    currentConnections,
+
+    // Actions
+    createWorkflow,
+    addNode,
+    updateNode,
+    deleteNode,
+    addConnection,
+    deleteConnection,
+    selectNode,
+    getSelectedNode,
+    runWorkflow,
+    validateWorkflow,
+
+    // FastGPT Actions
+    connectToFastGPT,
+    disconnectFromFastGPT,
+    syncWorkflowToFastGPT,
+    loadWorkflowFromFastGPT
+  }
+})
+
+function getDefaultNodeConfig(type: WorkflowNode['type']): any {
+  switch (type) {
+    case 'start':
+      return {}
+    case 'input':
+      return {
+        inputType: 'text',
+        placeholder: '请输入您的问题...',
+        required: true
+      }
+    case 'web-search':
+      return {
+        searchEngine: 'google',
+        maxResults: 10,
+        timeout: 30000
+      }
+    case 'annotated-data-retrieval':
+      return {
+        retrievalMode: 'keyword',
+        maxResults: 10,
+        threshold: 0.5
+      }
+    case 'question-rewrite':
+      return {
+        model: 'Qwen2.5-7B',
+        maxTokens: 500,
+        temperature: 0.7,
+        systemPrompt: '你是一个专业的问题助手，负责重写和优化用户问题。'
+      }
+    case 'knowledge-retrieval':
+      return {
+        retrievalMode: 'hybrid',
+        retrievalWeight: 0.5,
+        recallCount: 5,
+        recallThreshold: 0.8
+      }
+    case 'llm-call':
+      return {
+        model: 'Qwen2.5-7B',
+        maxTokens: 2000,
+        temperature: 0.7,
+        systemPrompt: '',
+        streamOutput: false
+      }
+    case 'data-processing':
+      return {
+        operation: 'filter',
+        rules: []
+      }
+    case 'condition':
+      return {
+        conditionType: 'equals',
+        compareValue: '',
+        trueBranch: '',
+        falseBranch: ''
+      }
+    case 'code-execution':
+      return {
+        language: 'python',
+        code: '',
+        timeout: 30000
+      }
+    case 'output':
+      return {
+        outputType: 'text',
+        format: 'markdown'
+      }
+    case 'end':
+      return {}
+    default:
+      return {}
+  }
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>直接API测试</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <h1>直接API流式测试</h1>
+    <button onclick="testDirectStreaming()">测试直接API流式</button>
+    <div id="output" style="border: 1px solid #ccc; padding: 10px; margin-top: 10px; height: 400px; overflow-y: auto; font-family: monospace;"></div>
+
+    <script>
+        async function testDirectStreaming() {
+            const output = document.getElementById('output')
+            output.innerHTML = '<div>开始测试...</div>'
+
+            try {
+                // 直接调用实际的API，不通过Vite代理
+                const apiUrl = 'https://www.aiping.cn/api/v1/chat/completions'
+
+                const requestBody = {
+                    model: 'claude-3-5-sonnet-20241022',
+                    messages: [
+                        { role: 'user', content: '请用5句话分别回答1+1等于几，2+2等于几，3+3等于几，4+4等于几，5+5等于几，每句话间隔1秒' }
+                    ],
+                    max_tokens: 300,
+                    temperature: 0.7,
+                    stream: true
+                }
+
+                output.innerHTML += `<div>请求URL: ${apiUrl}</div>`
+                output.innerHTML += `<div>请求体: ${JSON.stringify(requestBody, null, 2)}</div>`
+                output.innerHTML += '<div style="color: blue;">发送请求...</div>'
+
+                const startTime = Date.now()
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer sk-uGa9SGhTm59fiWiQ409aA4065cAf4dB091B81a78E01b5f26', // 这里需要实际的API key
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/event-stream',
+                        'Cache-Control': 'no-cache'
+                    },
+                    body: JSON.stringify(requestBody)
+                })
+
+                output.innerHTML += `<div style="color: green;">响应状态: ${response.status} ${response.statusText}</div>`
+                output.innerHTML += `<div style="color: green;">Content-Type: ${response.headers.get('content-type')}</div>`
+
+                if (!response.ok) {
+                    const errorText = await response.text()
+                    output.innerHTML += `<div style="color: red;">错误: ${errorText}</div>`
+                    return
+                }
+
+                const reader = response.body.getReader()
+                const decoder = new TextDecoder()
+                let fullResponse = ''
+                let chunkCount = 0
+
+                while (true) {
+                    const { done, value } = await reader.read()
+
+                    if (done) {
+                        const endTime = Date.now()
+                        output.innerHTML += `<div style="color: blue;">流结束，总耗时: ${endTime - startTime}ms，总chunks: ${chunkCount}</div>`
+                        break
+                    }
+
+                    const now = Date.now()
+                    const chunk = decoder.decode(value, { stream: true })
+                    chunkCount++
+
+                    output.innerHTML += `<div style="color: purple;">Chunk ${chunkCount} 时间: ${now - startTime}ms, 大小: ${chunk.length}</div>`
+
+                    // 处理SSE格式
+                    const lines = chunk.split('\n')
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const data = line.slice(6)
+                            if (data === '[DONE]') {
+                                output.innerHTML += '<div style="color: orange;">收到 [DONE] 标记</div>'
+                            } else {
+                                try {
+                                    const parsed = JSON.parse(data)
+                                    const content = parsed.choices?.[0]?.delta?.content
+                                    if (content) {
+                                        output.innerHTML += `<div style="color: green;">内容: "${content}" 时间: ${Date.now() - startTime}ms</div>`
+                                        output.scrollTop = output.scrollHeight
+                                    }
+                                } catch (e) {
+                                    output.innerHTML += `<div style="color: gray;">SSE数据: ${data}</div>`
+                                }
+                            }
+                        }
+                    }
+
+                    fullResponse += chunk
+                    output.scrollTop = output.scrollHeight
+                }
+
+                output.innerHTML += '<div style="color: blue; font-weight: bold;">测试完成！</div>'
+
+            } catch (error) {
+                output.innerHTML += `<div style="color: red;">请求失败: ${error.message}</div>`
+                console.error('Request failed:', error)
+            }
+        }
+    </script>
+</body>
+</html>

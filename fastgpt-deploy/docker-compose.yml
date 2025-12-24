@@ -1,0 +1,51 @@
+services:
+  # PostgreSQL 数据库
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: fastgpt-postgres
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: fastgpt
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fastgpt-network
+
+  # FastGPT 主应用 - 使用社区镜像
+  fastgpt:
+    image: c121914yu/fastgpt:latest
+    container_name: fastgpt-app
+    ports:
+      - "3000:3000"
+    environment:
+      # 数据库配置
+      POSTGRES_URL: postgres://myuser:mypassword@postgres:5432/fastgpt
+
+      # OpenAI API 配置 - 请替换为你的 API Key
+      OPENAI_API_BASE_URL: https://api.openai.com/v1
+      OPENAI_API_KEY: sk-your-api-key-here
+
+      # 密钥配置
+      TOKEN_KEY: your-secret-key-change-this
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - fastgpt-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  fastgpt-network:
+    driver: bridge

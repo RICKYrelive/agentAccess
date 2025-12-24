@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型提供商调试工具</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        #output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            height: 400px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 模型提供商调试工具</h1>
+
+        <div class="status info">
+            <strong>使用说明：</strong>
+            <ul>
+                <li>确保已经打开过主应用 (http://localhost:5173) 以加载必要的脚本</li>
+                <li>点击"运行完整调试"执行完整的调试流程</li>
+                <li>查看下方控制台输出了解详细信息</li>
+            </ul>
+        </div>
+
+        <button class="button" onclick="runDebug()">🚀 运行完整调试</button>
+        <button class="button" onclick="clearOutput()">🧹 清空输出</button>
+        <button class="button" onclick="loadMainApp()">📱 先加载主应用</button>
+
+        <div id="output"></div>
+    </div>
+
+    <script type="module">
+        // Load SQL.js
+        const loadSQLJS = async () => {
+            logOutput('正在加载 SQL.js...');
+            try {
+                const SQL = await initSqlJs({
+                    locateFile: (file) => `https://sql.js.org/dist/${file}`
+                });
+                window.SQL = SQL;
+                logOutput('✅ SQL.js 加载成功');
+                return true;
+            } catch (e) {
+                logOutput(`❌ SQL.js 加载失败: ${e.message}`, 'error');
+                return false;
+            }
+        };
+
+        // Output logging
+        function logOutput(message, type = 'info') {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+
+            output.innerHTML += `<div class="status ${className}">
+                <strong>[${timestamp}]</strong> ${message}
+            </div>`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // Make functions global
+        window.logOutput = logOutput;
+
+        // Load main app scripts
+        window.loadMainApp = async () => {
+            logOutput('正在加载主应用脚本...');
+
+            try {
+                // Load database service
+                const dbResponse = await fetch('/src/utils/database.ts');
+                const dbText = await dbResponse.text();
+
+                // This is a simplified approach - in reality the modules need to be properly bundled
+                logOutput('⚠️ 需要通过主应用访问完整的调试功能');
+                logOutput('请先在 http://localhost:5173 中运行调试脚本');
+
+            } catch (e) {
+                logOutput(`❌ 加载失败: ${e.message}`, 'error');
+            }
+        };
+
+        // Debug function
+        window.runDebug = async () => {
+            if (typeof window.settingsStore === 'undefined') {
+                logOutput('❌ Settings Store 未找到，请先加载主应用', 'error');
+                logOutput('💡 提示：在新标签页打开 http://localhost:5173，然后再回到此页面', 'info');
+                return;
+            }
+
+            logOutput('🚀 开始模型提供商插入调试...', 'success');
+
+            try {
+                await window.debugModelProviderInsertion();
+                logOutput('🎉 调试完成！请查看浏览器控制台的详细信息', 'success');
+            } catch (e) {
+                logOutput(`❌ 调试过程中出错: ${e.message}`, 'error');
+            }
+        };
+
+        window.clearOutput = () => {
+            document.getElementById('output').innerHTML = '';
+        };
+
+        // Check if main app is loaded
+        setTimeout(() => {
+            if (typeof window.settingsStore !== 'undefined') {
+                logOutput('✅ 检测到 Settings Store 已加载', 'success');
+            } else {
+                logOutput('⚠️ 未检测到 Settings Store', 'info');
+                logOutput('请先打开 http://localhost:5173 加载主应用', 'info');
+            }
+        }, 1000);
+    </script>
+
+    <!-- Load SQL.js -->
+    <script src="https://sql.js.org/dist/sql-wasm.js"></script>
+</body>
+</html>

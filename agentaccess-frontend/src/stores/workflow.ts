@@ -21,6 +21,15 @@ export const useWorkflowStore = defineStore('workflow', () => {
   const syncStatus = ref<'idle' | 'syncing' | 'synced' | 'error'>('idle')
   const useFastGPTExecution = ref(false)
 
+  // Canvas Transform State
+  const canvasScale = ref(1) // 0.5 to 2.0
+  const canvasPan = ref({ x: 0, y: 0 })
+  const isCanvasPanning = ref(false)
+  const panStart = ref({ x: 0, y: 0 })
+
+  // Preview Panel Visibility
+  const isPreviewPanelVisible = ref(true)
+
   // Computed
   const currentNodes = computed(() => currentWorkflow.value?.nodes || [])
   const currentConnections = computed(() => currentWorkflow.value?.connections || [])
@@ -347,6 +356,130 @@ export const useWorkflowStore = defineStore('workflow', () => {
     }
   }
 
+  /**
+   * Set canvas scale (clamped between 0.5 and 2.0)
+   */
+  const setCanvasScale = (scale: number) => {
+    canvasScale.value = Math.min(2, Math.max(0.5, scale))
+  }
+
+  /**
+   * Set canvas pan position
+   */
+  const setCanvasPan = (x: number, y: number) => {
+    canvasPan.value = { x, y }
+  }
+
+  /**
+   * Reset canvas view to default
+   */
+  const resetCanvasView = () => {
+    canvasScale.value = 1
+    canvasPan.value = { x: 0, y: 0 }
+  }
+
+  /**
+   * Fit all nodes in viewport
+   */
+  const fitCanvasToScreen = (viewportWidth: number, viewportHeight: number) => {
+    if (!currentWorkflow.value || currentWorkflow.value.nodes.length === 0) {
+      return
+    }
+
+    // Calculate bounding box of all nodes
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity
+    currentWorkflow.value.nodes.forEach(node => {
+      minX = Math.min(minX, node.position.x)
+      minY = Math.min(minY, node.position.y)
+      maxX = Math.max(maxX, node.position.x + 200) // Assume node width
+      maxY = Math.max(maxY, node.position.y + 100) // Assume node height
+    })
+
+    const contentWidth = maxX - minX
+    const contentHeight = maxY - minY
+    const padding = 100
+
+    const scaleX = (viewportWidth - padding * 2) / contentWidth
+    const scaleY = (viewportHeight - padding * 2) / contentHeight
+    const newScale = Math.min(scaleX, scaleY, 1) // Don't zoom in, only out
+
+    canvasScale.value = Math.max(0.5, Math.min(2, newScale))
+
+    // Center the content
+    const contentCenterX = (minX + maxX) / 2
+    const contentCenterY = (minY + maxY) / 2
+    canvasPan.value = {
+      x: (viewportWidth / 2) - (contentCenterX * canvasScale.value),
+      y: (viewportHeight / 2) - (contentCenterY * canvasScale.value)
+    }
+  }
+
+  /**
+   * Locate start node in center of viewport
+   */
+  const locateStartNode = (viewportWidth: number, viewportHeight: number) => {
+    if (!currentWorkflow.value) return
+
+    const startNode = currentWorkflow.value.nodes.find(n => n.type === 'start')
+    if (!startNode) return
+
+    canvasScale.value = 1
+    canvasPan.value = {
+      x: (viewportWidth / 2) - (startNode.position.x + 100), // Assume node width
+      y: (viewportHeight / 2) - (startNode.position.y + 50) // Assume node height
+    }
+  }
+
+  /**
+   * Toggle preview panel visibility
+   */
+  const togglePreviewPanel = () => {
+    isPreviewPanelVisible.value = !isPreviewPanelVisible.value
+  }
+
+  /**
+   * Update workflow name
+   */
+  const updateWorkflowName = (name: string) => {
+    if (currentWorkflow.value) {
+      currentWorkflow.value.name = name
+      currentWorkflow.value.updatedAt = new Date()
+    }
+  }
+
+  /**
+   * Save current workflow as an agent to "我的 Agent"
+   */
+  const saveAsAgent = () => {
+    if (!currentWorkflow.value) return null
+
+    // Check if this workflow is already saved as an agent
+    const existingIndex = workflows.value.findIndex(w => w.id === currentWorkflow.value!.id)
+
+    if (existingIndex !== -1) {
+      // Update existing workflow
+      workflows.value[existingIndex] = { ...currentWorkflow.value }
+    } else {
+      // Add to workflows list
+      workflows.value.push({ ...currentWorkflow.value })
+    }
+
+    return currentWorkflow.value
+  }
+
+  /**
+   * Load an agent from "我的 Agent"
+   */
+  const loadAgent = (agentId: string) => {
+    const agent = workflows.value.find(w => w.id === agentId)
+    if (agent) {
+      currentWorkflow.value = { ...agent }
+      // Reset canvas view when loading a new agent
+      resetCanvasView()
+    }
+    return agent
+  }
+
   return {
     // State
     workflows,
@@ -364,6 +497,13 @@ export const useWorkflowStore = defineStore('workflow', () => {
     syncStatus,
     useFastGPTExecution,
 
+    // Canvas Transform State
+    canvasScale,
+    canvasPan,
+    isCanvasPanning,
+    panStart,
+    isPreviewPanelVisible,
+
     // Computed
     currentNodes,
     currentConnections,
@@ -379,6 +519,19 @@ export const useWorkflowStore = defineStore('workflow', () => {
     getSelectedNode,
     runWorkflow,
     validateWorkflow,
+
+    // Canvas Transform Actions
+    setCanvasScale,
+    setCanvasPan,
+    resetCanvasView,
+    fitCanvasToScreen,
+    locateStartNode,
+    togglePreviewPanel,
+
+    // Agent Management Actions
+    updateWorkflowName,
+    saveAsAgent,
+    loadAgent,
 
     // FastGPT Actions
     connectToFastGPT,

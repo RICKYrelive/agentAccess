@@ -51,32 +51,30 @@
     </div>
 
     <!-- Right Panels -->
-    <div class="flex flex-col h-screen">
-      <!-- MCP Settings Panel -->
-      <SettingsPanel
-        v-if="showSettingsPanel"
-        key="settings"
-        class="w-80 flex-shrink-0 border-l border-gray-200"
-        @close="closeSettingsPanel"
-      />
-
+    <div v-if="activeView === 'workflow' && (isPreviewPanelVisible || hasSelectedWorkflowNode)" class="flex flex-col h-screen w-96 flex-shrink-0">
       <!-- Workflow Right Panel -->
-      <div v-if="activeView === 'workflow'" class="relative w-96 h-screen flex-shrink-0">
-        <PreviewPanel
-          v-show="!hasSelectedWorkflowNode"
-          key="preview"
-          class="absolute inset-0 border-l border-gray-200"
-        />
-        <NodeConfigPanel
-          v-show="hasSelectedWorkflowNode"
-          key="node-config"
-          :node="selectedWorkflowNode"
-          class="absolute inset-0 border-l border-gray-200"
-          @close="clearWorkflowNodeSelection"
-          @update="updateWorkflowNode"
-        />
-      </div>
+      <PreviewPanel
+        v-if="!hasSelectedWorkflowNode && isPreviewPanelVisible"
+        key="preview"
+        class="h-full border-l border-gray-200"
+      />
+      <NodeConfigPanel
+        v-if="hasSelectedWorkflowNode"
+        key="node-config"
+        :node="selectedWorkflowNode"
+        class="h-full border-l border-gray-200"
+        @close="clearWorkflowNodeSelection"
+        @update="updateWorkflowNode"
+      />
     </div>
+
+    <!-- MCP Settings Panel -->
+    <SettingsPanel
+      v-if="showSettingsPanel"
+      key="settings"
+      class="w-80 flex-shrink-0 border-l border-gray-200"
+      @close="closeSettingsPanel"
+    />
 
     <!-- User Settings Dialog -->
     <UserSettingsDialog
@@ -110,7 +108,7 @@ const showContentArea = ref(false)
 const chatStore = useChatStore()
 const workflowStore = useWorkflowStore()
 const { isLoading, currentConversation } = chatStore
-const { selectedNodeId: selectedWorkflowNodeId } = storeToRefs(workflowStore)
+const { selectedNodeId: selectedWorkflowNodeId, isPreviewPanelVisible } = storeToRefs(workflowStore)
 
 // Computed to safely check if a workflow node is selected
 const hasSelectedWorkflowNode = computed(() => {

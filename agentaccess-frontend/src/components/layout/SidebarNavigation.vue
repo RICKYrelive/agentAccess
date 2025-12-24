@@ -124,6 +124,22 @@
 
         <!-- My Agent Items -->
         <div v-if="isMyAgentsOpen" class="mt-1 ml-8 space-y-1">
+          <!-- Saved Workflow Agents -->
+          <div
+            v-for="agent in savedAgents"
+            :key="agent.id"
+            class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer flex items-center justify-between group"
+            @click="loadAgent(agent.id)"
+          >
+            <span class="flex items-center space-x-2">
+              <svg class="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+              <span>{{ agent.name }}</span>
+            </span>
+            <span class="text-xs text-gray-400 opacity-0 group-hover:opacity-100">编辑</span>
+          </div>
+          <!-- Legacy Agents -->
           <div
             v-for="agent in myAgents"
             :key="agent.id"
@@ -131,6 +147,9 @@
             @click="startChatWithAgent(agent)"
           >
             {{ agent.name }}
+          </div>
+          <div v-if="savedAgents.length === 0 && myAgents.length === 0" class="px-3 py-2 text-sm text-gray-400">
+            暂无保存的 Agent
           </div>
         </div>
 
@@ -367,7 +386,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { User } from '@/types'
 import { useAgentsStore } from '@/stores/agents'
@@ -394,7 +413,10 @@ const agentsStore = useAgentsStore()
 const { myAgents, teamAgents } = storeToRefs(agentsStore)
 
 const workflowStore = useWorkflowStore()
-const { fastgptConnected } = storeToRefs(workflowStore)
+const { fastgptConnected, workflows } = storeToRefs(workflowStore)
+
+// Get saved agents from workflow store
+const savedAgents = computed(() => workflows.value)
 
 const isKnowledgeBaseOpen = ref(false)
 const isRecentConversationsOpen = ref(false)
@@ -499,6 +521,13 @@ const toggleTeamAgents = () => {
 
 const startChatWithAgent = (agent: any) => {
   emit('start-chat-with-agent', agent)
+}
+
+const loadAgent = (agentId: string) => {
+  // Load the agent in workflow store
+  workflowStore.loadAgent(agentId)
+  // Switch to workflow view
+  switchToView('workflow')
 }
 
 const selectRecentConversation = (conversation: any) => {

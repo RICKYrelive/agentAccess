@@ -66,7 +66,7 @@ export type MessageBlock = ReasoningBlock | TextBlock | ToolCallsBlock
 export interface ChatMessage {
   id: string
   role: 'user' | 'assistant' | 'system'
-  content: string  // Legacy: for backward compatibility
+  content: string // Legacy: for backward compatibility
   timestamp: Date
   providerId?: string
   model?: string
@@ -99,4 +99,7 @@ export interface ChatConversation {
   }
   createdAt: Date
   updatedAt: Date
+  // Demo conversation metadata (optional, for internal use)
+  _isDemo?: boolean
+  _demoType?: string
 }

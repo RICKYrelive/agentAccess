@@ -31,7 +31,7 @@
             d="M12 4v16m8-8H4"
           />
         </svg>
-        <span>新对话</span>
+        <span>发起 Access</span>
       </button>
     </div>
 
@@ -45,7 +45,7 @@
             'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center space-x-3 transition-colors',
             isShowingHome
               ? 'bg-primary-100 text-primary-700'
-              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
           ]"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,7 +65,7 @@
             'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center space-x-3 transition-colors',
             activeView === 'workflow'
               ? 'bg-primary-100 text-primary-700'
-              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
           ]"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +80,10 @@
         </button>
 
         <!-- FastGPT Status Indicator -->
-        <div v-if="fastgptConnected" class="ml-8 mt-1 flex items-center space-x-2 text-xs text-green-600">
+        <div
+          v-if="fastgptConnected"
+          class="ml-8 mt-1 flex items-center space-x-2 text-xs text-green-600"
+        >
           <div class="w-2 h-2 bg-green-500 rounded-full"></div>
           <span>FastGPT已连接</span>
         </div>
@@ -96,11 +99,16 @@
             'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center justify-between transition-colors',
             activeView === 'my-agents'
               ? 'bg-primary-100 text-primary-700'
-              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
           ]"
         >
           <div class="flex items-center space-x-3">
-            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              class="w-5 h-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -136,8 +144,18 @@
             @click="openAgentInEditor(agent.id)"
             :title="agent.name"
           >
-            <svg class="w-4 h-4 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            <svg
+              class="w-4 h-4 text-primary-500 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+              />
             </svg>
             <span class="truncate">{{ agent.name }}</span>
           </div>
@@ -155,11 +173,16 @@
             'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center justify-between transition-colors',
             activeView === 'team-agents'
               ? 'bg-primary-100 text-primary-700'
-              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
           ]"
         >
           <div class="flex items-center space-x-3">
-            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              class="w-5 h-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -195,11 +218,26 @@
             :title="team.description || team.name"
             @click="handleTeamClick(team.id)"
           >
-            <svg class="w-4 h-4 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            <svg
+              class="w-4 h-4 text-primary-500 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+              />
             </svg>
             <span class="truncate">{{ team.name }}</span>
-            <span v-if="isTeamAdmin(team.id)" class="text-xs bg-primary-100 text-primary-700 px-1 rounded" title="管理员">管理员</span>
+            <span
+              v-if="isTeamAdmin(team.id)"
+              class="text-xs bg-primary-100 text-primary-700 px-1 rounded"
+              title="管理员"
+              >管理员</span
+            >
           </div>
         </div>
       </div>
@@ -215,15 +253,10 @@
             'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center space-x-3 transition-colors',
             activeView === 'knowledge-base'
               ? 'bg-primary-100 text-primary-700'
-              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
           ]"
         >
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -258,7 +291,7 @@
                 d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
               />
             </svg>
-            <span>最近对话</span>
+            <span>最近 Access 会话</span>
           </div>
           <svg
             class="w-4 h-4 text-gray-400 transform transition-transform"
@@ -288,10 +321,15 @@
             <button
               @click.stop="deleteRecentConversation(conv.id)"
               class="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-red-600 transition-opacity flex-shrink-0"
-              title="删除对话"
+              title="删除 Access 会话"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -389,12 +427,22 @@ import { useChatStore } from '@/stores/chat'
 import { useTeamsStore } from '@/stores/teams'
 
 interface Props {
-  activeView: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'team-detail' | 'knowledge-base' | 'knowledge-base-detail'
+  activeView:
+    | 'home'
+    | 'workflow'
+    | 'my-agents'
+    | 'team-agents'
+    | 'team-detail'
+    | 'knowledge-base'
+    | 'knowledge-base-detail'
   isShowingHome: boolean
 }
 
 interface Emits {
-  (e: 'view-change', view: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'knowledge-base'): void
+  (
+    e: 'view-change',
+    view: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'knowledge-base',
+  ): void
   (e: 'open-user-settings'): void
   (e: 'start-new-conversation'): void
   (e: 'go-to-home'): void
@@ -439,12 +487,14 @@ const user: User = {
   name: '用户03928',
 }
 
-const switchToView = (view: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'knowledge-base') => {
+const switchToView = (
+  view: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'knowledge-base',
+) => {
   emit('view-change', view)
 }
 
 const startNewConversation = () => {
-  // 清空当前对话，切换到聊天界面
+  // 清空当前 Access 会话，切换到聊天界面
   emit('start-new-conversation')
 }
 
@@ -497,13 +547,14 @@ const selectRecentConversation = (conversation: any) => {
 }
 
 const deleteRecentConversation = (conversationId: string) => {
+  console.log('🗑️ Attempting to delete conversation:', conversationId)
   // Check if this is a demo conversation that cannot be deleted
   if (isDemoConversation(conversationId)) {
-    alert('演示中，该对话不支持删除')
+    alert('演示中，该 Access 会话不支持删除')
     return
   }
 
-  if (confirm('确定要删除这个对话吗？')) {
+  if (confirm('确定要删除这个 Access 会话吗？')) {
     emit('delete-conversation', conversationId)
   }
 }
@@ -533,24 +584,27 @@ const handleClickOutside = (event: MouseEvent) => {
 }
 
 // Watch activeView to auto-expand/collapse my-agents and team-agents submenus
-watch(() => props.activeView, (newView) => {
-  if (newView === 'my-agents') {
-    // Auto-expand when entering my-agents view
-    isMyAgentsOpen.value = true
-  } else if (newView === 'workflow') {
-    // Keep expanded when editing an agent in workflow view
-    // Don't collapse when going to workflow editor from my-agents
-  } else {
-    // Auto-collapse when leaving my-agents view
-    isMyAgentsOpen.value = false
-  }
+watch(
+  () => props.activeView,
+  (newView) => {
+    if (newView === 'my-agents') {
+      // Auto-expand when entering my-agents view
+      isMyAgentsOpen.value = true
+    } else if (newView === 'workflow') {
+      // Keep expanded when editing an agent in workflow view
+      // Don't collapse when going to workflow editor from my-agents
+    } else {
+      // Auto-collapse when leaving my-agents view
+      isMyAgentsOpen.value = false
+    }
 
-  if (newView === 'team-agents' || newView === 'team-detail') {
-    // Auto-expand when entering team-agents or team-detail view
-    isTeamAgentsOpen.value = true
-  } else {
-    // Auto-collapse when leaving team views
-    isTeamAgentsOpen.value = false
-  }
-})
+    if (newView === 'team-agents' || newView === 'team-detail') {
+      // Auto-expand when entering team-agents or team-detail view
+      isTeamAgentsOpen.value = true
+    } else {
+      // Auto-collapse when leaving team views
+      isTeamAgentsOpen.value = false
+    }
+  },
+)
 </script>

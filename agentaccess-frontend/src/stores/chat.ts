@@ -1,6 +1,6 @@
 import { ref, computed, nextTick, watch } from 'vue'
 import { defineStore } from 'pinia'
-import type { ChatMessage, ChatConversation } from '@/types/settings'
+import type { ChatMessage, ChatConversation, ToolCall, ToolCallsBlock, TextBlock, ReasoningBlock } from '@/types/settings'
 import { useSettingsStore } from './settings'
 
 const CONVERSATIONS_STORAGE_KEY = 'agentaccess-conversations'
@@ -67,8 +67,8 @@ export const useChatStore = defineStore('chat', () => {
           updatedAt: new Date(conv.updatedAt),
           messages: conv.messages.map((msg: any) => ({
             ...msg,
-            timestamp: new Date(msg.timestamp)
-          }))
+            timestamp: new Date(msg.timestamp),
+          })),
         }))
 
         // Remove duplicates by keeping only the first occurrence of each ID
@@ -106,9 +106,13 @@ export const useChatStore = defineStore('chat', () => {
   isInitialized.value = true
 
   // Watch for changes and auto-save
-  watch(conversations, () => {
-    saveConversations()
-  }, { deep: true })
+  watch(
+    conversations,
+    () => {
+      saveConversations()
+    },
+    { deep: true },
+  )
 
   watch(currentConversationId, () => {
     saveCurrentConversationId()
@@ -116,7 +120,7 @@ export const useChatStore = defineStore('chat', () => {
 
   // Computed
   const currentConversation = computed(() =>
-    conversations.value.find(c => c.id === currentConversationId.value)
+    conversations.value.find((c) => c.id === currentConversationId.value),
   )
 
   const currentMessages = computed(() => {
@@ -126,21 +130,31 @@ export const useChatStore = defineStore('chat', () => {
   // Actions
   const createConversation = (title?: string) => {
     console.log('📝 createConversation called, current conversations:', conversations.value.length)
-    console.log('📝 conversations before:', conversations.value.map(c => ({ id: c.id, title: c.title })))
+    console.log(
+      '📝 conversations before:',
+      conversations.value.map((c) => ({ id: c.id, title: c.title })),
+    )
+
+    const newId = Date.now().toString()
+    console.log('📝 Creating new conversation with ID:', newId)
 
     const newConversation: ChatConversation = {
-      id: Date.now().toString(),
-      title: title || '新对话',
+      id: newId,
+      title: title || '发起 Access',
       messages: [],
       settings: {},
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
 
     conversations.value.unshift(newConversation)
     currentConversationId.value = newConversation.id
 
-    console.log('📝 conversations after:', conversations.value.map(c => ({ id: c.id, title: c.title })))
+    console.log(
+      '📝 conversations after:',
+      conversations.value.map((c) => ({ id: c.id, title: c.title })),
+    )
+    console.log('📝 New conversation is demo?', isDemoConversation(newId))
 
     // 清除所有流式和思维内容状态
     streamingMessage.value = ''
@@ -154,10 +168,10 @@ export const useChatStore = defineStore('chat', () => {
   const deleteConversation = (id: string) => {
     // Check if this is a demo conversation that cannot be deleted
     if (DEMO_CONVERSATION_IDS.has(id)) {
-      throw new Error('演示中，该对话不支持删除')
+      throw new Error('演示中，该 Access 会话不支持删除')
     }
 
-    const index = conversations.value.findIndex(c => c.id === id)
+    const index = conversations.value.findIndex((c) => c.id === id)
     if (index > -1) {
       conversations.value.splice(index, 1)
       if (currentConversationId.value === id) {
@@ -173,7 +187,9 @@ export const useChatStore = defineStore('chat', () => {
 
   // Check if a conversation is a demo conversation
   const isDemoConversation = (id: string): boolean => {
-    return DEMO_CONVERSATION_IDS.has(id)
+    const result = DEMO_CONVERSATION_IDS.has(id)
+    console.log('🔍 isDemoConversation check:', id, 'isDemo:', result, 'demoIds:', Array.from(DEMO_CONVERSATION_IDS))
+    return result
   }
 
   // Initialize demo conversations (called on app startup if no conversations exist)
@@ -188,24 +204,25 @@ export const useChatStore = defineStore('chat', () => {
             id: 'msg-1-1',
             role: 'user' as const,
             content: '帮我生成一个PPT',
-            timestamp: new Date(Date.now() - 1000 * 60 * 30)
+            timestamp: new Date(Date.now() - 1000 * 60 * 30),
           },
           {
             id: 'msg-1-2',
             role: 'assistant' as const,
             content: '好的，我可以帮您生成PPT。请告诉我PPT的主题是什么？',
-            timestamp: new Date(Date.now() - 1000 * 60 * 29.5)
+            timestamp: new Date(Date.now() - 1000 * 60 * 29.5),
           },
           {
             id: 'msg-1-3',
             role: 'user' as const,
             content: '关于人工智能发展趋势',
-            timestamp: new Date(Date.now() - 1000 * 60 * 29)
+            timestamp: new Date(Date.now() - 1000 * 60 * 29),
           },
           {
             id: 'msg-1-4',
             role: 'assistant' as const,
-            content: '明白了！我将为您创建一个关于人工智能发展趋势的PPT。\n\n我已经为您生成了演示文稿，包含以下内容：\n\n1. 人工智能发展历程\n2. 当前主流AI技术\n3. 未来发展趋势\n4. 行业应用案例\n\n您可以通过以下链接下载PPT：https://example.com/download/ppt-ai-trends.pptx',
+            content:
+              '明白了！我将为您创建一个关于人工智能发展趋势的PPT。\n\n我已经为您生成了演示文稿，包含以下内容：\n\n1. 人工智能发展历程\n2. 当前主流AI技术\n3. 未来发展趋势\n4. 行业应用案例\n\n您可以通过以下链接下载PPT：https://example.com/download/ppt-ai-trends.pptx',
             timestamp: new Date(Date.now() - 1000 * 60 * 28),
             toolCalls: [
               {
@@ -216,7 +233,7 @@ export const useChatStore = defineStore('chat', () => {
                 startTime: new Date(Date.now() - 1000 * 60 * 28.5),
                 endTime: new Date(Date.now() - 1000 * 60 * 28),
                 input: { task: '生成PPT大纲', topic: '人工智能发展趋势' },
-                result: { outline: ['发展历程', '主流AI技术', '未来趋势', '行业应用'] }
+                result: { outline: ['发展历程', '主流AI技术', '未来趋势', '行业应用'] },
               },
               {
                 id: 'tool-1-2',
@@ -226,21 +243,21 @@ export const useChatStore = defineStore('chat', () => {
                 startTime: new Date(Date.now() - 1000 * 60 * 28.8),
                 endTime: new Date(Date.now() - 1000 * 60 * 28.6),
                 input: { query: '人工智能 PPT 模板' },
-                result: { templateUsed: 'AI-Trends-Template-2024' }
-              }
+                result: { templateUsed: 'AI-Trends-Template-2024' },
+              },
             ],
             metadata: {
               agentUsed: '写作助手',
-              toolsUsed: ['写作助手', '产品文档知识库']
-            }
-          }
+              toolsUsed: ['写作助手', '产品文档知识库'],
+            },
+          },
         ],
         settings: {
           agentId: 'team-2',
-          knowledgeBaseIds: ['kb-text-1']
+          knowledgeBaseIds: ['kb-text-1'],
         },
         createdAt: new Date(Date.now() - 1000 * 60 * 30),
-        updatedAt: new Date(Date.now() - 1000 * 60 * 28)
+        updatedAt: new Date(Date.now() - 1000 * 60 * 28),
       },
       {
         id: 'conv-2',
@@ -250,12 +267,13 @@ export const useChatStore = defineStore('chat', () => {
             id: 'msg-2-1',
             role: 'user' as const,
             content: '给我设置一个明天8点的会议提醒',
-            timestamp: new Date(Date.now() - 1000 * 60 * 60)
+            timestamp: new Date(Date.now() - 1000 * 60 * 60),
           },
           {
             id: 'msg-2-2',
             role: 'assistant' as const,
-            content: '好的，我已经为您设置了明天上午8点的会议提醒。\n\n提醒内容：\n📅 时间：明天 8:00 AM\n⏰ 提醒：会议提醒\n\n我会准时提醒您参加会议。需要我添加会议备注吗？',
+            content:
+              '好的，我已经为您设置了明天上午8点的会议提醒。\n\n提醒内容：\n📅 时间：明天 8:00 AM\n⏰ 提醒：会议提醒\n\n我会准时提醒您参加会议。需要我添加会议备注吗？',
             timestamp: new Date(Date.now() - 1000 * 60 * 59),
             toolCalls: [
               {
@@ -266,19 +284,19 @@ export const useChatStore = defineStore('chat', () => {
                 startTime: new Date(Date.now() - 1000 * 60 * 59.5),
                 endTime: new Date(Date.now() - 1000 * 60 * 59),
                 input: { action: 'create_reminder', time: '明天 8:00', title: '会议提醒' },
-                result: { reminderId: 'rem-12345', status: '已创建' }
-              }
+                result: { reminderId: 'rem-12345', status: '已创建' },
+              },
             ],
             metadata: {
-              toolsUsed: ['日历插件']
-            }
-          }
+              toolsUsed: ['日历插件'],
+            },
+          },
         ],
         settings: {
-          pluginIds: ['plugin-calendar']
+          pluginIds: ['plugin-calendar'],
         },
         createdAt: new Date(Date.now() - 1000 * 60 * 60),
-        updatedAt: new Date(Date.now() - 1000 * 60 * 59)
+        updatedAt: new Date(Date.now() - 1000 * 60 * 59),
       },
       {
         id: 'conv-3',
@@ -288,12 +306,13 @@ export const useChatStore = defineStore('chat', () => {
             id: 'msg-3-1',
             role: 'user' as const,
             content: '写一封产品介绍邮件',
-            timestamp: new Date(Date.now() - 1000 * 60 * 120)
+            timestamp: new Date(Date.now() - 1000 * 60 * 120),
           },
           {
             id: 'msg-3-2',
             role: 'assistant' as const,
-            content: '好的，以下是一封产品介绍邮件的草稿：\n\n主题：全新智能产品介绍\n\n尊敬的客户，\n\n您好！我们很高兴向您介绍我们最新推出的智能产品...\n\n请告诉我您想介绍什么产品，我可以帮您定制更具体的内容。',
+            content:
+              '好的，以下是一封产品介绍邮件的草稿：\n\n主题：全新智能产品介绍\n\n尊敬的客户，\n\n您好！我们很高兴向您介绍我们最新推出的智能产品...\n\n请告诉我您想介绍什么产品，我可以帮您定制更具体的内容。',
             timestamp: new Date(Date.now() - 1000 * 60 * 119),
             toolCalls: [
               {
@@ -304,7 +323,7 @@ export const useChatStore = defineStore('chat', () => {
                 startTime: new Date(Date.now() - 1000 * 60 * 119.8),
                 endTime: new Date(Date.now() - 1000 * 60 * 119.5),
                 input: { task: '撰写产品介绍邮件' },
-                result: { draftGenerated: true }
+                result: { draftGenerated: true },
               },
               {
                 id: 'tool-3-2',
@@ -314,21 +333,21 @@ export const useChatStore = defineStore('chat', () => {
                 startTime: new Date(Date.now() - 1000 * 60 * 119.5),
                 endTime: new Date(Date.now() - 1000 * 60 * 119.2),
                 input: { templateType: 'product_introduction' },
-                result: { templateUsed: 'professional-email-template-v2' }
-              }
+                result: { templateUsed: 'professional-email-template-v2' },
+              },
             ],
             metadata: {
               agentUsed: '写作助手',
-              toolsUsed: ['写作助手', '邮件模板']
-            }
-          }
+              toolsUsed: ['写作助手', '邮件模板'],
+            },
+          },
         ],
         settings: {
           agentId: 'team-2',
-          mcpServiceIds: ['mcp-email-templates']
+          mcpServiceIds: ['mcp-email-templates'],
         },
         createdAt: new Date(Date.now() - 1000 * 60 * 120),
-        updatedAt: new Date(Date.now() - 1000 * 60 * 119)
+        updatedAt: new Date(Date.now() - 1000 * 60 * 119),
       },
       {
         id: 'conv-4',
@@ -338,7 +357,7 @@ export const useChatStore = defineStore('chat', () => {
             id: 'msg-4-1',
             role: 'user' as const,
             content: '分析这个数据报表',
-            timestamp: new Date(Date.now() - 1000 * 60 * 180)
+            timestamp: new Date(Date.now() - 1000 * 60 * 180),
           },
           {
             id: 'msg-4-2',
@@ -350,13 +369,15 @@ export const useChatStore = defineStore('chat', () => {
               // Turn 1: Reasoning -> Text
               {
                 type: 'reasoning',
-                content: '用户想要分析数据报表。我需要先了解报表的结构和内容，然后进行数据分析。\n\n分析步骤：\n1. 读取报表数据\n2. 检查数据完整性\n3. 计算关键指标\n4. 识别趋势和异常',
-                timestamp: new Date(Date.now() - 1000 * 60 * 179.5)
+                content:
+                  '用户想要分析数据报表。我需要先了解报表的结构和内容，然后进行数据分析。\n\n分析步骤：\n1. 读取报表数据\n2. 检查数据完整性\n3. 计算关键指标\n4. 识别趋势和异常',
+                timestamp: new Date(Date.now() - 1000 * 60 * 179.5),
               },
               {
                 type: 'text',
-                content: '我看到您上传了数据报表。让我来帮您分析一下...\n\n首先，我需要调用数据分析工具来处理这个报表。',
-                timestamp: new Date(Date.now() - 1000 * 60 * 179)
+                content:
+                  '我看到您上传了数据报表。让我来帮您分析一下...\n\n首先，我需要调用数据分析工具来处理这个报表。',
+                timestamp: new Date(Date.now() - 1000 * 60 * 179),
               },
               // Turn 1: Tool Calls
               {
@@ -370,7 +391,7 @@ export const useChatStore = defineStore('chat', () => {
                     startTime: new Date(Date.now() - 1000 * 60 * 179),
                     endTime: new Date(Date.now() - 1000 * 60 * 178.8),
                     input: { task: '分析销售数据报表', file: 'sales_data.xlsx' },
-                    result: { analysisCompleted: true }
+                    result: { analysisCompleted: true },
                   },
                   {
                     id: 'tool-4-2',
@@ -380,16 +401,16 @@ export const useChatStore = defineStore('chat', () => {
                     startTime: new Date(Date.now() - 1000 * 60 * 178.8),
                     endTime: new Date(Date.now() - 1000 * 60 * 178.6),
                     input: { query: '销售数据趋势分析' },
-                    result: { recordsProcessed: 1500 }
-                  }
+                    result: { recordsProcessed: 1500 },
+                  },
                 ],
-                timestamp: new Date(Date.now() - 1000 * 60 * 179)
+                timestamp: new Date(Date.now() - 1000 * 60 * 179),
               },
               // Turn 2: Text -> Tool Call
               {
                 type: 'text',
                 content: '数据已加载完成。现在让我执行代码来进行更深入的统计分析...',
-                timestamp: new Date(Date.now() - 1000 * 60 * 178.5)
+                timestamp: new Date(Date.now() - 1000 * 60 * 178.5),
               },
               {
                 type: 'tool_calls',
@@ -401,32 +422,35 @@ export const useChatStore = defineStore('chat', () => {
                     status: 'completed',
                     startTime: new Date(Date.now() - 1000 * 60 * 178.5),
                     endTime: new Date(Date.now() - 1000 * 60 * 178.2),
-                    input: { code: 'import pandas as pd\ndf = pd.read_excel("sales_data.xlsx")\ndf.describe()\nprint(f"销售额增长: {((df[\'sales\'].iloc[-1] / df[\'sales\'].iloc[0]) - 1) * 100:.1f}%")' },
-                    result: { output: '销售额增长25%，活跃用户提升15%，转化率8%' }
-                  }
+                    input: {
+                      code: 'import pandas as pd\ndf = pd.read_excel("sales_data.xlsx")\ndf.describe()\nprint(f"销售额增长: {((df[\'sales\'].iloc[-1] / df[\'sales\'].iloc[0]) - 1) * 100:.1f}%")',
+                    },
+                    result: { output: '销售额增长25%，活跃用户提升15%，转化率8%' },
+                  },
                 ],
-                timestamp: new Date(Date.now() - 1000 * 60 * 178.5)
+                timestamp: new Date(Date.now() - 1000 * 60 * 178.5),
               },
               // Turn 3: Final Text
               {
                 type: 'text',
-                content: '根据报表数据分析，我发现了以下几个关键趋势：\n\n1. 销售额比去年同期增长了25%\n2. 用户活跃度提升了15%\n3. 新用户转化率达到了8%\n\n需要我深入分析某个特定指标吗？',
-                timestamp: new Date(Date.now() - 1000 * 60 * 178)
-              }
+                content:
+                  '根据报表数据分析，我发现了以下几个关键趋势：\n\n1. 销售额比去年同期增长了25%\n2. 用户活跃度提升了15%\n3. 新用户转化率达到了8%\n\n需要我深入分析某个特定指标吗？',
+                timestamp: new Date(Date.now() - 1000 * 60 * 178),
+              },
             ],
             metadata: {
               agentUsed: '智能数据分析',
-              toolsUsed: ['智能数据分析', '代码执行沙箱', '销售数据表格']
-            }
-          }
+              toolsUsed: ['智能数据分析', '代码执行沙箱', '销售数据表格'],
+            },
+          },
         ],
         settings: {
           agentId: 'team-1',
           pluginIds: ['plugin-code-execution'],
-          knowledgeBaseIds: ['kb-spreadsheet-1']
+          knowledgeBaseIds: ['kb-spreadsheet-1'],
         },
         createdAt: new Date(Date.now() - 1000 * 60 * 180),
-        updatedAt: new Date(Date.now() - 1000 * 60 * 178)
+        updatedAt: new Date(Date.now() - 1000 * 60 * 178),
       },
       {
         id: 'conv-5',
@@ -436,20 +460,22 @@ export const useChatStore = defineStore('chat', () => {
             id: 'msg-5-1',
             role: 'user' as const,
             content: '翻译这段文字到英文',
-            timestamp: new Date(Date.now() - 1000 * 60 * 240)
+            timestamp: new Date(Date.now() - 1000 * 60 * 240),
           },
           {
             id: 'msg-5-2',
             role: 'assistant' as const,
             content: '请提供您需要翻译的文字内容，我会帮您翻译成地道的英文。',
-            timestamp: new Date(Date.now() - 1000 * 60 * 239)
-          }
+            timestamp: new Date(Date.now() - 1000 * 60 * 239),
+          },
         ],
         settings: {
-          mcpServiceIds: ['mcp-translate']
+          mcpServiceIds: ['mcp-translate'],
         },
         createdAt: new Date(Date.now() - 1000 * 60 * 240),
-        updatedAt: new Date(Date.now() - 1000 * 60 * 239)
+        updatedAt: new Date(Date.now() - 1000 * 60 * 239),
+        _isDemo: true,
+        _demoType: 'translation',
       },
       {
         id: 'conv-6',
@@ -459,12 +485,13 @@ export const useChatStore = defineStore('chat', () => {
             id: 'msg-6-1',
             role: 'user' as const,
             content: '搜索文档并总结Agent Access的核心功能',
-            timestamp: new Date(Date.now() - 1000 * 60 * 300)
+            timestamp: new Date(Date.now() - 1000 * 60 * 300),
           },
           {
             id: 'msg-6-2',
             role: 'assistant' as const,
-            content: '好的，让我在知识库中搜索相关文档...\n\n根据搜索结果，Agent Access的核心功能总结如下：\n\n1. **智能Agent管理**：支持创建、编辑和管理个性化AI助手\n2. **团队协作**：支持Agent分享和团队协作，提升团队效率\n3. **知识库集成**：支持多种知识库类型（文本、表格、数据库）\n4. **工具调用**：集成MCP服务和系统插件，扩展AI能力\n5. **实时对话**：支持流式响应和多轮对话\n6. **可视化编辑器**：提供直观的工作流编辑界面',
+            content:
+              '好的，让我在知识库中搜索相关文档...\n\n根据搜索结果，Agent Access的核心功能总结如下：\n\n1. **智能Agent管理**：支持创建、编辑和管理个性化AI助手\n2. **团队协作**：支持Agent分享和团队协作，提升团队效率\n3. **知识库集成**：支持多种知识库类型（文本、表格、数据库）\n4. **工具调用**：集成MCP服务和系统插件，扩展AI能力\n5. **实时对话**：支持流式响应和多轮对话\n6. **可视化编辑器**：提供直观的工作流编辑界面',
             timestamp: new Date(Date.now() - 1000 * 60 * 298),
             toolCalls: [
               {
@@ -475,7 +502,7 @@ export const useChatStore = defineStore('chat', () => {
                 startTime: new Date(Date.now() - 1000 * 60 * 299),
                 endTime: new Date(Date.now() - 1000 * 60 * 298.8),
                 input: { query: 'Agent Access 核心功能' },
-                result: { documentsFound: 5, relevanceScore: 0.95 }
+                result: { documentsFound: 5, relevanceScore: 0.95 },
               },
               {
                 id: 'tool-6-2',
@@ -485,7 +512,7 @@ export const useChatStore = defineStore('chat', () => {
                 startTime: new Date(Date.now() - 1000 * 60 * 298.8),
                 endTime: new Date(Date.now() - 1000 * 60 * 298.5),
                 input: { query: '功能特性 数据分析' },
-                result: { documentsFound: 3, relevanceScore: 0.88 }
+                result: { documentsFound: 3, relevanceScore: 0.88 },
               },
               {
                 id: 'tool-6-3',
@@ -495,25 +522,25 @@ export const useChatStore = defineStore('chat', () => {
                 startTime: new Date(Date.now() - 1000 * 60 * 298.5),
                 endTime: new Date(Date.now() - 1000 * 60 * 298),
                 input: { query: '用户管理 功能说明' },
-                result: { documentsFound: 8, relevanceScore: 0.92 }
-              }
+                result: { documentsFound: 8, relevanceScore: 0.92 },
+              },
             ],
             metadata: {
-              toolsUsed: ['产品文档知识库', '销售数据表格', '用户信息数据库']
-            }
-          }
+              toolsUsed: ['产品文档知识库', '销售数据表格', '用户信息数据库'],
+            },
+          },
         ],
         settings: {
-          knowledgeBaseIds: ['kb-text-1', 'kb-spreadsheet-1', 'kb-database-1']
+          knowledgeBaseIds: ['kb-text-1', 'kb-spreadsheet-1', 'kb-database-1'],
         },
         createdAt: new Date(Date.now() - 1000 * 60 * 300),
-        updatedAt: new Date(Date.now() - 1000 * 60 * 298)
-      }
+        updatedAt: new Date(Date.now() - 1000 * 60 * 298),
+      },
     ]
 
     // Add demo conversations if they don't already exist, or update existing ones
-    demoConversations.forEach(demoConv => {
-      const exists = conversations.value.find(c => c.id === demoConv.id)
+    demoConversations.forEach((demoConv) => {
+      const exists = conversations.value.find((c) => c.id === demoConv.id)
       if (!exists) {
         conversations.value.push(demoConv as ChatConversation)
         // Mark as demo (protected from deletion)
@@ -523,10 +550,17 @@ export const useChatStore = defineStore('chat', () => {
         // Even if conversation exists, ensure it's marked as demo
         DEMO_CONVERSATION_IDS.add(demoConv.id)
         // Update existing demo conversation with new data (settings, messages, toolCalls)
+        // But preserve the original createdAt and updatedAt timestamps
+        const originalCreatedAt = exists.createdAt
+        const originalUpdatedAt = exists.updatedAt
         exists.messages = demoConv.messages
         exists.settings = demoConv.settings
         exists.title = demoConv.title
-        exists.updatedAt = new Date()
+        exists.createdAt = originalCreatedAt
+        exists.updatedAt = originalUpdatedAt
+        // Preserve demo metadata
+        exists._isDemo = demoConv._isDemo
+        exists._demoType = demoConv._demoType
         console.log('✅ Updated demo conversation:', demoConv.title)
       }
     })
@@ -547,7 +581,12 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   const addMessage = async (content: string, role: 'user' | 'assistant' | 'system' = 'user') => {
-    console.log('📨 addMessage called, role:', role, 'currentConversation exists:', !!currentConversation.value)
+    console.log(
+      '📨 addMessage called, role:',
+      role,
+      'currentConversation exists:',
+      !!currentConversation.value,
+    )
 
     if (!currentConversation.value) {
       console.log('📨 No current conversation, creating one...')
@@ -559,11 +598,16 @@ export const useChatStore = defineStore('chat', () => {
       role,
       content,
       timestamp: new Date(),
-      model: settingsStore.selectedProvider?.model
+      model: settingsStore.selectedProvider?.model,
     }
 
     if (currentConversation.value) {
-      console.log('📨 Adding message to conversation:', currentConversation.value.id, 'current messages:', currentConversation.value.messages.length)
+      console.log(
+        '📨 Adding message to conversation:',
+        currentConversation.value.id,
+        'current messages:',
+        currentConversation.value.messages.length,
+      )
       currentConversation.value.messages.push(newMessage)
       currentConversation.value.updatedAt = new Date()
       console.log('📨 After adding, messages:', currentConversation.value.messages.length)
@@ -572,7 +616,274 @@ export const useChatStore = defineStore('chat', () => {
     return newMessage
   }
 
+  // Handle demo translation conversation with simulated streaming response
+  const handleDemoTranslationResponse = async (userMessage: string) => {
+    console.log('🎭 Demo translation conversation detected')
+
+    // Check for provider
+    const provider = settingsStore.selectedProvider
+    if (!provider) {
+      throw new Error('没有可用的模型提供商，请先配置API')
+    }
+
+    // Start loading
+    isLoading.value = true
+    abortController.value = new AbortController()
+
+    // Clear any existing streaming state
+    streamingMessage.value = ''
+    streamingReasoning.value = ''
+    completedReasoning.value = ''
+    showFullReasoning.value = false
+
+    // Add user message
+    await addMessage(userMessage, 'user')
+
+    const now = new Date()
+    const messageId = Date.now().toString()
+
+    // Prepare the content for each block
+    const reasoningContent = `用户请求将中文翻译成英文。我需要准确理解原文的含义，确保翻译既准确又自然。
+
+原文分析：
+"${userMessage}"
+
+翻译策略：
+1. 保持原文的语气和表达力度
+2. 使用地道的英文表达方式
+3. 确保专业术语的准确性
+
+准备使用翻译工具来辅助翻译过程。`
+
+    // Step 1: Stream reasoning using streamingReasoning
+    console.log('📝 Step 1: Streaming reasoning...')
+
+    const reasoningChars = reasoningContent.split('')
+    for (const char of reasoningChars) {
+      if (abortController.value.signal.aborted) {
+        console.log('❌ Demo response aborted')
+        isLoading.value = false
+        return
+      }
+      streamingReasoning.value += char
+      await new Promise(resolve => setTimeout(resolve, 30)) // 30ms per char
+    }
+
+    // Save reasoning to completedReasoning and stop loading (tool starts)
+    completedReasoning.value = streamingReasoning.value
+    streamingReasoning.value = ''
+    isLoading.value = false // Stop loading when tool starts
+
+    console.log('✅ Step 1: Reasoning completed')
+
+    // Step 2: Show tool call for 5 seconds
+    console.log('🔧 Step 2: Running tool for 5 seconds...')
+
+    const toolCall: ToolCall = {
+      id: `tool-${Date.now()}`,
+      type: 'mcp',
+      name: '翻译工具',
+      status: 'running',
+      startTime: new Date(),
+      input: {
+        text: userMessage,
+        sourceLang: 'zh',
+        targetLang: 'en',
+      },
+    }
+
+    // Create assistant message with reasoning block and tool_calls block
+    const reasoningBlock: ReasoningBlock = {
+      type: 'reasoning',
+      content: completedReasoning.value,
+      timestamp: new Date(now.getTime() - 6000),
+    }
+
+    const toolCallsBlock: ToolCallsBlock = {
+      type: 'tool_calls',
+      toolCalls: [toolCall],
+      timestamp: new Date(now.getTime() - 5000),
+    }
+
+    const assistantMessage: ChatMessage = {
+      id: messageId,
+      role: 'assistant',
+      content: '',
+      timestamp: now,
+      blocks: [reasoningBlock, toolCallsBlock],
+      metadata: {
+        reasoning: true,
+        toolsUsed: ['翻译工具'],
+      },
+    }
+
+    if (currentConversation.value) {
+      currentConversation.value.messages.push(assistantMessage)
+    }
+
+    // Wait for 5 seconds while tool is "running"
+    await new Promise(resolve => setTimeout(resolve, 5000))
+
+    // Complete the tool call - get the actual message from the conversation
+    if (currentConversation.value) {
+      const lastMessage = currentConversation.value.messages[currentConversation.value.messages.length - 1]
+      if (lastMessage && lastMessage.blocks) {
+        const toolBlockIndex = lastMessage.blocks.findIndex(b => b.type === 'tool_calls')
+        if (toolBlockIndex !== -1) {
+          const toolBlock = lastMessage.blocks[toolBlockIndex] as ToolCallsBlock
+          if (toolBlock.toolCalls && toolBlock.toolCalls.length > 0) {
+            // Create completed tool call with new reference
+            const completedToolCall: ToolCall = {
+              ...toolBlock.toolCalls[0],
+              status: 'completed',
+              endTime: new Date(),
+              result: {
+                translation: 'Tool completed successfully',
+                confidence: 0.95,
+              },
+            }
+            // Replace the tool_calls block with a new array to trigger reactivity
+            const newBlocks = [...lastMessage.blocks]
+            newBlocks[toolBlockIndex] = {
+              type: 'tool_calls',
+              toolCalls: [completedToolCall],
+              timestamp: toolBlock.timestamp,
+            }
+            lastMessage.blocks = newBlocks
+          }
+        }
+      }
+    }
+
+    console.log('✅ Step 2: Tool call completed')
+
+    // Step 3: Call real LLM API for translation
+    console.log('💬 Step 3: Calling real LLM API...')
+
+    isLoading.value = true // Start loading again for final response
+
+    try {
+      // Prepare messages for LLM API
+      const systemPrompt = `你是一个专业的翻译助手。请将用户的中文翻译成英文。
+要求：
+1. 翻译要准确、自然、地道
+2. 保持原文的语气和表达力度
+3. 先直接给出翻译结果
+4. 然后用简短的中文说明翻译的考虑（可选）`
+
+      const messages = [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userMessage },
+      ]
+
+      // Call real API
+      const apiUrl = `${provider.baseUrl}/chat/completions`
+      console.log('🌐 Calling API for translation:', apiUrl)
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${provider.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: provider.model,
+          messages,
+          max_tokens: provider.maxTokens || 2000,
+          temperature: provider.temperature || 0.3,
+          stream: true,
+        }),
+        signal: abortController.value.signal,
+      })
+
+      if (!response.ok) {
+        throw new Error(`API 请求失败 (${response.status}): ${response.statusText}`)
+      }
+
+      const reader = response.body?.getReader()
+      if (!reader) {
+        throw new Error('无法读取响应流')
+      }
+
+      const decoder = new TextDecoder()
+      let assistantResponse = ''
+
+      console.log('📖 Starting to read translation stream...')
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        const chunk = decoder.decode(value, { stream: true })
+        const lines = chunk.split('\n')
+
+        for (const line of lines) {
+          const trimmedLine = line.trim()
+          if (!trimmedLine) continue
+
+          if (trimmedLine.startsWith('data: ')) {
+            const data = trimmedLine.slice(6)
+            if (data === '[DONE]') break
+
+            try {
+              const json = JSON.parse(data)
+              const content = json.choices?.[0]?.delta?.content
+              if (content) {
+                assistantResponse += content
+                streamingMessage.value = assistantResponse
+                await nextTick()
+              }
+            } catch (e) {
+              // Ignore parse errors
+            }
+          }
+        }
+      }
+
+      console.log('✅ Translation completed')
+
+      // Create text block and add to the actual message in conversation
+      const textBlock: TextBlock = {
+        type: 'text',
+        content: streamingMessage.value,
+        timestamp: new Date(),
+      }
+
+      // Get the actual message from the conversation and add the text block
+      if (currentConversation.value) {
+        const lastMessage = currentConversation.value.messages[currentConversation.value.messages.length - 1]
+        if (lastMessage && lastMessage.blocks) {
+          // Create new blocks array to trigger reactivity
+          lastMessage.blocks = [...lastMessage.blocks, textBlock]
+        }
+      }
+
+      streamingMessage.value = ''
+
+      // Stop loading
+      isLoading.value = false
+
+      console.log('✅ Demo translation response completed')
+    } catch (error) {
+      console.error('❌ Translation API error:', error)
+      isLoading.value = false
+      throw error
+    }
+  }
+
   const sendMessage = async (userMessage: string) => {
+    // Check if this is a demo conversation with special handling
+    console.log('🔍 Checking demo conversation:', {
+      id: currentConversation.value?.id,
+      _isDemo: currentConversation.value?._isDemo,
+      _demoType: currentConversation.value?._demoType,
+    })
+
+    if (currentConversation.value?._isDemo && currentConversation.value?._demoType === 'translation') {
+      console.log('✅ Demo translation detected, calling handleDemoTranslationResponse')
+      return handleDemoTranslationResponse(userMessage)
+    }
+
     // Check for provider
     const provider = settingsStore.selectedProvider
     if (!provider) {
@@ -592,8 +903,8 @@ export const useChatStore = defineStore('chat', () => {
     try {
       // Prepare messages (add current user message to existing messages)
       const messages = [
-        ...currentMessages.value.map(m => ({ role: m.role, content: m.content })),
-        { role: 'user', content: userMessage }
+        ...currentMessages.value.map((m) => ({ role: m.role, content: m.content })),
+        { role: 'user', content: userMessage },
       ]
 
       // Add user message to UI *after* preparing API request
@@ -616,7 +927,7 @@ export const useChatStore = defineStore('chat', () => {
           messages,
           max_tokens: provider.maxTokens || 4000,
           temperature: provider.temperature || 0.7,
-          stream: true
+          stream: true,
         }
 
         console.log('📋 Request body:', JSON.stringify(requestBody, null, 2))
@@ -624,11 +935,11 @@ export const useChatStore = defineStore('chat', () => {
         response = await fetch(apiUrl, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${provider.apiKey}`,
-            'Content-Type': 'application/json'
+            Authorization: `Bearer ${provider.apiKey}`,
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(requestBody),
-          signal: abortController.value.signal
+          signal: abortController.value.signal,
         })
       } catch (fetchError) {
         console.error('❌ Fetch failed:', fetchError)
@@ -709,12 +1020,10 @@ export const useChatStore = defineStore('chat', () => {
                 const choice = json.choices?.[0]
                 if (choice) {
                   // 尝试获取不同路径的内容
-                  const content = choice.delta?.content ||
-                                 json.content
+                  const content = choice.delta?.content || json.content
 
                   // 获取reasoning_content
-                  const reasoningContent = choice.delta?.reasoning_content ||
-                                          json.reasoning_content
+                  const reasoningContent = choice.delta?.reasoning_content || json.reasoning_content
 
                   // 处理reasoning_content
                   if (reasoningContent) {
@@ -798,11 +1107,11 @@ export const useChatStore = defineStore('chat', () => {
 
       // Update conversation title with first user message if it's a new conversation
       if (currentConversation.value && currentConversation.value.messages.length === 2) {
-        currentConversation.value.title = userMessage.slice(0, 30) + (userMessage.length > 30 ? '...' : '')
+        currentConversation.value.title =
+          userMessage.slice(0, 30) + (userMessage.length > 30 ? '...' : '')
       }
 
       console.log('📝 All processing completed, about to exit try block')
-
     } catch (error) {
       console.error('Chat API Error:', error)
       // Ensure cleanup happens even on error
@@ -905,6 +1214,6 @@ export const useChatStore = defineStore('chat', () => {
     saveConversations,
     markConversationAsDemo,
     isDemoConversation,
-    initializeDemoConversations
+    initializeDemoConversations,
   }
 })

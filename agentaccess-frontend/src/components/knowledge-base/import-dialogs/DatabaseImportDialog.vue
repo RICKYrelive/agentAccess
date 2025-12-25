@@ -159,18 +159,42 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">
             选择表 <span class="text-red-500">*</span>
           </label>
-          <select
-            v-model="form.table"
-            :disabled="!hasTestedConnection"
-            required
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-          >
-            <option value="">请先测试连接</option>
-            <option v-for="table in availableTables" :key="table" :value="table">
-              {{ table }}
-            </option>
-          </select>
-          <p class="mt-1 text-xs text-gray-500">需要先测试连接才能选择表</p>
+          <div v-if="!hasTestedConnection" class="text-sm text-gray-500 py-2">
+            请先测试连接以获取可用表
+          </div>
+          <div v-else class="space-y-2">
+            <!-- Multi-select checkboxes -->
+            <div class="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2 space-y-1">
+              <label
+                v-for="table in availableTables"
+                :key="table"
+                class="flex items-center space-x-2 px-2 py-1 hover:bg-gray-50 rounded cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  :value="table"
+                  v-model="form.tables"
+                  :disabled="form.tables.length >= 20 && !form.tables.includes(table)"
+                  class="h-4 w-4 text-purple-600 focus:ring-purple-500 rounded"
+                />
+                <span class="text-sm text-gray-700">{{ table }}</span>
+              </label>
+            </div>
+            <div class="flex items-center justify-between">
+              <p class="text-xs text-gray-500">已选择: {{ form.tables.length }} / 20 个表</p>
+              <button
+                v-if="form.tables.length > 0"
+                type="button"
+                @click="form.tables = []"
+                class="text-xs text-red-500 hover:text-red-700"
+              >
+                清空选择
+              </button>
+            </div>
+            <p v-if="form.tables.length >= 20" class="text-xs text-orange-600">
+              已达到最大表数量限制
+            </p>
+          </div>
         </div>
 
         <!-- Actions -->
@@ -217,7 +241,7 @@ const form = ref<DatabaseImportForm>({
   username: '',
   password: '',
   database: '',
-  table: ''
+  tables: []
 })
 
 const isTesting = ref(false)
@@ -235,7 +259,7 @@ const updateDefaultPort = () => {
   hasTestedConnection.value = false
   connectionTestResult.value = null
   availableTables.value = []
-  form.value.table = ''
+  form.value.tables = []
 }
 
 const canTestConnection = computed(() => {
@@ -249,7 +273,7 @@ const isFormValid = computed(() => {
          form.value.username &&
          form.value.password &&
          form.value.database &&
-         form.value.table
+         form.value.tables.length > 0
 })
 
 const testConnection = async () => {
@@ -266,17 +290,17 @@ const testConnection = async () => {
       username: form.value.username,
       password: form.value.password,
       database: form.value.database,
-      table: ''
+      tables: []
     })
 
     connectionTestResult.value = result
 
-    if (result.success && result.tables) {
+    if (result.success && result.tables && result.tables.length > 0) {
       availableTables.value = result.tables
       hasTestedConnection.value = true
       // Auto-select first table
-      if (result.tables.length > 0 && result.tables[0]) {
-        form.value.table = result.tables[0]
+      if (result.tables[0]) {
+        form.value.tables = [result.tables[0]]
       }
     }
   } catch (error) {

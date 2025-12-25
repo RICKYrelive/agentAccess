@@ -78,19 +78,43 @@
                     ref="fileInput"
                     type="file"
                     accept=".pdf,.docx,.txt"
+                    multiple
                     @change="handleFileChange"
                     class="sr-only"
                   />
                 </label>
                 <p class="pl-1">或拖拽文件到此处</p>
               </div>
-              <p class="text-xs text-gray-500">支持 PDF, DOCX, TXT 格式，最大 10MB</p>
-              <p v-if="form.file" class="text-sm text-green-600 font-medium">
-                已选择: {{ form.file.name }}
+              <p class="text-xs text-gray-500">支持 PDF, DOCX, TXT 格式，单个文件最大 10MB，最多 50 个文件</p>
+              <p v-if="form.files.length > 0" class="text-sm text-green-600 font-medium">
+                已选择: {{ form.files.length }} 个文件 ({{ formatSize(totalSize) }})
               </p>
             </div>
           </div>
           <p v-if="errors.file" class="mt-1 text-sm text-red-600">{{ errors.file }}</p>
+
+          <!-- File List -->
+          <div v-if="form.files.length > 0" class="mt-3 space-y-2 max-h-40 overflow-y-auto">
+            <div
+              v-for="(file, index) in form.files"
+              :key="index"
+              class="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg"
+            >
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate">{{ file.name }}</p>
+                <p class="text-xs text-gray-500">{{ formatSize(file.size) }}</p>
+              </div>
+              <button
+                type="button"
+                @click="removeFile(index)"
+                class="ml-2 text-red-500 hover:text-red-700"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Encoding -->
@@ -158,7 +182,7 @@ const emit = defineEmits<Emits>()
 const form = ref<TextImportForm>({
   name: '',
   description: '',
-  file: null,
+  files: [],
   encoding: 'UTF-8',
   language: 'zh'
 })
@@ -166,31 +190,72 @@ const form = ref<TextImportForm>({
 const errors = ref<Record<string, string>>({})
 const fileInput = ref<HTMLInputElement | null>(null)
 
+const totalSize = computed(() => {
+  return form.value.files.reduce((sum, file) => sum + file.size, 0)
+})
+
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement
-  const file = target.files?.[0]
-  if (file) {
-    // Validate file size (10MB max)
-    if (file.size > 10 * 1024 * 1024) {
-      errors.value.file = '文件大小不能超过 10MB'
-      form.value.file = null
+  const files = target.files
+  if (files) {
+    // Check total file count
+    if (form.value.files.length + files.length > 50) {
+      errors.value.file = '最多只能上传 50 个文件'
       return
     }
-    // Validate file type
-    const validExtensions = ['.pdf', '.docx', '.txt']
-    const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase()
-    if (!validExtensions.includes(fileExtension)) {
-      errors.value.file = '不支持的文件格式，请上传 PDF, DOCX 或 TXT 文件'
-      form.value.file = null
-      return
+
+    // Validate and add each file
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+
+      // Validate file size (10MB max)
+      if (file.size > 10 * 1024 * 1024) {
+        errors.value.file = `文件 ${file.name} 超过 10MB 限制`
+        return
+      }
+
+      // Validate file type
+      const validExtensions = ['.pdf', '.docx', '.txt']
+      const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase()
+      if (!validExtensions.includes(fileExtension)) {
+        errors.value.file = `文件 ${file.name} 格式不支持，请上传 PDF, DOCX 或 TXT 文件`
+        return
+      }
+
+      // Check for duplicates
+      if (form.value.files.some(f => f.name === file.name)) {
+        errors.value.file = `文件 ${file.name} 已存在`
+        return
+      }
     }
+
     errors.value.file = ''
-    form.value.file = file
+    // Add all new files
+    for (let i = 0; i < files.length; i++) {
+      form.value.files.push(files[i])
+    }
+  }
+
+  // Reset input so same files can be selected again if needed
+  if (target) {
+    target.value = ''
   }
 }
 
+const removeFile = (index: number) => {
+  form.value.files.splice(index, 1)
+}
+
+const formatSize = (bytes: number): string => {
+  if (bytes === 0) return '0 B'
+  const k = 1024
+  const sizes = ['B', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
+
 const isFormValid = computed(() => {
-  return form.value.name.trim() !== '' && form.value.file !== null
+  return form.value.name.trim() !== '' && form.value.files.length > 0
 })
 
 const handleSubmit = () => {

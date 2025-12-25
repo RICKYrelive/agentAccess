@@ -81,6 +81,16 @@
       <KnowledgeBasePage
         v-else-if="activeView === 'knowledge-base'"
         class="flex-1 h-full overflow-hidden"
+        @view-knowledge-base="handleViewKnowledgeBase"
+      />
+
+      <!-- Knowledge Base Detail Page View -->
+      <KnowledgeBaseDetailPage
+        v-else-if="activeView === 'knowledge-base-detail' && selectedKnowledgeBaseId"
+        :knowledge-base-id="selectedKnowledgeBaseId"
+        class="flex-1 h-full overflow-hidden"
+        @back="handleBackFromKnowledgeBaseDetail"
+        @edit-knowledge-base="handleEditKnowledgeBase"
       />
     </div>
 
@@ -137,9 +147,11 @@ import MyAgentsPage from '../my-agents/MyAgentsPage.vue'
 import TeamAgentsPage from '../team-agents/TeamAgentsPage.vue'
 import TeamDetailPage from '../team-agents/TeamDetailPage.vue'
 import KnowledgeBasePage from '../knowledge-base/KnowledgeBasePage.vue'
+import KnowledgeBaseDetailPage from '../knowledge-base/KnowledgeBaseDetailPage.vue'
 
-const activeView = ref<'home' | 'workflow' | 'my-agents' | 'team-agents' | 'team-detail' | 'knowledge-base'>('home')
+const activeView = ref<'home' | 'workflow' | 'my-agents' | 'team-agents' | 'team-detail' | 'knowledge-base' | 'knowledge-base-detail'>('home')
 const selectedTeamId = ref<string | null>(null)
+const selectedKnowledgeBaseId = ref<string | null>(null)
 const showSettingsPanel = ref(false)
 const showUserSettingsDialog = ref(false)
 const showChatInterface = ref(false)
@@ -303,6 +315,23 @@ const handleViewTeam = (teamId: string) => {
 const handleBackFromTeamDetail = () => {
   selectedTeamId.value = null
   activeView.value = 'team-agents'
+}
+
+// View knowledge base detail page
+const handleViewKnowledgeBase = (knowledgeBaseId: string) => {
+  selectedKnowledgeBaseId.value = knowledgeBaseId
+  activeView.value = 'knowledge-base-detail'
+}
+
+// Go back from knowledge base detail page
+const handleBackFromKnowledgeBaseDetail = () => {
+  selectedKnowledgeBaseId.value = null
+  activeView.value = 'knowledge-base'
+}
+
+// Edit knowledge base (opens edit dialog on detail page)
+const handleEditKnowledgeBase = (knowledgeBaseId: string) => {
+  // This will be handled by the detail page itself
 }
 
 // Make method available to child components

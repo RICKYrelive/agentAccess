@@ -389,7 +389,7 @@ import { useChatStore } from '@/stores/chat'
 import { useTeamsStore } from '@/stores/teams'
 
 interface Props {
-  activeView: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'team-detail' | 'knowledge-base'
+  activeView: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'team-detail' | 'knowledge-base' | 'knowledge-base-detail'
   isShowingHome: boolean
 }
 

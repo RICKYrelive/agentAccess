@@ -76,6 +76,7 @@
           v-for="kb in textKnowledgeBases"
           :key="kb.id"
           :knowledge-base="kb"
+          @view="handleView"
           @edit="handleEdit"
           @delete="handleDelete"
         />
@@ -114,6 +115,7 @@
           v-for="kb in spreadsheetKnowledgeBases"
           :key="kb.id"
           :knowledge-base="kb"
+          @view="handleView"
           @edit="handleEdit"
           @delete="handleDelete"
         />
@@ -152,6 +154,7 @@
           v-for="kb in databaseKnowledgeBases"
           :key="kb.id"
           :knowledge-base="kb"
+          @view="handleView"
           @edit="handleEdit"
           @delete="handleDelete"
         />
@@ -196,6 +199,11 @@ import DatabaseImportDialog from './import-dialogs/DatabaseImportDialog.vue'
 import EditKnowledgeBaseDialog from './EditKnowledgeBaseDialog.vue'
 import type { KnowledgeBase, TextImportForm, SpreadsheetImportForm, DatabaseImportForm } from '@/types/knowledge-base'
 
+interface Emits {
+  (e: 'view-knowledge-base', id: string): void
+}
+
+const emit = defineEmits<Emits>()
 const knowledgeBaseStore = useKnowledgeBaseStore()
 const {
   textKnowledgeBases,
@@ -230,6 +238,10 @@ const handleEdit = (id: string) => {
   if (kb) {
     editingKnowledgeBase.value = kb
   }
+}
+
+const handleView = (id: string) => {
+  emit('view-knowledge-base', id)
 }
 
 const closeEditDialog = () => {

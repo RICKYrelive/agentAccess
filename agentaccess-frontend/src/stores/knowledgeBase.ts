@@ -1,14 +1,112 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
-import type { KnowledgeBase, TextImportForm, SpreadsheetImportForm, DatabaseImportForm, DatabaseConnectionTest, KnowledgeBaseType } from '@/types/knowledge-base'
+import type { KnowledgeBase, TextImportForm, SpreadsheetImportForm, DatabaseImportForm, DatabaseConnectionTest, KnowledgeBaseType, FileInfo, KnowledgeBaseConfig } from '@/types/knowledge-base'
 
 const KNOWLEDGE_BASES_STORAGE_KEY = 'agentaccess-knowledge-bases'
+const MAX_FILES = 50
+const MAX_TABLES = 20
+
+// Get default config for a knowledge base type
+const getDefaultConfig = (type: KnowledgeBaseType): KnowledgeBaseConfig => {
+  const baseConfig = {
+    settings: {
+      isPublic: false,
+      isEnabled: true,
+      tags: []
+    },
+    embedding: {
+      enabled: true,
+      model: 'bge-large-zh',
+      dimension: 1024
+    },
+    rerank: {
+      enabled: false,
+      model: 'bge-reranker-large',
+      topK: 5,
+      scoreThreshold: 0.5
+    }
+  }
+
+  if (type === 'text') {
+    return {
+      ...baseConfig,
+      chunking: {
+        chunkSize: 512,
+        chunkOverlap: 50
+      }
+    }
+  } else if (type === 'spreadsheet') {
+    return {
+      ...baseConfig,
+      chunking: {
+        chunkSize: 256,
+        chunkOverlap: 0,
+        splitBy: 'row',
+        hasHeader: true
+      }
+    }
+  } else if (type === 'database') {
+    return {
+      ...baseConfig,
+      databaseSync: {
+        frequency: 'daily',
+        maxRowsPerQuery: 1000,
+        enableCache: true
+      }
+    }
+  }
+
+  return baseConfig
+}
 
 export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
   // State
   const knowledgeBases = ref<KnowledgeBase[]>([])
   const isLoading = ref(false)
   const isInitialized = ref(false)
+
+  // Migration function for backward compatibility
+  const migrateKnowledgeBase = (kb: any): KnowledgeBase => {
+    const migrated = { ...kb }
+
+    // Migrate single file to files array
+    if (migrated.sourceInfo.fileName && !migrated.sourceInfo.files) {
+      migrated.sourceInfo.files = [{
+        id: `file-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        fileType: migrated.sourceInfo.fileType || '',
+        fileName: migrated.sourceInfo.fileName,
+        fileSize: migrated.sourceInfo.fileSize || 0,
+        addedAt: new Date(kb.createdAt)
+      }]
+      delete migrated.sourceInfo.fileType
+      delete migrated.sourceInfo.fileName
+      delete migrated.sourceInfo.fileSize
+    }
+
+    // Migrate single table to tables array
+    if (migrated.sourceInfo.table && !migrated.sourceInfo.tables) {
+      migrated.sourceInfo.tables = [migrated.sourceInfo.table]
+      delete migrated.sourceInfo.table
+    }
+
+    // Migrate database connection info
+    if ((migrated.sourceInfo.dbType || migrated.sourceInfo.host) && !migrated.sourceInfo.connection) {
+      migrated.sourceInfo.connection = {
+        dbType: migrated.sourceInfo.dbType || 'mysql',
+        host: migrated.sourceInfo.host || 'localhost',
+        port: migrated.sourceInfo.port || 3306,
+        username: migrated.sourceInfo.username || '',
+        database: migrated.sourceInfo.database || ''
+      }
+    }
+
+    // Add default config if missing
+    if (!migrated.config) {
+      migrated.config = getDefaultConfig(migrated.type || 'text')
+    }
+
+    return migrated as KnowledgeBase
+  }
 
   // Save to localStorage
   const saveKnowledgeBases = () => {
@@ -27,11 +125,21 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
       const saved = localStorage.getItem(KNOWLEDGE_BASES_STORAGE_KEY)
       if (saved) {
         const data = JSON.parse(saved)
-        knowledgeBases.value = data.map((kb: any) => ({
-          ...kb,
-          createdAt: new Date(kb.createdAt),
-          updatedAt: new Date(kb.updatedAt)
-        }))
+        knowledgeBases.value = data.map((kb: any) => {
+          const migrated = migrateKnowledgeBase(kb)
+          return {
+            ...migrated,
+            createdAt: new Date(migrated.createdAt),
+            updatedAt: new Date(migrated.updatedAt),
+            sourceInfo: {
+              ...migrated.sourceInfo,
+              files: migrated.sourceInfo.files?.map((f: FileInfo) => ({
+                ...f,
+                addedAt: new Date(f.addedAt)
+              }))
+            }
+          }
+        })
       }
     } catch (error) {
       console.error('Failed to load knowledge bases:', error)
@@ -54,9 +162,24 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
         description: '包含产品说明书、用户手册等相关文档',
         type: 'text',
         sourceInfo: {
-          fileType: 'pdf',
-          fileName: 'product_docs.pdf'
+          files: [
+            {
+              id: 'file-1',
+              fileType: 'pdf',
+              fileName: 'product_docs.pdf',
+              fileSize: 1024 * 512,
+              addedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7)
+            },
+            {
+              id: 'file-2',
+              fileType: 'pdf',
+              fileName: 'user_manual.pdf',
+              fileSize: 1024 * 256,
+              addedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 6)
+            }
+          ]
         },
+        config: getDefaultConfig('text'),
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
         updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7)
       },
@@ -66,9 +189,24 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
         description: '2024年各季度销售数据统计',
         type: 'spreadsheet',
         sourceInfo: {
-          fileType: 'xlsx',
-          fileName: 'sales_2024.xlsx'
+          files: [
+            {
+              id: 'file-3',
+              fileType: 'xlsx',
+              fileName: 'sales_q1.xlsx',
+              fileSize: 1024 * 128,
+              addedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5)
+            },
+            {
+              id: 'file-4',
+              fileType: 'xlsx',
+              fileName: 'sales_q2.xlsx',
+              fileSize: 1024 * 128,
+              addedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 4)
+            }
+          ]
         },
+        config: getDefaultConfig('spreadsheet'),
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
         updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5)
       },
@@ -78,12 +216,16 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
         description: 'MySQL用户管理数据库连接',
         type: 'database',
         sourceInfo: {
-          dbType: 'mysql',
-          host: 'localhost',
-          port: 3306,
-          database: 'user_db',
-          table: 'users'
+          connection: {
+            dbType: 'mysql',
+            host: 'localhost',
+            port: 3306,
+            username: 'root',
+            database: 'user_db'
+          },
+          tables: ['users', 'profiles', 'permissions']
         },
+        config: getDefaultConfig('database'),
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
         updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3)
       }
@@ -126,6 +268,7 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
       description,
       type,
       sourceInfo,
+      config: getDefaultConfig(type),
       createdAt: new Date(),
       updatedAt: new Date()
     }
@@ -135,37 +278,87 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
   }
 
   const createFromTextImport = (form: TextImportForm) => {
+    const files: FileInfo[] = form.files.map((file, index) => ({
+      id: `file-${Date.now()}-${index}`,
+      fileType: file.name.split('.').pop() || '',
+      fileName: file.name,
+      fileSize: file.size,
+      addedAt: new Date()
+    }))
+
     return createKnowledgeBase('text', form.name, form.description, {
-      fileType: form.file?.name.split('.').pop(),
-      fileName: form.file?.name,
-      fileSize: form.file?.size
+      files
     })
   }
 
   const createFromSpreadsheetImport = (form: SpreadsheetImportForm) => {
+    const files: FileInfo[] = form.files.map((file, index) => ({
+      id: `file-${Date.now()}-${index}`,
+      fileType: file.name.split('.').pop() || '',
+      fileName: file.name,
+      fileSize: file.size,
+      addedAt: new Date()
+    }))
+
     return createKnowledgeBase('spreadsheet', form.name, form.description, {
-      fileType: form.file?.name.split('.').pop(),
-      fileName: form.file?.name,
-      fileSize: form.file?.size
+      files
     })
   }
 
   const createFromDatabaseImport = (form: DatabaseImportForm) => {
     return createKnowledgeBase('database', form.name, form.description, {
-      dbType: form.dbType,
-      host: form.host,
-      port: form.port,
-      database: form.database,
-      table: form.table
+      connection: {
+        dbType: form.dbType,
+        host: form.host,
+        port: form.port,
+        username: form.username,
+        database: form.database
+      },
+      tables: form.tables
     })
   }
 
-  const updateKnowledgeBase = (id: string, updates: Partial<Pick<KnowledgeBase, 'name' | 'description'>>) => {
+  const updateKnowledgeBase = (id: string, updates: Partial<Pick<KnowledgeBase, 'name' | 'description' | 'sourceInfo' | 'config'>>) => {
     const index = knowledgeBases.value.findIndex(kb => kb.id === id)
     if (index > -1) {
       knowledgeBases.value[index] = {
         ...knowledgeBases.value[index],
         ...updates,
+        updatedAt: new Date()
+      } as KnowledgeBase
+    }
+  }
+
+  const updateKnowledgeBaseConfig = (id: string, config: Partial<KnowledgeBaseConfig>) => {
+    const index = knowledgeBases.value.findIndex(kb => kb.id === id)
+    if (index > -1) {
+      const kb = knowledgeBases.value[index]
+      knowledgeBases.value[index] = {
+        ...kb,
+        config: {
+          ...kb.config,
+          ...config,
+          settings: {
+            ...kb.config.settings,
+            ...(config.settings || {})
+          },
+          embedding: {
+            ...kb.config.embedding,
+            ...(config.embedding || {})
+          },
+          rerank: {
+            ...kb.config.rerank,
+            ...(config.rerank || {})
+          },
+          chunking: config.chunking ? {
+            ...kb.config.chunking,
+            ...config.chunking
+          } : kb.config.chunking,
+          databaseSync: config.databaseSync ? {
+            ...kb.config.databaseSync,
+            ...config.databaseSync
+          } : kb.config.databaseSync
+        },
         updatedAt: new Date()
       } as KnowledgeBase
     }
@@ -178,8 +371,68 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
     }
   }
 
+  const addFileToKnowledgeBase = (id: string, file: File) => {
+    const kb = knowledgeBases.value.find(k => k.id === id)
+    if (!kb || !kb.sourceInfo.files) return
+
+    if (kb.sourceInfo.files.length >= MAX_FILES) {
+      throw new Error(`最多只能上传 ${MAX_FILES} 个文件`)
+    }
+
+    const newFile: FileInfo = {
+      id: `file-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      fileType: file.name.split('.').pop() || '',
+      fileName: file.name,
+      fileSize: file.size,
+      addedAt: new Date()
+    }
+
+    kb.sourceInfo.files.push(newFile)
+    kb.updatedAt = new Date()
+  }
+
+  const removeFileFromKnowledgeBase = (id: string, fileId: string) => {
+    const kb = knowledgeBases.value.find(k => k.id === id)
+    if (!kb || !kb.sourceInfo.files) return
+
+    if (kb.sourceInfo.files.length <= 1) {
+      throw new Error('知识库至少需要 1 个源文件')
+    }
+
+    kb.sourceInfo.files = kb.sourceInfo.files.filter(f => f.id !== fileId)
+    kb.updatedAt = new Date()
+  }
+
+  const addTableToKnowledgeBase = (id: string, table: string) => {
+    const kb = knowledgeBases.value.find(k => k.id === id)
+    if (!kb || !kb.sourceInfo.tables) return
+
+    if (kb.sourceInfo.tables.length >= MAX_TABLES) {
+      throw new Error(`最多只能选择 ${MAX_TABLES} 个表`)
+    }
+
+    if (kb.sourceInfo.tables.includes(table)) {
+      throw new Error('表已存在')
+    }
+
+    kb.sourceInfo.tables.push(table)
+    kb.updatedAt = new Date()
+  }
+
+  const removeTableFromKnowledgeBase = (id: string, table: string) => {
+    const kb = knowledgeBases.value.find(k => k.id === id)
+    if (!kb || !kb.sourceInfo.tables) return
+
+    if (kb.sourceInfo.tables.length <= 1) {
+      throw new Error('知识库至少需要 1 个表')
+    }
+
+    kb.sourceInfo.tables = kb.sourceInfo.tables.filter(t => t !== table)
+    kb.updatedAt = new Date()
+  }
+
   // Mock database connection test
-  const testDatabaseConnection = async (config: Omit<DatabaseImportForm, 'name' | 'description'>): Promise<DatabaseConnectionTest> => {
+  const testDatabaseConnection = async (config: Omit<DatabaseImportForm, 'name' | 'description' | 'tables'>): Promise<DatabaseConnectionTest> => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000))
 
@@ -189,7 +442,12 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
       'orders',
       'products',
       'categories',
-      'transactions'
+      'transactions',
+      'profiles',
+      'permissions',
+      'settings',
+      'logs',
+      'analytics'
     ]
 
     return {
@@ -215,7 +473,12 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
     createFromSpreadsheetImport,
     createFromDatabaseImport,
     updateKnowledgeBase,
+    updateKnowledgeBaseConfig,
     deleteKnowledgeBase,
+    addFileToKnowledgeBase,
+    removeFileFromKnowledgeBase,
+    addTableToKnowledgeBase,
+    removeTableFromKnowledgeBase,
     testDatabaseConnection,
     loadKnowledgeBases,
     saveKnowledgeBases

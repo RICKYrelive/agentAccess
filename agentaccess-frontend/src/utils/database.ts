@@ -28,7 +28,7 @@ export class DatabaseService {
 
       // Load SQL.js
       const SQL = await initSqlJs({
-        locateFile: (file) => `https://sql.js.org/dist/${file}`
+        locateFile: (file) => `https://sql.js.org/dist/${file}`,
       })
       console.log('✅ SQL.js loaded successfully')
 
@@ -66,7 +66,8 @@ export class DatabaseService {
       this.createTables()
 
       // Check if we have any providers
-      const providerCount = this.db!.exec('SELECT COUNT(*) as count FROM model_providers')[0].values[0][0] as number
+      const providerCount = this.db!.exec('SELECT COUNT(*) as count FROM model_providers')[0]
+        .values[0][0] as number
       console.log('📊 Existing provider count:', providerCount)
 
       if (providerCount === 0 || shouldCreateDefaultProviders) {
@@ -103,7 +104,11 @@ export class DatabaseService {
           const SQL = await initSqlJs()
           const uInt8Array = new Uint8Array(parsedBackup.data)
           this.db = new SQL.Database(uInt8Array)
-          console.log('✅ Database loaded from backup (', parsedBackup.truncated ? 'partial' : 'complete', ')')
+          console.log(
+            '✅ Database loaded from backup (',
+            parsedBackup.truncated ? 'partial' : 'complete',
+            ')',
+          )
 
           // Try to restore primary storage from backup
           if (parsedBackup.truncated) {
@@ -172,14 +177,14 @@ export class DatabaseService {
           const compressed = JSON.stringify({
             data: dataArray.slice(0, 10000), // Save first 10KB as backup
             timestamp: Date.now(),
-            truncated: dataArray.length > 10000
+            truncated: dataArray.length > 10000,
           })
           localStorage.setItem('agentaccess-db-backup', compressed)
           console.log('💾 Backup database saved')
         } catch (backupError) {
           console.error('❌ Both primary and backup storage failed:', {
             primary: storageError,
-            backup: backupError
+            backup: backupError,
           })
         }
       }
@@ -203,22 +208,24 @@ export class DatabaseService {
       console.log('🔍 DB query - total rows found:', rows.length)
 
       // Convert SQLite boolean to JavaScript boolean and map field names
-      return rows.map((row: any) => {
-        console.log('🔍 Raw DB row:', row)
-        return {
-          id: row.id || '',
-          name: row.name || '',
-          type: row.type || 'openai',
-          baseUrl: row.base_url || '',
-          apiKey: row.api_key || '',
-          model: row.model || '',
-          maxTokens: row.max_tokens || 4000,
-          temperature: row.temperature || 0.7,
-          isActive: Boolean(row.is_active),
-          createdAt: row.created_at ? new Date(row.created_at) : new Date(),
-          updatedAt: row.updated_at ? new Date(row.updated_at) : new Date()
-        }
-      }).filter(provider => provider.id) // Filter out any empty/invalid providers
+      return rows
+        .map((row: any) => {
+          console.log('🔍 Raw DB row:', row)
+          return {
+            id: row.id || '',
+            name: row.name || '',
+            type: row.type || 'openai',
+            baseUrl: row.base_url || '',
+            apiKey: row.api_key || '',
+            model: row.model || '',
+            maxTokens: row.max_tokens || 4000,
+            temperature: row.temperature || 0.7,
+            isActive: Boolean(row.is_active),
+            createdAt: row.created_at ? new Date(row.created_at) : new Date(),
+            updatedAt: row.updated_at ? new Date(row.updated_at) : new Date(),
+          }
+        })
+        .filter((provider) => provider.id) // Filter out any empty/invalid providers
     } catch (error) {
       console.error('Failed to get model providers:', error)
       return []
@@ -253,7 +260,7 @@ export class DatabaseService {
         provider.maxTokens || 4000,
         provider.temperature || 0.7,
         provider.isActive ? 1 : 0,
-        provider.id
+        provider.id,
       ])
       stmt.free()
 
@@ -320,7 +327,7 @@ export class DatabaseService {
         temperature: provider.temperature || 0.7,
         isActive: Boolean(provider.is_active),
         createdAt: provider.created_at ? new Date(provider.created_at) : new Date(),
-        updatedAt: provider.updated_at ? new Date(provider.updated_at) : new Date()
+        updatedAt: provider.updated_at ? new Date(provider.updated_at) : new Date(),
       }
     } catch (error) {
       console.error('Failed to get active model provider:', error)
@@ -340,7 +347,9 @@ export class DatabaseService {
       this.db.run('UPDATE model_providers SET is_active = 0')
 
       // Set specified provider to active
-      const stmt = this.db.prepare('UPDATE model_providers SET is_active = 1, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
+      const stmt = this.db.prepare(
+        'UPDATE model_providers SET is_active = 1, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+      )
       stmt.run([providerId])
       stmt.free()
 
@@ -368,7 +377,7 @@ export class DatabaseService {
       return result.map((row: any) => ({
         ...row,
         isActive: Boolean(row.is_active),
-        config: JSON.parse(row.config || '{}')
+        config: JSON.parse(row.config || '{}'),
       }))
     } catch (error) {
       console.error('Failed to get MCP services:', error)
@@ -392,7 +401,7 @@ export class DatabaseService {
         service.name,
         service.type,
         JSON.stringify(service.config || {}),
-        service.isActive ? 1 : 0
+        service.isActive ? 1 : 0,
       ])
       stmt.free()
 

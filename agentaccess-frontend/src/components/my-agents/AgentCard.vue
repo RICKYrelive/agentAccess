@@ -8,8 +8,18 @@
     <!-- Header with name and edit button -->
     <div class="flex items-start justify-between mb-3">
       <div class="flex items-center space-x-2 flex-1 min-w-0">
-        <svg class="w-5 h-5 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+        <svg
+          class="w-5 h-5 text-primary-500 flex-shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+          />
         </svg>
         <h3 class="font-semibold text-gray-900 truncate">{{ agent.name }}</h3>
       </div>
@@ -80,8 +90,8 @@ const sharedGroupNames = computed(() => {
   }
 
   return props.agent.sharedGroups
-    .map(groupId => {
-      const group = props.sharingGroups.find(g => g.id === groupId)
+    .map((groupId) => {
+      const group = props.sharingGroups.find((g) => g.id === groupId)
       return group?.name
     })
     .filter(Boolean)

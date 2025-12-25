@@ -6,12 +6,14 @@
     <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-semibold text-gray-900">管理团队 - {{ team?.name }}</h3>
-        <button
-          @click="$emit('close')"
-          class="text-gray-400 hover:text-gray-600"
-        >
+        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -48,7 +50,12 @@
               title="设置有效期"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
               </svg>
             </button>
             <button
@@ -58,7 +65,12 @@
               title="移除成员"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
               </svg>
             </button>
           </div>
@@ -113,7 +125,7 @@ const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('zh-CN', {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   }).format(date)
 }
 
@@ -137,12 +149,12 @@ const removeMember = (memberId: string) => {
 const setExpiration = (member: any) => {
   const expiresAtStr = prompt(
     `设置 ${member.name} 的有效期 (格式: YYYY-MM-DD，留空表示永久):`,
-    member.expiresAt ? new Date(member.expiresAt).toISOString().split('T')[0] : ''
+    member.expiresAt ? new Date(member.expiresAt).toISOString().split('T')[0] : '',
   )
 
   if (expiresAtStr !== null) {
     if (expiresAtStr.trim() === '') {
-      setMemberExpiration(props.team!.id, member.id, (null as unknown) as Date)
+      setMemberExpiration(props.team!.id, member.id, null as unknown as Date)
     } else {
       const expiresAt = new Date(expiresAtStr)
       if (!isNaN(expiresAt.getTime())) {

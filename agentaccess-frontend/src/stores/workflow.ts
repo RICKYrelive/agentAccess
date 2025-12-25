@@ -14,110 +14,434 @@ const PRESET_WORKFLOWS: Record<string, Workflow> = {
     name: '个人助理小助手',
     description: '个人日常助手',
     nodes: [
-      { id: 'start', type: 'start', position: { x: 100, y: 100 }, configuration: {}, status: 'idle' },
-      { id: 'input-1', type: 'input', position: { x: 350, y: 100 }, configuration: { inputType: 'text', placeholder: '请问有什么可以帮您？', required: true }, status: 'idle' },
-      { id: 'llm-1', type: 'llm-call', position: { x: 600, y: 100 }, configuration: { model: 'Qwen2.5-7B', maxTokens: 2000, temperature: 0.7, systemPrompt: '你是一个友好、专业的个人助理，帮助用户处理日常事务。', streamOutput: false }, status: 'idle' },
-      { id: 'output-1', type: 'output', position: { x: 850, y: 100 }, configuration: { outputType: 'text', format: 'markdown' }, status: 'idle' }
+      {
+        id: 'start',
+        type: 'start',
+        position: { x: 100, y: 100 },
+        configuration: {},
+        status: 'idle',
+      },
+      {
+        id: 'input-1',
+        type: 'input',
+        position: { x: 350, y: 100 },
+        configuration: { inputType: 'text', placeholder: '请问有什么可以帮您？', required: true },
+        status: 'idle',
+      },
+      {
+        id: 'llm-1',
+        type: 'llm-call',
+        position: { x: 600, y: 100 },
+        configuration: {
+          model: 'Qwen2.5-7B',
+          maxTokens: 2000,
+          temperature: 0.7,
+          systemPrompt: '你是一个友好、专业的个人助理，帮助用户处理日常事务。',
+          streamOutput: false,
+        },
+        status: 'idle',
+      },
+      {
+        id: 'output-1',
+        type: 'output',
+        position: { x: 850, y: 100 },
+        configuration: { outputType: 'text', format: 'markdown' },
+        status: 'idle',
+      },
     ],
     connections: [
-      { id: 'conn-1', sourceNodeId: 'start', targetNodeId: 'input-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-2', sourceNodeId: 'input-1', targetNodeId: 'llm-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-3', sourceNodeId: 'llm-1', targetNodeId: 'output-1', sourceOutput: 'output', targetInput: 'input' }
+      {
+        id: 'conn-1',
+        sourceNodeId: 'start',
+        targetNodeId: 'input-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-2',
+        sourceNodeId: 'input-1',
+        targetNodeId: 'llm-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-3',
+        sourceNodeId: 'llm-1',
+        targetNodeId: 'output-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
     ],
     isActive: true,
     createdAt: new Date('2024-01-01'),
     updatedAt: new Date('2024-01-01'),
-    createdBy: 'current-user'
+    createdBy: 'current-user',
   },
   'my-2': {
     id: 'my-2',
     name: '代码助手',
     description: '编程开发助手',
     nodes: [
-      { id: 'start', type: 'start', position: { x: 100, y: 100 }, configuration: {}, status: 'idle' },
-      { id: 'input-1', type: 'input', position: { x: 350, y: 100 }, configuration: { inputType: 'text', placeholder: '请描述您的编程问题或需求...', required: true }, status: 'idle' },
-      { id: 'llm-1', type: 'llm-call', position: { x: 600, y: 100 }, configuration: { model: 'Qwen2.5-7B', maxTokens: 3000, temperature: 0.3, systemPrompt: '你是一个专业的编程助手，精通多种编程语言。提供清晰、可执行的代码示例和解释。', streamOutput: false }, status: 'idle' },
-      { id: 'output-1', type: 'output', position: { x: 850, y: 100 }, configuration: { outputType: 'text', format: 'markdown' }, status: 'idle' }
+      {
+        id: 'start',
+        type: 'start',
+        position: { x: 100, y: 100 },
+        configuration: {},
+        status: 'idle',
+      },
+      {
+        id: 'input-1',
+        type: 'input',
+        position: { x: 350, y: 100 },
+        configuration: {
+          inputType: 'text',
+          placeholder: '请描述您的编程问题或需求...',
+          required: true,
+        },
+        status: 'idle',
+      },
+      {
+        id: 'llm-1',
+        type: 'llm-call',
+        position: { x: 600, y: 100 },
+        configuration: {
+          model: 'Qwen2.5-7B',
+          maxTokens: 3000,
+          temperature: 0.3,
+          systemPrompt:
+            '你是一个专业的编程助手，精通多种编程语言。提供清晰、可执行的代码示例和解释。',
+          streamOutput: false,
+        },
+        status: 'idle',
+      },
+      {
+        id: 'output-1',
+        type: 'output',
+        position: { x: 850, y: 100 },
+        configuration: { outputType: 'text', format: 'markdown' },
+        status: 'idle',
+      },
     ],
     connections: [
-      { id: 'conn-1', sourceNodeId: 'start', targetNodeId: 'input-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-2', sourceNodeId: 'input-1', targetNodeId: 'llm-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-3', sourceNodeId: 'llm-1', targetNodeId: 'output-1', sourceOutput: 'output', targetInput: 'input' }
+      {
+        id: 'conn-1',
+        sourceNodeId: 'start',
+        targetNodeId: 'input-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-2',
+        sourceNodeId: 'input-1',
+        targetNodeId: 'llm-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-3',
+        sourceNodeId: 'llm-1',
+        targetNodeId: 'output-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
     ],
     isActive: true,
     createdAt: new Date('2024-01-02'),
     updatedAt: new Date('2024-01-02'),
-    createdBy: 'current-user'
+    createdBy: 'current-user',
   },
   'my-3': {
     id: 'my-3',
     name: '机电维修助手瑶哥',
     description: '机电维修专家',
     nodes: [
-      { id: 'start', type: 'start', position: { x: 100, y: 100 }, configuration: {}, status: 'idle' },
-      { id: 'input-1', type: 'input', position: { x: 350, y: 100 }, configuration: { inputType: 'text', placeholder: '请描述机电设备的故障现象...', required: true }, status: 'idle' },
-      { id: 'knowledge-1', type: 'knowledge-retrieval', position: { x: 600, y: 50 }, configuration: { retrievalMode: 'hybrid', retrievalWeight: 0.5, recallCount: 5, recallThreshold: 0.8 }, status: 'idle' },
-      { id: 'llm-1', type: 'llm-call', position: { x: 850, y: 100 }, configuration: { model: 'Qwen2.5-7B', maxTokens: 2500, temperature: 0.5, systemPrompt: '你是一位经验丰富的机电维修专家（瑶哥），擅长诊断和解决各类机电设备故障。请基于检索的知识库信息，提供专业、实用的维修建议。', streamOutput: false }, status: 'idle' },
-      { id: 'output-1', type: 'output', position: { x: 1100, y: 100 }, configuration: { outputType: 'text', format: 'markdown' }, status: 'idle' }
+      {
+        id: 'start',
+        type: 'start',
+        position: { x: 100, y: 100 },
+        configuration: {},
+        status: 'idle',
+      },
+      {
+        id: 'input-1',
+        type: 'input',
+        position: { x: 350, y: 100 },
+        configuration: {
+          inputType: 'text',
+          placeholder: '请描述机电设备的故障现象...',
+          required: true,
+        },
+        status: 'idle',
+      },
+      {
+        id: 'knowledge-1',
+        type: 'knowledge-retrieval',
+        position: { x: 600, y: 50 },
+        configuration: {
+          retrievalMode: 'hybrid',
+          retrievalWeight: 0.5,
+          recallCount: 5,
+          recallThreshold: 0.8,
+        },
+        status: 'idle',
+      },
+      {
+        id: 'llm-1',
+        type: 'llm-call',
+        position: { x: 850, y: 100 },
+        configuration: {
+          model: 'Qwen2.5-7B',
+          maxTokens: 2500,
+          temperature: 0.5,
+          systemPrompt:
+            '你是一位经验丰富的机电维修专家（瑶哥），擅长诊断和解决各类机电设备故障。请基于检索的知识库信息，提供专业、实用的维修建议。',
+          streamOutput: false,
+        },
+        status: 'idle',
+      },
+      {
+        id: 'output-1',
+        type: 'output',
+        position: { x: 1100, y: 100 },
+        configuration: { outputType: 'text', format: 'markdown' },
+        status: 'idle',
+      },
     ],
     connections: [
-      { id: 'conn-1', sourceNodeId: 'start', targetNodeId: 'input-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-2', sourceNodeId: 'input-1', targetNodeId: 'knowledge-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-3', sourceNodeId: 'input-1', targetNodeId: 'llm-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-4', sourceNodeId: 'knowledge-1', targetNodeId: 'llm-1', sourceOutput: 'output', targetInput: 'context' },
-      { id: 'conn-5', sourceNodeId: 'llm-1', targetNodeId: 'output-1', sourceOutput: 'output', targetInput: 'input' }
+      {
+        id: 'conn-1',
+        sourceNodeId: 'start',
+        targetNodeId: 'input-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-2',
+        sourceNodeId: 'input-1',
+        targetNodeId: 'knowledge-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-3',
+        sourceNodeId: 'input-1',
+        targetNodeId: 'llm-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-4',
+        sourceNodeId: 'knowledge-1',
+        targetNodeId: 'llm-1',
+        sourceOutput: 'output',
+        targetInput: 'context',
+      },
+      {
+        id: 'conn-5',
+        sourceNodeId: 'llm-1',
+        targetNodeId: 'output-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
     ],
     isActive: true,
     createdAt: new Date('2024-01-03'),
     updatedAt: new Date('2024-01-03'),
-    createdBy: 'current-user'
+    createdBy: 'current-user',
   },
   'my-4': {
     id: 'my-4',
     name: '动环监控王师傅',
     description: '动环监控专家',
     nodes: [
-      { id: 'start', type: 'start', position: { x: 100, y: 100 }, configuration: {}, status: 'idle' },
-      { id: 'input-1', type: 'input', position: { x: 350, y: 100 }, configuration: { inputType: 'text', placeholder: '请输入动环监控数据或问题...', required: true }, status: 'idle' },
-      { id: 'knowledge-1', type: 'knowledge-retrieval', position: { x: 600, y: 50 }, configuration: { retrievalMode: 'vector', retrievalWeight: 0.7, recallCount: 8, recallThreshold: 0.75 }, status: 'idle' },
-      { id: 'llm-1', type: 'llm-call', position: { x: 850, y: 100 }, configuration: { model: 'Qwen2.5-7B', maxTokens: 2000, temperature: 0.4, systemPrompt: '你是动环监控专家王师傅，精通数据中心动力环境监控系统，包括UPS、空调、配电、温湿度等设备的监控和维护。', streamOutput: false }, status: 'idle' },
-      { id: 'output-1', type: 'output', position: { x: 1100, y: 100 }, configuration: { outputType: 'text', format: 'markdown' }, status: 'idle' }
+      {
+        id: 'start',
+        type: 'start',
+        position: { x: 100, y: 100 },
+        configuration: {},
+        status: 'idle',
+      },
+      {
+        id: 'input-1',
+        type: 'input',
+        position: { x: 350, y: 100 },
+        configuration: {
+          inputType: 'text',
+          placeholder: '请输入动环监控数据或问题...',
+          required: true,
+        },
+        status: 'idle',
+      },
+      {
+        id: 'knowledge-1',
+        type: 'knowledge-retrieval',
+        position: { x: 600, y: 50 },
+        configuration: {
+          retrievalMode: 'vector',
+          retrievalWeight: 0.7,
+          recallCount: 8,
+          recallThreshold: 0.75,
+        },
+        status: 'idle',
+      },
+      {
+        id: 'llm-1',
+        type: 'llm-call',
+        position: { x: 850, y: 100 },
+        configuration: {
+          model: 'Qwen2.5-7B',
+          maxTokens: 2000,
+          temperature: 0.4,
+          systemPrompt:
+            '你是动环监控专家王师傅，精通数据中心动力环境监控系统，包括UPS、空调、配电、温湿度等设备的监控和维护。',
+          streamOutput: false,
+        },
+        status: 'idle',
+      },
+      {
+        id: 'output-1',
+        type: 'output',
+        position: { x: 1100, y: 100 },
+        configuration: { outputType: 'text', format: 'markdown' },
+        status: 'idle',
+      },
     ],
     connections: [
-      { id: 'conn-1', sourceNodeId: 'start', targetNodeId: 'input-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-2', sourceNodeId: 'input-1', targetNodeId: 'knowledge-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-3', sourceNodeId: 'input-1', targetNodeId: 'llm-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-4', sourceNodeId: 'knowledge-1', targetNodeId: 'llm-1', sourceOutput: 'output', targetInput: 'context' },
-      { id: 'conn-5', sourceNodeId: 'llm-1', targetNodeId: 'output-1', sourceOutput: 'output', targetInput: 'input' }
+      {
+        id: 'conn-1',
+        sourceNodeId: 'start',
+        targetNodeId: 'input-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-2',
+        sourceNodeId: 'input-1',
+        targetNodeId: 'knowledge-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-3',
+        sourceNodeId: 'input-1',
+        targetNodeId: 'llm-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-4',
+        sourceNodeId: 'knowledge-1',
+        targetNodeId: 'llm-1',
+        sourceOutput: 'output',
+        targetInput: 'context',
+      },
+      {
+        id: 'conn-5',
+        sourceNodeId: 'llm-1',
+        targetNodeId: 'output-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
     ],
     isActive: true,
     createdAt: new Date('2024-01-04'),
     updatedAt: new Date('2024-01-04'),
-    createdBy: 'current-user'
+    createdBy: 'current-user',
   },
   'my-5': {
     id: 'my-5',
     name: '差旅助手TravelTang',
     description: '差旅规划助手',
     nodes: [
-      { id: 'start', type: 'start', position: { x: 100, y: 100 }, configuration: {}, status: 'idle' },
-      { id: 'input-1', type: 'input', position: { x: 350, y: 100 }, configuration: { inputType: 'text', placeholder: '请输入您的差旅需求（出发地、目的地、时间等）...', required: true }, status: 'idle' },
-      { id: 'search-1', type: 'web-search', position: { x: 600, y: 50 }, configuration: { searchEngine: 'google', maxResults: 5, timeout: 10000 }, status: 'idle' },
-      { id: 'llm-1', type: 'llm-call', position: { x: 850, y: 100 }, configuration: { model: 'Qwen2.5-7B', maxTokens: 2500, temperature: 0.6, systemPrompt: '你是专业的差旅规划助手TravelTang，帮助用户规划行程、推荐交通和住宿方案，并提供实用的旅行建议。', streamOutput: false }, status: 'idle' },
-      { id: 'output-1', type: 'output', position: { x: 1100, y: 100 }, configuration: { outputType: 'text', format: 'markdown' }, status: 'idle' }
+      {
+        id: 'start',
+        type: 'start',
+        position: { x: 100, y: 100 },
+        configuration: {},
+        status: 'idle',
+      },
+      {
+        id: 'input-1',
+        type: 'input',
+        position: { x: 350, y: 100 },
+        configuration: {
+          inputType: 'text',
+          placeholder: '请输入您的差旅需求（出发地、目的地、时间等）...',
+          required: true,
+        },
+        status: 'idle',
+      },
+      {
+        id: 'search-1',
+        type: 'web-search',
+        position: { x: 600, y: 50 },
+        configuration: { searchEngine: 'google', maxResults: 5, timeout: 10000 },
+        status: 'idle',
+      },
+      {
+        id: 'llm-1',
+        type: 'llm-call',
+        position: { x: 850, y: 100 },
+        configuration: {
+          model: 'Qwen2.5-7B',
+          maxTokens: 2500,
+          temperature: 0.6,
+          systemPrompt:
+            '你是专业的差旅规划助手TravelTang，帮助用户规划行程、推荐交通和住宿方案，并提供实用的旅行建议。',
+          streamOutput: false,
+        },
+        status: 'idle',
+      },
+      {
+        id: 'output-1',
+        type: 'output',
+        position: { x: 1100, y: 100 },
+        configuration: { outputType: 'text', format: 'markdown' },
+        status: 'idle',
+      },
     ],
     connections: [
-      { id: 'conn-1', sourceNodeId: 'start', targetNodeId: 'input-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-2', sourceNodeId: 'input-1', targetNodeId: 'search-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-3', sourceNodeId: 'input-1', targetNodeId: 'llm-1', sourceOutput: 'output', targetInput: 'input' },
-      { id: 'conn-4', sourceNodeId: 'search-1', targetNodeId: 'llm-1', sourceOutput: 'output', targetInput: 'context' },
-      { id: 'conn-5', sourceNodeId: 'llm-1', targetNodeId: 'output-1', sourceOutput: 'output', targetInput: 'input' }
+      {
+        id: 'conn-1',
+        sourceNodeId: 'start',
+        targetNodeId: 'input-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-2',
+        sourceNodeId: 'input-1',
+        targetNodeId: 'search-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-3',
+        sourceNodeId: 'input-1',
+        targetNodeId: 'llm-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
+      {
+        id: 'conn-4',
+        sourceNodeId: 'search-1',
+        targetNodeId: 'llm-1',
+        sourceOutput: 'output',
+        targetInput: 'context',
+      },
+      {
+        id: 'conn-5',
+        sourceNodeId: 'llm-1',
+        targetNodeId: 'output-1',
+        sourceOutput: 'output',
+        targetInput: 'input',
+      },
     ],
     isActive: true,
     createdAt: new Date('2024-01-05'),
     updatedAt: new Date('2024-01-05'),
-    createdBy: 'current-user'
-  }
+    createdBy: 'current-user',
+  },
 }
 
 export const useWorkflowStore = defineStore('workflow', () => {
@@ -183,7 +507,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
         workflows.value = data.map((w: any) => ({
           ...w,
           createdAt: new Date(w.createdAt),
-          updatedAt: new Date(w.updatedAt)
+          updatedAt: new Date(w.updatedAt),
         }))
       }
     } catch (error) {
@@ -210,14 +534,14 @@ export const useWorkflowStore = defineStore('workflow', () => {
           type: 'start',
           position: { x: 100, y: 100 },
           configuration: {},
-          status: 'idle'
-        }
+          status: 'idle',
+        },
       ],
       connections: [],
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date(),
-      createdBy: 'current-user'
+      createdBy: 'current-user',
     }
 
     workflows.value.push(workflow)
@@ -235,7 +559,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
       type,
       position,
       configuration: getDefaultNodeConfig(type),
-      status: 'idle'
+      status: 'idle',
     }
 
     // Use spread to trigger reactivity
@@ -250,7 +574,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
   const updateNode = (nodeId: string, updates: Partial<WorkflowNode>) => {
     if (!currentWorkflow.value) return
 
-    const nodeIndex = currentWorkflow.value.nodes.findIndex(n => n.id === nodeId)
+    const nodeIndex = currentWorkflow.value.nodes.findIndex((n) => n.id === nodeId)
     if (nodeIndex === -1) return
 
     const existingNode = currentWorkflow.value.nodes[nodeIndex]
@@ -261,7 +585,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
         position: updates.position ?? existingNode.position,
         configuration: { ...existingNode.configuration, ...updates.configuration },
         status: updates.status ?? existingNode.status,
-        result: updates.result ?? existingNode.result
+        result: updates.result ?? existingNode.result,
       }
       currentWorkflow.value.updatedAt = new Date()
     }
@@ -272,11 +596,11 @@ export const useWorkflowStore = defineStore('workflow', () => {
 
     // Remove connections related to this node
     currentWorkflow.value.connections = currentWorkflow.value.connections.filter(
-      conn => conn.sourceNodeId !== nodeId && conn.targetNodeId !== nodeId
+      (conn) => conn.sourceNodeId !== nodeId && conn.targetNodeId !== nodeId,
     )
 
     // Remove the node
-    currentWorkflow.value.nodes = currentWorkflow.value.nodes.filter(n => n.id !== nodeId)
+    currentWorkflow.value.nodes = currentWorkflow.value.nodes.filter((n) => n.id !== nodeId)
     currentWorkflow.value.updatedAt = new Date()
 
     // Clear selection if this node was selected
@@ -290,7 +614,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
 
     // Check if connection already exists
     const existingConnection = currentWorkflow.value.connections.find(
-      conn => conn.sourceNodeId === sourceNodeId && conn.targetNodeId === targetNodeId
+      (conn) => conn.sourceNodeId === sourceNodeId && conn.targetNodeId === targetNodeId,
     )
 
     if (existingConnection) return
@@ -300,7 +624,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
       sourceNodeId,
       targetNodeId,
       sourceOutput: 'output',
-      targetInput: 'input'
+      targetInput: 'input',
     }
 
     // Use spread to trigger reactivity
@@ -312,7 +636,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
     if (!currentWorkflow.value) return
 
     currentWorkflow.value.connections = currentWorkflow.value.connections.filter(
-      conn => conn.id !== connectionId
+      (conn) => conn.id !== connectionId,
     )
     currentWorkflow.value.updatedAt = new Date()
   }
@@ -323,7 +647,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
 
   const getSelectedNode = () => {
     if (!selectedNodeId.value || !currentWorkflow.value) return null
-    return currentWorkflow.value.nodes.find(n => n.id === selectedNodeId.value) || null
+    return currentWorkflow.value.nodes.find((n) => n.id === selectedNodeId.value) || null
   }
 
   /**
@@ -434,7 +758,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
       executionTime: undefined,
       referencedMaterials: [],
       createdAt: new Date(),
-      runAt: new Date()
+      runAt: new Date(),
     }
 
     const startTime = Date.now()
@@ -449,13 +773,14 @@ export const useWorkflowStore = defineStore('workflow', () => {
           test.status = result.status === 'completed' ? 'passed' : 'failed'
           test.actualOutput = result.output
           test.executionTime = result.executionTime || Date.now() - startTime
-          test.referencedMaterials = result.referencedMaterials?.map(m => ({
-            id: m.id,
-            title: m.title,
-            content: m.content,
-            source: m.source,
-            relevanceScore: m.relevanceScore || 0
-          })) || []
+          test.referencedMaterials =
+            result.referencedMaterials?.map((m) => ({
+              id: m.id,
+              title: m.title,
+              content: m.content,
+              source: m.source,
+              relevanceScore: m.relevanceScore || 0,
+            })) || []
 
           isRunning.value = false
           testResults.value.push(test)
@@ -464,7 +789,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
       }
 
       // Fallback to mock execution
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      await new Promise((resolve) => setTimeout(resolve, 2000))
 
       test.status = 'passed'
       test.actualOutput = 'This is a simulated workflow execution result'
@@ -475,8 +800,8 @@ export const useWorkflowStore = defineStore('workflow', () => {
           title: 'Sample Reference',
           content: 'This is a referenced material from the knowledge base',
           source: 'Knowledge Base',
-          relevanceScore: 0.95
-        }
+          relevanceScore: 0.95,
+        },
       ]
     } catch (error) {
       test.status = 'failed'
@@ -497,19 +822,19 @@ export const useWorkflowStore = defineStore('workflow', () => {
     const errors: string[] = []
 
     // Check if there's at least a start node
-    const hasStartNode = currentWorkflow.value.nodes.some(n => n.type === 'start')
+    const hasStartNode = currentWorkflow.value.nodes.some((n) => n.type === 'start')
     if (!hasStartNode) {
       errors.push('Workflow must have a start node')
     }
 
     // Check for disconnected nodes (except start node)
     const connectedNodeIds = new Set<string>()
-    currentWorkflow.value.connections.forEach(conn => {
+    currentWorkflow.value.connections.forEach((conn) => {
       connectedNodeIds.add(conn.sourceNodeId)
       connectedNodeIds.add(conn.targetNodeId)
     })
 
-    currentWorkflow.value.nodes.forEach(node => {
+    currentWorkflow.value.nodes.forEach((node) => {
       if (node.type !== 'start' && !connectedNodeIds.has(node.id)) {
         errors.push(`Node "${node.type}" is disconnected`)
       }
@@ -517,7 +842,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
 
     return {
       valid: errors.length === 0,
-      errors
+      errors,
     }
   }
 
@@ -552,8 +877,11 @@ export const useWorkflowStore = defineStore('workflow', () => {
     }
 
     // Calculate bounding box of all nodes
-    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity
-    currentWorkflow.value.nodes.forEach(node => {
+    let minX = Infinity,
+      minY = Infinity,
+      maxX = -Infinity,
+      maxY = -Infinity
+    currentWorkflow.value.nodes.forEach((node) => {
       minX = Math.min(minX, node.position.x)
       minY = Math.min(minY, node.position.y)
       maxX = Math.max(maxX, node.position.x + 200) // Assume node width
@@ -574,8 +902,8 @@ export const useWorkflowStore = defineStore('workflow', () => {
     const contentCenterX = (minX + maxX) / 2
     const contentCenterY = (minY + maxY) / 2
     canvasPan.value = {
-      x: (viewportWidth / 2) - (contentCenterX * canvasScale.value),
-      y: (viewportHeight / 2) - (contentCenterY * canvasScale.value)
+      x: viewportWidth / 2 - contentCenterX * canvasScale.value,
+      y: viewportHeight / 2 - contentCenterY * canvasScale.value,
     }
   }
 
@@ -585,13 +913,13 @@ export const useWorkflowStore = defineStore('workflow', () => {
   const locateStartNode = (viewportWidth: number, viewportHeight: number) => {
     if (!currentWorkflow.value) return
 
-    const startNode = currentWorkflow.value.nodes.find(n => n.type === 'start')
+    const startNode = currentWorkflow.value.nodes.find((n) => n.type === 'start')
     if (!startNode) return
 
     canvasScale.value = 1
     canvasPan.value = {
-      x: (viewportWidth / 2) - (startNode.position.x + 100), // Assume node width
-      y: (viewportHeight / 2) - (startNode.position.y + 50) // Assume node height
+      x: viewportWidth / 2 - (startNode.position.x + 100), // Assume node width
+      y: viewportHeight / 2 - (startNode.position.y + 50), // Assume node height
     }
   }
 
@@ -619,7 +947,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
     if (!currentWorkflow.value) return null
 
     // Check if this workflow is already saved as an agent
-    const existingIndex = workflows.value.findIndex(w => w.id === currentWorkflow.value!.id)
+    const existingIndex = workflows.value.findIndex((w) => w.id === currentWorkflow.value!.id)
 
     if (existingIndex !== -1) {
       // Update existing workflow
@@ -640,7 +968,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
     const presetWorkflow = PRESET_WORKFLOWS[agentId]
     if (presetWorkflow) {
       // Check if this workflow is already in our workflows list (user may have modified it)
-      const existingWorkflow = workflows.value.find(w => w.id === agentId)
+      const existingWorkflow = workflows.value.find((w) => w.id === agentId)
       if (existingWorkflow) {
         // Load the user's modified version
         currentWorkflow.value = { ...existingWorkflow }
@@ -654,7 +982,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
     }
 
     // Fall back to existing workflow in workflows array
-    const agent = workflows.value.find(w => w.id === agentId)
+    const agent = workflows.value.find((w) => w.id === agentId)
     if (agent) {
       currentWorkflow.value = { ...agent }
       resetCanvasView()
@@ -719,7 +1047,7 @@ export const useWorkflowStore = defineStore('workflow', () => {
     connectToFastGPT,
     disconnectFromFastGPT,
     syncWorkflowToFastGPT,
-    loadWorkflowFromFastGPT
+    loadWorkflowFromFastGPT,
   }
 })
 
@@ -731,33 +1059,33 @@ function getDefaultNodeConfig(type: WorkflowNode['type']): any {
       return {
         inputType: 'text',
         placeholder: '请输入您的问题...',
-        required: true
+        required: true,
       }
     case 'web-search':
       return {
         searchEngine: 'google',
         maxResults: 10,
-        timeout: 30000
+        timeout: 30000,
       }
     case 'annotated-data-retrieval':
       return {
         retrievalMode: 'keyword',
         maxResults: 10,
-        threshold: 0.5
+        threshold: 0.5,
       }
     case 'question-rewrite':
       return {
         model: 'Qwen2.5-7B',
         maxTokens: 500,
         temperature: 0.7,
-        systemPrompt: '你是一个专业的问题助手，负责重写和优化用户问题。'
+        systemPrompt: '你是一个专业的问题助手，负责重写和优化用户问题。',
       }
     case 'knowledge-retrieval':
       return {
         retrievalMode: 'hybrid',
         retrievalWeight: 0.5,
         recallCount: 5,
-        recallThreshold: 0.8
+        recallThreshold: 0.8,
       }
     case 'llm-call':
       return {
@@ -765,30 +1093,30 @@ function getDefaultNodeConfig(type: WorkflowNode['type']): any {
         maxTokens: 2000,
         temperature: 0.7,
         systemPrompt: '',
-        streamOutput: false
+        streamOutput: false,
       }
     case 'data-processing':
       return {
         operation: 'filter',
-        rules: []
+        rules: [],
       }
     case 'condition':
       return {
         conditionType: 'equals',
         compareValue: '',
         trueBranch: '',
-        falseBranch: ''
+        falseBranch: '',
       }
     case 'code-execution':
       return {
         language: 'python',
         code: '',
-        timeout: 30000
+        timeout: 30000,
       }
     case 'output':
       return {
         outputType: 'text',
-        format: 'markdown'
+        format: 'markdown',
       }
     case 'end':
       return {}

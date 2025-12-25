@@ -15,7 +15,7 @@ export const useChatStore = defineStore('chat', () => {
 
   // Computed
   const currentConversation = computed(() =>
-    conversations.value.find(c => c.id === currentConversationId.value)
+    conversations.value.find((c) => c.id === currentConversationId.value),
   )
 
   const currentMessages = computed(() => {
@@ -30,7 +30,7 @@ export const useChatStore = defineStore('chat', () => {
       messages: [],
       settings: {},
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
 
     conversations.value.unshift(newConversation)
@@ -39,7 +39,7 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   const deleteConversation = (id: string) => {
-    const index = conversations.value.findIndex(c => c.id === id)
+    const index = conversations.value.findIndex((c) => c.id === id)
     if (index > -1) {
       conversations.value.splice(index, 1)
       if (currentConversationId.value === id) {
@@ -62,7 +62,7 @@ export const useChatStore = defineStore('chat', () => {
       role,
       content,
       timestamp: new Date(),
-      model: settingsStore.selectedProvider?.model
+      model: settingsStore.selectedProvider?.model,
     }
 
     if (currentConversation.value) {
@@ -93,8 +93,8 @@ export const useChatStore = defineStore('chat', () => {
     try {
       // Prepare messages
       const messages = [
-        ...currentMessages.value.map(m => ({ role: m.role, content: m.content })),
-        { role: 'user', content: userMessage }
+        ...currentMessages.value.map((m) => ({ role: m.role, content: m.content })),
+        { role: 'user', content: userMessage },
       ]
 
       console.log('🚀 Starting streaming request')
@@ -104,9 +104,10 @@ export const useChatStore = defineStore('chat', () => {
       let response
       try {
         // 使用真实的API
-        const apiUrl = provider.baseUrl.includes('localhost') || provider.baseUrl.includes('127.0.0.1')
-          ? `${provider.baseUrl}/chat/completions`
-          : `/api/chat/completions`
+        const apiUrl =
+          provider.baseUrl.includes('localhost') || provider.baseUrl.includes('127.0.0.1')
+            ? `${provider.baseUrl}/chat/completions`
+            : `/api/chat/completions`
 
         console.log('🌐 Request URL:', apiUrl)
         console.log('📡 Making request with stream: true')
@@ -116,7 +117,7 @@ export const useChatStore = defineStore('chat', () => {
           messages,
           max_tokens: provider.maxTokens || 4000,
           temperature: provider.temperature || 0.7,
-          stream: true
+          stream: true,
         }
 
         console.log('📋 Request body:', JSON.stringify(requestBody, null, 2))
@@ -124,14 +125,14 @@ export const useChatStore = defineStore('chat', () => {
         response = await fetch(apiUrl, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${provider.apiKey}`,
+            Authorization: `Bearer ${provider.apiKey}`,
             'Content-Type': 'application/json',
-            'Accept': 'text/event-stream',
+            Accept: 'text/event-stream',
             'Cache-Control': 'no-cache',
-            'Connection': 'keep-alive'
+            Connection: 'keep-alive',
           },
           body: JSON.stringify(requestBody),
-          signal: abortController.value.signal
+          signal: abortController.value.signal,
         })
       } catch (fetchError) {
         console.error('❌ Fetch failed:', fetchError)
@@ -179,12 +180,15 @@ export const useChatStore = defineStore('chat', () => {
       console.log('📖 Starting to read stream...')
 
       // Read stream with timeout handling
-      const readWithTimeout = async (reader: ReadableStreamDefaultReader, timeout: number = 30000) => {
+      const readWithTimeout = async (
+        reader: ReadableStreamDefaultReader,
+        timeout: number = 30000,
+      ) => {
         return Promise.race([
           reader.read(),
           new Promise<{ done: boolean; value?: Uint8Array }>((_, reject) =>
-            setTimeout(() => reject(new Error('读取超时')), timeout)
-          )
+            setTimeout(() => reject(new Error('读取超时')), timeout),
+          ),
         ])
       }
 
@@ -206,7 +210,10 @@ export const useChatStore = defineStore('chat', () => {
           buffer += chunk
 
           // 详细日志每个chunk和时间间隔
-          console.log(`📦 Chunk ${chunkCount} (size: ${chunk.length}, interval: ${timeSinceLastChunk}ms):`, chunk)
+          console.log(
+            `📦 Chunk ${chunkCount} (size: ${chunk.length}, interval: ${timeSinceLastChunk}ms):`,
+            chunk,
+          )
 
           // Split by lines but handle partial lines
           const lines = buffer.split('\n')
@@ -231,15 +238,16 @@ export const useChatStore = defineStore('chat', () => {
                 if (choice) {
                   // 尝试获取不同路径的内容
                   // 优先使用content而不是reasoning_content
-                  const content = choice.delta?.content ||
-                                 json.content
+                  const content = choice.delta?.content || json.content
 
                   // 如果没有content但有reasoning_content，记录但不显示
-                  const reasoningContent = choice.delta?.reasoning_content ||
-                                          json.reasoning_content
+                  const reasoningContent = choice.delta?.reasoning_content || json.reasoning_content
 
                   if (reasoningContent && !content) {
-                    console.log('🧠 Reasoning content (not displayed):', JSON.stringify(reasoningContent))
+                    console.log(
+                      '🧠 Reasoning content (not displayed):',
+                      JSON.stringify(reasoningContent),
+                    )
                   }
 
                   if (content) {
@@ -294,14 +302,15 @@ export const useChatStore = defineStore('chat', () => {
               const choice = json.choices?.[0]
               if (choice) {
                 // 优先使用content而不是reasoning_content
-                const content = choice.delta?.content ||
-                               json.content
+                const content = choice.delta?.content || json.content
 
-                const reasoningContent = choice.delta?.reasoning_content ||
-                                        json.reasoning_content
+                const reasoningContent = choice.delta?.reasoning_content || json.reasoning_content
 
                 if (reasoningContent && !content) {
-                  console.log('🧠 Final reasoning content (not displayed):', JSON.stringify(reasoningContent))
+                  console.log(
+                    '🧠 Final reasoning content (not displayed):',
+                    JSON.stringify(reasoningContent),
+                  )
                 }
 
                 if (content) {
@@ -326,11 +335,11 @@ export const useChatStore = defineStore('chat', () => {
 
       // Update conversation title with first user message if it's a new conversation
       if (currentConversation.value && currentConversation.value.messages.length === 2) {
-        currentConversation.value.title = userMessage.slice(0, 30) + (userMessage.length > 30 ? '...' : '')
+        currentConversation.value.title =
+          userMessage.slice(0, 30) + (userMessage.length > 30 ? '...' : '')
       }
 
       console.log('📝 All processing completed, about to exit try block')
-
     } catch (error) {
       console.error('Chat API Error:', error)
       // Ensure cleanup happens even on error
@@ -382,6 +391,6 @@ export const useChatStore = defineStore('chat', () => {
     addMessage,
     sendMessage,
     clearConversation,
-    stopGeneration
+    stopGeneration,
   }
 })

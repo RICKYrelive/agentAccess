@@ -7,12 +7,14 @@
       <!-- Header -->
       <div class="flex items-center justify-between p-6 border-b border-gray-200">
         <h2 class="text-xl font-semibold text-gray-900">导入文本知识库</h2>
-        <button
-          @click="$emit('close')"
-          class="text-gray-400 hover:text-gray-600"
-        >
+        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -36,9 +38,7 @@
 
         <!-- Description -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            描述
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1"> 描述 </label>
           <textarea
             v-model="form.description"
             rows="3"
@@ -52,7 +52,9 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">
             上传文件 <span class="text-red-500">*</span>
           </label>
-          <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-green-400 transition-colors">
+          <div
+            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-green-400 transition-colors"
+          >
             <div class="space-y-1 text-center">
               <svg
                 class="mx-auto h-12 w-12 text-gray-400"
@@ -85,7 +87,9 @@
                 </label>
                 <p class="pl-1">或拖拽文件到此处</p>
               </div>
-              <p class="text-xs text-gray-500">支持 PDF, DOCX, TXT 格式，单个文件最大 10MB，最多 50 个文件</p>
+              <p class="text-xs text-gray-500">
+                支持 PDF, DOCX, TXT 格式，单个文件最大 10MB，最多 50 个文件
+              </p>
               <p v-if="form.files.length > 0" class="text-sm text-green-600 font-medium">
                 已选择: {{ form.files.length }} 个文件 ({{ formatSize(totalSize) }})
               </p>
@@ -110,7 +114,12 @@
                 class="ml-2 text-red-500 hover:text-red-700"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -119,9 +128,7 @@
 
         <!-- Encoding -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            文件编码
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1"> 文件编码 </label>
           <select
             v-model="form.encoding"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -134,9 +141,7 @@
 
         <!-- Language -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            语言
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1"> 语言 </label>
           <select
             v-model="form.language"
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -184,7 +189,7 @@ const form = ref<TextImportForm>({
   description: '',
   files: [],
   encoding: 'UTF-8',
-  language: 'zh'
+  language: 'zh',
 })
 
 const errors = ref<Record<string, string>>({})
@@ -223,7 +228,7 @@ const handleFileChange = (event: Event) => {
       }
 
       // Check for duplicates
-      if (form.value.files.some(f => f.name === file.name)) {
+      if (form.value.files.some((f) => f.name === file.name)) {
         errors.value.file = `文件 ${file.name} 已存在`
         return
       }

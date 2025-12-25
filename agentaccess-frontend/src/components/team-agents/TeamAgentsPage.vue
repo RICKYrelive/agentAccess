@@ -8,7 +8,12 @@
         class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md flex items-center space-x-2 transition-colors"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4v16m8-8H4"
+          />
         </svg>
         <span>创建团队</span>
       </button>
@@ -16,16 +21,19 @@
 
     <!-- My Teams Section -->
     <div class="mb-8">
-      <h2 class="text-lg font-semibold text-gray-900 mb-4">
-        我的团队 ({{ myTeams.length }})
-      </h2>
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">我的团队 ({{ myTeams.length }})</h2>
 
       <!-- Empty state -->
       <div
         v-if="myTeams.length === 0"
         class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
       >
-        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -160,7 +168,8 @@ const emit = defineEmits<Emits>()
 const teamsStore = useTeamsStore()
 const agentsStore = useAgentsStore()
 const { myTeams, otherTeams } = storeToRefs(teamsStore)
-const { isTeamAdmin, hasPendingRequest, joinTeam, cancelJoinRequest, leaveTeam, createTeam } = teamsStore
+const { isTeamAdmin, hasPendingRequest, joinTeam, cancelJoinRequest, leaveTeam, createTeam } =
+  teamsStore
 const { myAgents } = storeToRefs(agentsStore)
 
 // Dialog state
@@ -173,7 +182,7 @@ const newTeamDescription = ref('')
 // Toast state
 const toast = ref({
   show: false,
-  message: ''
+  message: '',
 })
 
 // Show toast notification
@@ -223,7 +232,7 @@ const handleLeaveTeam = (teamId: string) => {
 
 // Handle manage team
 const handleManageTeam = (teamId: string) => {
-  const team = teamsStore.teams.find(t => t.id === teamId)
+  const team = teamsStore.teams.find((t) => t.id === teamId)
   if (team) {
     managingTeam.value = team
     showTeamManagementDialog.value = true

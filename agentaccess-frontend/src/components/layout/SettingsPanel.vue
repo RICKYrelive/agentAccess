@@ -23,7 +23,8 @@
       <!-- Description -->
       <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
         <p class="text-sm text-blue-800">
-          <strong>说明：</strong>这是会话级的MCP服务启停设置。要配置全局可用的MCP服务，请从左下角用户菜单进入"用户设置"。
+          <strong>说明：</strong
+          >这是会话级的MCP服务启停设置。要配置全局可用的MCP服务，请从左下角用户菜单进入"用户设置"。
         </p>
       </div>
 

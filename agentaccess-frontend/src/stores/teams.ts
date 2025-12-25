@@ -33,9 +33,9 @@ export const useTeamsStore = defineStore('teams', () => {
       members: [
         { id: 'user-1', name: '张三', role: 'admin', joinedAt: new Date('2024-01-01') },
         { id: 'user-2', name: '李四', role: 'member', joinedAt: new Date('2024-02-15') },
-        { id: '03928', name: '用户03928', role: 'admin', joinedAt: new Date('2024-03-01') }
+        { id: '03928', name: '用户03928', role: 'admin', joinedAt: new Date('2024-03-01') },
       ],
-      sharedAgentIds: ['team-1', 'team-2', 'team-3']
+      sharedAgentIds: ['team-1', 'team-2', 'team-3'],
     },
     {
       id: 'team-2',
@@ -44,20 +44,18 @@ export const useTeamsStore = defineStore('teams', () => {
       createdAt: new Date('2024-01-15'),
       members: [
         { id: 'user-3', name: '王五', role: 'admin', joinedAt: new Date('2024-01-15') },
-        { id: '03928', name: '用户03928', role: 'member', joinedAt: new Date('2024-03-10') }
+        { id: '03928', name: '用户03928', role: 'member', joinedAt: new Date('2024-03-10') },
       ],
-      sharedAgentIds: []
+      sharedAgentIds: [],
     },
     {
       id: 'team-3',
       name: '客户支持部',
       description: '负责客户服务和问题解决',
       createdAt: new Date('2024-02-01'),
-      members: [
-        { id: 'user-4', name: '赵六', role: 'admin', joinedAt: new Date('2024-02-01') }
-      ],
-      sharedAgentIds: []
-    }
+      members: [{ id: 'user-4', name: '赵六', role: 'admin', joinedAt: new Date('2024-02-01') }],
+      sharedAgentIds: [],
+    },
   ])
 
   const currentUserId = '03928'
@@ -68,15 +66,11 @@ export const useTeamsStore = defineStore('teams', () => {
 
   // Computed
   const myTeams = computed(() => {
-    return teams.value.filter(team =>
-      team.members.some(member => member.id === currentUserId)
-    )
+    return teams.value.filter((team) => team.members.some((member) => member.id === currentUserId))
   })
 
   const otherTeams = computed(() => {
-    return teams.value.filter(team =>
-      !team.members.some(member => member.id === currentUserId)
-    )
+    return teams.value.filter((team) => !team.members.some((member) => member.id === currentUserId))
   })
 
   // Check if user has pending request for a team
@@ -85,16 +79,21 @@ export const useTeamsStore = defineStore('teams', () => {
   }
 
   // Get agents shared with a specific team (both personal agents and homepage team agents)
-  const getAgentsInTeam = (teamId: string, allAgents: ExtendedAgent[]): (ExtendedAgent | Agent)[] => {
-    const team = teams.value.find(t => t.id === teamId)
+  const getAgentsInTeam = (
+    teamId: string,
+    allAgents: ExtendedAgent[],
+  ): (ExtendedAgent | Agent)[] => {
+    const team = teams.value.find((t) => t.id === teamId)
     if (!team) return []
 
     // Get shared personal agents
-    const sharedPersonalAgents = allAgents.filter(agent => team.sharedAgentIds.includes(agent.id))
+    const sharedPersonalAgents = allAgents.filter((agent) => team.sharedAgentIds.includes(agent.id))
 
     // Also get homepage team agents that are shared with this team
     const agentsStore = useAgentsStore()
-    const sharedTeamAgents = agentsStore.teamAgents.filter(agent => team.sharedAgentIds.includes(agent.id))
+    const sharedTeamAgents = agentsStore.teamAgents.filter((agent) =>
+      team.sharedAgentIds.includes(agent.id),
+    )
 
     // Combine both types
     return [...sharedPersonalAgents, ...sharedTeamAgents]
@@ -102,9 +101,9 @@ export const useTeamsStore = defineStore('teams', () => {
 
   // Check if current user is admin of a team
   const isTeamAdmin = (teamId: string): boolean => {
-    const team = teams.value.find(t => t.id === teamId)
+    const team = teams.value.find((t) => t.id === teamId)
     if (!team) return false
-    const member = team.members.find(m => m.id === currentUserId)
+    const member = team.members.find((m) => m.id === currentUserId)
     return member?.role === 'admin'
   }
 
@@ -120,38 +119,43 @@ export const useTeamsStore = defineStore('teams', () => {
 
   // Leave a team
   const leaveTeam = (teamId: string) => {
-    const team = teams.value.find(t => t.id === teamId)
+    const team = teams.value.find((t) => t.id === teamId)
     if (!team) return
-    team.members = team.members.filter(m => m.id !== currentUserId)
+    team.members = team.members.filter((m) => m.id !== currentUserId)
   }
 
   // Add member (admin only)
-  const addMember = (teamId: string, memberId: string, memberName: string, role: 'admin' | 'member' = 'member') => {
-    const team = teams.value.find(t => t.id === teamId)
+  const addMember = (
+    teamId: string,
+    memberId: string,
+    memberName: string,
+    role: 'admin' | 'member' = 'member',
+  ) => {
+    const team = teams.value.find((t) => t.id === teamId)
     if (!team || !isTeamAdmin(teamId)) return
 
     team.members.push({
       id: memberId,
       name: memberName,
       role,
-      joinedAt: new Date()
+      joinedAt: new Date(),
     })
   }
 
   // Remove member (admin only)
   const removeMember = (teamId: string, memberId: string) => {
-    const team = teams.value.find(t => t.id === teamId)
+    const team = teams.value.find((t) => t.id === teamId)
     if (!team || !isTeamAdmin(teamId)) return
 
-    team.members = team.members.filter(m => m.id !== memberId)
+    team.members = team.members.filter((m) => m.id !== memberId)
   }
 
   // Set member expiration (admin only)
   const setMemberExpiration = (teamId: string, memberId: string, expiresAt: Date) => {
-    const team = teams.value.find(t => t.id === teamId)
+    const team = teams.value.find((t) => t.id === teamId)
     if (!team || !isTeamAdmin(teamId)) return
 
-    const member = team.members.find(m => m.id === memberId)
+    const member = team.members.find((m) => m.id === memberId)
     if (member) {
       member.expiresAt = expiresAt
     }
@@ -159,7 +163,7 @@ export const useTeamsStore = defineStore('teams', () => {
 
   // Share agent with team
   const shareAgentWithTeam = (agentId: string, teamId: string) => {
-    const team = teams.value.find(t => t.id === teamId)
+    const team = teams.value.find((t) => t.id === teamId)
     if (!team) return
 
     if (!team.sharedAgentIds.includes(agentId)) {
@@ -169,10 +173,10 @@ export const useTeamsStore = defineStore('teams', () => {
 
   // Unshare agent from team
   const unshareAgentFromTeam = (agentId: string, teamId: string) => {
-    const team = teams.value.find(t => t.id === teamId)
+    const team = teams.value.find((t) => t.id === teamId)
     if (!team) return
 
-    team.sharedAgentIds = team.sharedAgentIds.filter(id => id !== agentId)
+    team.sharedAgentIds = team.sharedAgentIds.filter((id) => id !== agentId)
   }
 
   // Create new team
@@ -187,10 +191,10 @@ export const useTeamsStore = defineStore('teams', () => {
           id: currentUserId,
           name: '用户03928',
           role: 'admin',
-          joinedAt: new Date()
-        }
+          joinedAt: new Date(),
+        },
       ],
-      sharedAgentIds: []
+      sharedAgentIds: [],
     }
     teams.value.push(newTeam)
     return newTeam
@@ -199,7 +203,7 @@ export const useTeamsStore = defineStore('teams', () => {
   // Delete team (admin only)
   const deleteTeam = (teamId: string) => {
     if (!isTeamAdmin(teamId)) return
-    const index = teams.value.findIndex(t => t.id === teamId)
+    const index = teams.value.findIndex((t) => t.id === teamId)
     if (index > -1) {
       teams.value.splice(index, 1)
     }
@@ -228,6 +232,6 @@ export const useTeamsStore = defineStore('teams', () => {
     shareAgentWithTeam,
     unshareAgentFromTeam,
     createTeam,
-    deleteTeam
+    deleteTeam,
   }
 })

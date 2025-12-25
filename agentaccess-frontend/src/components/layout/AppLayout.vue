@@ -21,10 +21,7 @@
       <!-- Home Page View -->
       <div v-if="activeView === 'home'" class="flex-1 overflow-hidden">
         <!-- Chat Interface (shown when there are messages) -->
-        <ChatInterface
-          v-if="showChatInterface"
-          class="flex-1 h-full overflow-hidden"
-        />
+        <ChatInterface v-if="showChatInterface" class="flex-1 h-full overflow-hidden" />
 
         <!-- ContentArea for new conversation (shown when starting new chat) -->
         <ContentArea
@@ -47,10 +44,7 @@
       </div>
 
       <!-- Workflow Editor View -->
-      <WorkflowCanvas
-        v-else-if="activeView === 'workflow'"
-        class="flex-1 h-full overflow-hidden"
-      />
+      <WorkflowCanvas v-else-if="activeView === 'workflow'" class="flex-1 h-full overflow-hidden" />
 
       <!-- My Agents Page View -->
       <MyAgentsPage
@@ -95,7 +89,10 @@
     </div>
 
     <!-- Right Panels -->
-    <div v-if="activeView === 'workflow' && (isPreviewPanelVisible || hasSelectedWorkflowNode)" class="flex flex-col h-screen w-96 flex-shrink-0">
+    <div
+      v-if="activeView === 'workflow' && (isPreviewPanelVisible || hasSelectedWorkflowNode)"
+      class="flex flex-col h-screen w-96 flex-shrink-0"
+    >
       <!-- Workflow Right Panel -->
       <PreviewPanel
         v-if="!hasSelectedWorkflowNode && isPreviewPanelVisible"
@@ -121,10 +118,7 @@
     />
 
     <!-- User Settings Dialog -->
-    <UserSettingsDialog
-      v-if="showUserSettingsDialog"
-      @close="closeUserSettingsDialog"
-    />
+    <UserSettingsDialog v-if="showUserSettingsDialog" @close="closeUserSettingsDialog" />
   </div>
 </template>
 
@@ -149,7 +143,15 @@ import TeamDetailPage from '../team-agents/TeamDetailPage.vue'
 import KnowledgeBasePage from '../knowledge-base/KnowledgeBasePage.vue'
 import KnowledgeBaseDetailPage from '../knowledge-base/KnowledgeBaseDetailPage.vue'
 
-const activeView = ref<'home' | 'workflow' | 'my-agents' | 'team-agents' | 'team-detail' | 'knowledge-base' | 'knowledge-base-detail'>('home')
+const activeView = ref<
+  | 'home'
+  | 'workflow'
+  | 'my-agents'
+  | 'team-agents'
+  | 'team-detail'
+  | 'knowledge-base'
+  | 'knowledge-base-detail'
+>('home')
 const selectedTeamId = ref<string | null>(null)
 const selectedKnowledgeBaseId = ref<string | null>(null)
 const showSettingsPanel = ref(false)
@@ -181,7 +183,9 @@ const isShowingHomePage = computed(() => {
   return activeView.value === 'home' && !showChatInterface.value && !showContentArea.value
 })
 
-const handleViewChange = (view: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'knowledge-base') => {
+const handleViewChange = (
+  view: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'knowledge-base',
+) => {
   activeView.value = view
 }
 
@@ -208,8 +212,9 @@ const closeUserSettingsDialog = () => {
 }
 
 const startNewConversation = () => {
-  // Create a new conversation and show new conversation interface
-  chatStore.createConversation()
+  // Clear current conversation ID to ensure a new conversation is created
+  // when the user sends their first message
+  chatStore.currentConversationId = null
   showContentArea.value = true
   showChatInterface.value = false
 }

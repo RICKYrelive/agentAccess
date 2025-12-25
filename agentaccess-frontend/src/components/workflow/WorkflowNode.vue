@@ -4,9 +4,9 @@
     :class="[
       {
         'border-primary-500 shadow-md': isSelected,
-        'border-gray-300': !isSelected
+        'border-gray-300': !isSelected,
       },
-      getNodeClasses()
+      getNodeClasses(),
     ]"
     @click="handleClick"
     @mousedown="startDrag"
@@ -16,7 +16,7 @@
       <div
         :class="[
           'w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0',
-          getNodeStyle().bgColor
+          getNodeStyle().bgColor,
         ]"
       >
         <svg
@@ -39,11 +39,7 @@
         <p class="text-xs text-gray-500">{{ getNodeStyle().description }}</p>
       </div>
       <!-- Status Indicator -->
-      <div
-        v-if="node.status !== 'idle'"
-        class="w-2 h-2 rounded-full"
-        :class="getStatusClasses()"
-      />
+      <div v-if="node.status !== 'idle'" class="w-2 h-2 rounded-full" :class="getStatusClasses()" />
     </div>
 
     <!-- Node Actions -->
@@ -141,7 +137,7 @@ const getNodeStyle = () => {
         description: '工作流起点',
         icon: 'M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z',
         bgColor: 'bg-purple-100',
-        textColor: 'text-purple-600'
+        textColor: 'text-purple-600',
       }
     case 'input':
       return {
@@ -149,7 +145,7 @@ const getNodeStyle = () => {
         description: '接收用户输入',
         icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
         bgColor: 'bg-purple-100',
-        textColor: 'text-purple-600'
+        textColor: 'text-purple-600',
       }
     case 'web-search':
       return {
@@ -157,7 +153,7 @@ const getNodeStyle = () => {
         description: '搜索网络信息',
         icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
         bgColor: 'bg-cyan-100',
-        textColor: 'text-cyan-600'
+        textColor: 'text-cyan-600',
       }
     case 'annotated-data-retrieval':
       return {
@@ -165,7 +161,7 @@ const getNodeStyle = () => {
         description: '检索标注数据',
         icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',
         bgColor: 'bg-blue-100',
-        textColor: 'text-blue-600'
+        textColor: 'text-blue-600',
       }
     case 'question-rewrite':
       return {
@@ -173,7 +169,7 @@ const getNodeStyle = () => {
         description: '重写用户问题',
         icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
         bgColor: 'bg-indigo-100',
-        textColor: 'text-indigo-600'
+        textColor: 'text-indigo-600',
       }
     case 'knowledge-retrieval':
       return {
@@ -181,7 +177,7 @@ const getNodeStyle = () => {
         description: '从知识库检索信息',
         icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
         bgColor: 'bg-orange-100',
-        textColor: 'text-orange-600'
+        textColor: 'text-orange-600',
       }
     case 'llm-call':
       return {
@@ -189,7 +185,7 @@ const getNodeStyle = () => {
         description: '调用大语言模型',
         icon: 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z',
         bgColor: 'bg-rose-100',
-        textColor: 'text-rose-600'
+        textColor: 'text-rose-600',
       }
     case 'data-processing':
       return {
@@ -197,7 +193,7 @@ const getNodeStyle = () => {
         description: '处理和转换数据',
         icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4',
         bgColor: 'bg-amber-100',
-        textColor: 'text-amber-600'
+        textColor: 'text-amber-600',
       }
     case 'condition':
       return {
@@ -205,7 +201,7 @@ const getNodeStyle = () => {
         description: '根据条件分支',
         icon: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4',
         bgColor: 'bg-yellow-100',
-        textColor: 'text-yellow-600'
+        textColor: 'text-yellow-600',
       }
     case 'code-execution':
       return {
@@ -213,7 +209,7 @@ const getNodeStyle = () => {
         description: '执行自定义代码',
         icon: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
         bgColor: 'bg-emerald-100',
-        textColor: 'text-emerald-600'
+        textColor: 'text-emerald-600',
       }
     case 'output':
       return {
@@ -221,7 +217,7 @@ const getNodeStyle = () => {
         description: '输出最终结果',
         icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
         bgColor: 'bg-teal-100',
-        textColor: 'text-teal-600'
+        textColor: 'text-teal-600',
       }
     case 'end':
       return {
@@ -229,7 +225,7 @@ const getNodeStyle = () => {
         description: '工作流终点',
         icon: 'M6 18L18 6M6 6l12 12',
         bgColor: 'bg-gray-100',
-        textColor: 'text-gray-600'
+        textColor: 'text-gray-600',
       }
     default:
       return {
@@ -237,7 +233,7 @@ const getNodeStyle = () => {
         description: '未知节点类型',
         icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
         bgColor: 'bg-gray-100',
-        textColor: 'text-gray-600'
+        textColor: 'text-gray-600',
       }
   }
 }
@@ -293,7 +289,7 @@ const startDrag = (event: MouseEvent) => {
   hasMoved.value = false
   dragStart.value = {
     x: event.clientX - props.node.position.x,
-    y: event.clientY - props.node.position.y
+    y: event.clientY - props.node.position.y,
   }
 
   document.addEventListener('mousemove', onDrag, { passive: true })
@@ -312,8 +308,8 @@ const onDrag = (event: MouseEvent) => {
     emit('update', props.node.id, {
       position: {
         x: Math.max(0, newX),
-        y: Math.max(0, newY)
-      }
+        y: Math.max(0, newY),
+      },
     })
   }
 }

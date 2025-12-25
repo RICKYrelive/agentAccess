@@ -1,10 +1,6 @@
 <template>
   <div class="mini-map">
-    <svg
-      viewBox="0 0 2000 2000"
-      preserveAspectRatio="xMidYMid meet"
-      class="mini-map-svg"
-    >
+    <svg viewBox="0 0 2000 2000" preserveAspectRatio="xMidYMid meet" class="mini-map-svg">
       <!-- Background -->
       <rect
         x="0"
@@ -82,24 +78,24 @@ const viewportRect = computed(() => {
     x: viewportCanvasX,
     y: viewportCanvasY,
     width: canvasContainerWidth,
-    height: canvasContainerHeight
+    height: canvasContainerHeight,
   }
 })
 
 const getNodeColor = (type: string) => {
   const colors: Record<string, string> = {
-    'start': '#a78bfa',
-    'input': '#a78bfa',
+    start: '#a78bfa',
+    input: '#a78bfa',
     'web-search': '#22d3ee',
     'annotated-data-retrieval': '#60a5fa',
     'question-rewrite': '#818cf8',
     'knowledge-retrieval': '#fb923c',
     'llm-call': '#fb7185',
     'data-processing': '#fbbf24',
-    'condition': '#facc15',
+    condition: '#facc15',
     'code-execution': '#34d399',
-    'output': '#2dd4bf',
-    'end': '#9ca3af'
+    output: '#2dd4bf',
+    end: '#9ca3af',
   }
   return colors[type] || '#9ca3af'
 }
@@ -113,8 +109,8 @@ const handleNodeClick = (node: WorkflowNode) => {
   const containerHeight = 600
 
   // Calculate pan to center the node
-  const newX = (containerWidth / 2) - (nodeCenterX * canvasScale.value)
-  const newY = (containerHeight / 2) - (nodeCenterY * canvasScale.value)
+  const newX = containerWidth / 2 - nodeCenterX * canvasScale.value
+  const newY = containerHeight / 2 - nodeCenterY * canvasScale.value
 
   emit('panTo', newX, newY)
 }

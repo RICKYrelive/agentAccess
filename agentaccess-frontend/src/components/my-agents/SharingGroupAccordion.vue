@@ -18,12 +18,7 @@
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 5l7 7-7 7"
-          />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>
         <span class="font-medium text-gray-900">{{ group.name }}</span>
         <span class="text-sm text-gray-500">({{ agents.length }})</span>
@@ -70,8 +65,18 @@
         >
           <div class="flex items-start justify-between mb-3">
             <div class="flex items-center space-x-2 flex-1 min-w-0">
-              <svg class="w-5 h-5 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              <svg
+                class="w-5 h-5 text-primary-500 flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                />
               </svg>
               <h3 class="font-semibold text-gray-900 truncate">{{ agent.name }}</h3>
             </div>
@@ -159,26 +164,27 @@ const toggleExpanded = () => {
 const otherGroupNames = (agent: ExtendedAgent) => {
   if (!agent.sharedGroups || agent.sharedGroups.length <= 1) return ''
 
-  return agent.sharedGroups
-    .filter(id => id !== props.group.id)
-    .map(id => {
-      const otherAgents = props.allAgents.filter(a => a.sharedGroups?.includes(id))
-      if (otherAgents.length > 0) {
-        // Find a group name by checking if any agent has this group
-        for (const a of otherAgents) {
-          const groups = a.sharedGroups || []
-          if (groups.includes(id)) {
-            // Get group name from store or use placeholder
-            return id // For now, just return the ID
+  return (
+    agent.sharedGroups
+      .filter((id) => id !== props.group.id)
+      .map((id) => {
+        const otherAgents = props.allAgents.filter((a) => a.sharedGroups?.includes(id))
+        if (otherAgents.length > 0) {
+          // Find a group name by checking if any agent has this group
+          for (const a of otherAgents) {
+            const groups = a.sharedGroups || []
+            if (groups.includes(id)) {
+              // Get group name from store or use placeholder
+              return id // For now, just return the ID
+            }
           }
         }
-      }
-      return null
-    })
-    .filter(Boolean)
-    .slice(0, 2)
-    .join(', ')
-    + (agent.sharedGroups.length > 2 ? '...' : '')
+        return null
+      })
+      .filter(Boolean)
+      .slice(0, 2)
+      .join(', ') + (agent.sharedGroups.length > 2 ? '...' : '')
+  )
 }
 
 const handleDragOver = (event: DragEvent) => {

@@ -13,7 +13,12 @@
         class="bg-green-50 hover:bg-green-100 border border-green-200 text-green-700 px-6 py-6 rounded-lg flex flex-col items-center justify-center space-y-3 transition-colors"
       >
         <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
         </svg>
         <span class="font-medium">文本导入</span>
         <span class="text-xs text-green-600">支持 Word, PDF, TXT</span>
@@ -25,7 +30,12 @@
         class="bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 px-6 py-6 rounded-lg flex flex-col items-center justify-center space-y-3 transition-colors"
       >
         <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+          />
         </svg>
         <span class="font-medium">表格导入</span>
         <span class="text-xs text-blue-600">支持 Excel, CSV</span>
@@ -37,7 +47,12 @@
         class="bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 px-6 py-6 rounded-lg flex flex-col items-center justify-center space-y-3 transition-colors"
       >
         <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+          />
         </svg>
         <span class="font-medium">数据库导入</span>
         <span class="text-xs text-purple-600">支持 MySQL, PostgreSQL</span>
@@ -47,8 +62,18 @@
     <!-- Text Knowledge Bases Section -->
     <section class="mb-8">
       <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-        <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        <svg
+          class="w-5 h-5 mr-2 text-green-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
         </svg>
         文本知识库 ({{ textKnowledgeBases.length }})
       </h2>
@@ -58,8 +83,18 @@
         v-if="textKnowledgeBases.length === 0"
         class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
       >
-        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        <svg
+          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
         </svg>
         <p class="text-gray-500 mb-2">还没有文本知识库</p>
         <button
@@ -86,8 +121,18 @@
     <!-- Spreadsheet Knowledge Bases Section -->
     <section class="mb-8">
       <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        <svg
+          class="w-5 h-5 mr-2 text-blue-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+          />
         </svg>
         表格知识库 ({{ spreadsheetKnowledgeBases.length }})
       </h2>
@@ -97,8 +142,18 @@
         v-if="spreadsheetKnowledgeBases.length === 0"
         class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
       >
-        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        <svg
+          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+          />
         </svg>
         <p class="text-gray-500 mb-2">还没有表格知识库</p>
         <button
@@ -125,8 +180,18 @@
     <!-- Database Knowledge Bases Section -->
     <section class="mb-8">
       <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-        <svg class="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+        <svg
+          class="w-5 h-5 mr-2 text-purple-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+          />
         </svg>
         数据库知识库 ({{ databaseKnowledgeBases.length }})
       </h2>
@@ -136,8 +201,18 @@
         v-if="databaseKnowledgeBases.length === 0"
         class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
       >
-        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+        <svg
+          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+          />
         </svg>
         <p class="text-gray-500 mb-2">还没有数据库知识库</p>
         <button
@@ -197,7 +272,12 @@ import TextImportDialog from './import-dialogs/TextImportDialog.vue'
 import SpreadsheetImportDialog from './import-dialogs/SpreadsheetImportDialog.vue'
 import DatabaseImportDialog from './import-dialogs/DatabaseImportDialog.vue'
 import EditKnowledgeBaseDialog from './EditKnowledgeBaseDialog.vue'
-import type { KnowledgeBase, TextImportForm, SpreadsheetImportForm, DatabaseImportForm } from '@/types/knowledge-base'
+import type {
+  KnowledgeBase,
+  TextImportForm,
+  SpreadsheetImportForm,
+  DatabaseImportForm,
+} from '@/types/knowledge-base'
 
 interface Emits {
   (e: 'view-knowledge-base', id: string): void
@@ -205,11 +285,8 @@ interface Emits {
 
 const emit = defineEmits<Emits>()
 const knowledgeBaseStore = useKnowledgeBaseStore()
-const {
-  textKnowledgeBases,
-  spreadsheetKnowledgeBases,
-  databaseKnowledgeBases
-} = storeToRefs(knowledgeBaseStore)
+const { textKnowledgeBases, spreadsheetKnowledgeBases, databaseKnowledgeBases } =
+  storeToRefs(knowledgeBaseStore)
 
 const importDialogType = ref<'text' | 'spreadsheet' | 'database' | null>(null)
 const editingKnowledgeBase = ref<KnowledgeBase | null>(null)
@@ -234,7 +311,7 @@ const handleImportSubmit = (form: TextImportForm | SpreadsheetImportForm | Datab
 }
 
 const handleEdit = (id: string) => {
-  const kb = knowledgeBaseStore.knowledgeBases.find(k => k.id === id)
+  const kb = knowledgeBaseStore.knowledgeBases.find((k) => k.id === id)
   if (kb) {
     editingKnowledgeBase.value = kb
   }

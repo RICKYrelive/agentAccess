@@ -7,12 +7,14 @@
       <!-- Header -->
       <div class="flex items-center justify-between p-6 border-b border-gray-200">
         <h2 class="text-xl font-semibold text-gray-900">编辑知识库</h2>
-        <button
-          @click="$emit('close')"
-          class="text-gray-400 hover:text-gray-600"
-        >
+        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -36,9 +38,7 @@
 
         <!-- Description -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            描述
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1"> 描述 </label>
           <textarea
             v-model="form.description"
             rows="3"
@@ -60,7 +60,9 @@
               <span class="font-medium">文件:</span> {{ knowledgeBase.sourceInfo.fileName }}
             </div>
             <div v-if="knowledgeBase.sourceInfo.database" class="mt-1">
-              <span class="font-medium">数据库:</span> {{ knowledgeBase.sourceInfo.database }}.{{ knowledgeBase.sourceInfo.table }}
+              <span class="font-medium">数据库:</span> {{ knowledgeBase.sourceInfo.database }}.{{
+                knowledgeBase.sourceInfo.table
+              }}
             </div>
           </div>
         </div>
@@ -105,24 +107,28 @@ const emit = defineEmits<Emits>()
 
 const form = ref({
   name: '',
-  description: ''
+  description: '',
 })
 
 // Initialize form with knowledge base data
-watch(() => props.knowledgeBase, (kb) => {
-  if (kb) {
-    form.value = {
-      name: kb.name,
-      description: kb.description
+watch(
+  () => props.knowledgeBase,
+  (kb) => {
+    if (kb) {
+      form.value = {
+        name: kb.name,
+        description: kb.description,
+      }
     }
-  }
-}, { immediate: true })
+  },
+  { immediate: true },
+)
 
 const typeLabel = computed(() => {
   const typeMap: Record<string, string> = {
     text: '文本',
     spreadsheet: '表格',
-    database: '数据库'
+    database: '数据库',
   }
   return typeMap[props.knowledgeBase.type] || props.knowledgeBase.type
 })
@@ -131,7 +137,7 @@ const typeBadgeClass = computed(() => {
   const classMap: Record<string, string> = {
     text: 'bg-green-100 text-green-700',
     spreadsheet: 'bg-blue-100 text-blue-700',
-    database: 'bg-purple-100 text-purple-700'
+    database: 'bg-purple-100 text-purple-700',
   }
   return classMap[props.knowledgeBase.type] || 'bg-gray-100 text-gray-700'
 })
@@ -144,7 +150,7 @@ const handleSubmit = () => {
   if (isFormValid.value) {
     emit('submit', {
       name: form.value.name.trim(),
-      description: form.value.description.trim()
+      description: form.value.description.trim(),
     })
   }
 }

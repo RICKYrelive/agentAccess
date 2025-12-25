@@ -3,16 +3,23 @@
     class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
     @click.self="$emit('close')"
   >
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto" @click.stop>
+    <div
+      class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto"
+      @click.stop
+    >
       <!-- Header -->
-      <div class="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white">
+      <div
+        class="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white"
+      >
         <h2 class="text-xl font-semibold text-gray-900">添加数据源</h2>
-        <button
-          @click="$emit('close')"
-          class="text-gray-400 hover:text-gray-600"
-        >
+        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -22,10 +29,10 @@
         <!-- Text/Spreadsheet - File Upload -->
         <div v-if="knowledgeBase.type === 'text' || knowledgeBase.type === 'spreadsheet'">
           <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              上传文件
-            </label>
-            <div class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-blue-400 transition-colors">
+            <label class="block text-sm font-medium text-gray-700 mb-1"> 上传文件 </label>
+            <div
+              class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-blue-400 transition-colors"
+            >
               <div class="space-y-1 text-center">
                 <svg
                   class="mx-auto h-12 w-12 text-gray-400"
@@ -80,7 +87,12 @@
                   class="ml-2 text-red-500 hover:text-red-700"
                 >
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
@@ -97,19 +109,27 @@
               <div class="grid grid-cols-2 gap-2 text-sm">
                 <div>
                   <span class="text-purple-700">类型:</span>
-                  <span class="text-purple-900 ml-1">{{ knowledgeBase.sourceInfo.connection.dbType }}</span>
+                  <span class="text-purple-900 ml-1">{{
+                    knowledgeBase.sourceInfo.connection.dbType
+                  }}</span>
                 </div>
                 <div>
                   <span class="text-purple-700">主机:</span>
-                  <span class="text-purple-900 ml-1">{{ knowledgeBase.sourceInfo.connection.host }}</span>
+                  <span class="text-purple-900 ml-1">{{
+                    knowledgeBase.sourceInfo.connection.host
+                  }}</span>
                 </div>
                 <div>
                   <span class="text-purple-700">端口:</span>
-                  <span class="text-purple-900 ml-1">{{ knowledgeBase.sourceInfo.connection.port }}</span>
+                  <span class="text-purple-900 ml-1">{{
+                    knowledgeBase.sourceInfo.connection.port
+                  }}</span>
                 </div>
                 <div>
                   <span class="text-purple-700">数据库:</span>
-                  <span class="text-purple-900 ml-1">{{ knowledgeBase.sourceInfo.connection.database }}</span>
+                  <span class="text-purple-900 ml-1">{{
+                    knowledgeBase.sourceInfo.connection.database
+                  }}</span>
                 </div>
               </div>
             </div>
@@ -123,28 +143,43 @@
                 class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
               >
                 <svg v-if="isTesting" class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
                 <span>{{ isTesting ? '获取表中...' : '刷新可用表' }}</span>
               </button>
-              <span v-if="connectionTestResult" :class="connectionTestResult.success ? 'text-green-600' : 'text-red-600'" class="text-sm">
+              <span
+                v-if="connectionTestResult"
+                :class="connectionTestResult.success ? 'text-green-600' : 'text-red-600'"
+                class="text-sm"
+              >
                 {{ connectionTestResult.message }}
               </span>
             </div>
 
             <!-- Table Selection -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
-                选择表
-              </label>
+              <label class="block text-sm font-medium text-gray-700 mb-1"> 选择表 </label>
               <div v-if="!hasTestedConnection" class="text-sm text-gray-500 py-2">
                 点击"刷新可用表"获取可用表列表
               </div>
               <div v-else class="space-y-2">
-                <div class="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2 space-y-1">
+                <div
+                  class="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2 space-y-1"
+                >
                   <label
-                    v-for="table in availableTables.filter(t => !existingTables.includes(t))"
+                    v-for="table in availableTables.filter((t) => !existingTables.includes(t))"
                     :key="table"
                     class="flex items-center space-x-2 px-2 py-1 hover:bg-gray-50 rounded cursor-pointer"
                   >
@@ -152,12 +187,17 @@
                       type="checkbox"
                       :value="table"
                       v-model="selectedTables"
-                      :disabled="selectedTables.length >= maxNewTables && !selectedTables.includes(table)"
+                      :disabled="
+                        selectedTables.length >= maxNewTables && !selectedTables.includes(table)
+                      "
                       class="h-4 w-4 text-purple-600 focus:ring-purple-500 rounded"
                     />
                     <span class="text-sm text-gray-700">{{ table }}</span>
                   </label>
-                  <p v-if="availableTables.filter(t => !existingTables.includes(t)).length === 0" class="text-sm text-gray-500 py-2 text-center">
+                  <p
+                    v-if="availableTables.filter((t) => !existingTables.includes(t)).length === 0"
+                    class="text-sm text-gray-500 py-2 text-center"
+                  >
                     所有表已添加
                   </p>
                 </div>
@@ -211,7 +251,7 @@ interface Props {
 
 interface Emits {
   (e: 'close'): void
-  (e: 'add', source: { type: 'file' | 'table', data: any }): void
+  (e: 'add', source: { type: 'file' | 'table'; data: any }): void
 }
 
 const props = defineProps<Props>()
@@ -290,9 +330,8 @@ const handleFileChange = (event: Event) => {
       }
 
       // Validate file type
-      const validExtensions = props.knowledgeBase.type === 'text'
-        ? ['.pdf', '.docx', '.txt']
-        : ['.xlsx', '.xls', '.csv']
+      const validExtensions =
+        props.knowledgeBase.type === 'text' ? ['.pdf', '.docx', '.txt'] : ['.xlsx', '.xls', '.csv']
       const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase()
       if (!validExtensions.includes(fileExtension)) {
         errors.value.file = `文件 ${file.name} 格式不支持`
@@ -300,8 +339,8 @@ const handleFileChange = (event: Event) => {
       }
 
       // Check for duplicates
-      const existingFileNames = props.knowledgeBase.sourceInfo.files?.map(f => f.fileName) || []
-      const newFileNames = newFiles.value.map(f => f.name)
+      const existingFileNames = props.knowledgeBase.sourceInfo.files?.map((f) => f.fileName) || []
+      const newFileNames = newFiles.value.map((f) => f.name)
       if (existingFileNames.includes(file.name) || newFileNames.includes(file.name)) {
         errors.value.file = `文件 ${file.name} 已存在`
         return
@@ -352,7 +391,7 @@ const testConnection = async () => {
       port: conn.port,
       username: conn.username,
       password: '', // Password not stored in sourceInfo
-      database: conn.database
+      database: conn.database,
     })
 
     connectionTestResult.value = result
@@ -365,7 +404,7 @@ const testConnection = async () => {
   } catch (error) {
     connectionTestResult.value = {
       success: false,
-      message: '连接测试失败 - 请检查数据库连接信息'
+      message: '连接测试失败 - 请检查数据库连接信息',
     }
   } finally {
     isTesting.value = false

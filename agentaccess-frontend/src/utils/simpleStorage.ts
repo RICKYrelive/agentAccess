@@ -20,7 +20,7 @@ export class SimpleStorageService {
       return providers.map((p: any) => ({
         ...p,
         createdAt: new Date(p.createdAt),
-        updatedAt: new Date(p.updatedAt)
+        updatedAt: new Date(p.updatedAt),
       }))
     } catch (error) {
       console.error('❌ Failed to load providers from localStorage:', error)
@@ -31,7 +31,7 @@ export class SimpleStorageService {
   async saveModelProvider(provider: ModelProvider): Promise<void> {
     try {
       const providers = await this.getModelProviders()
-      const existingIndex = providers.findIndex(p => p.id === provider.id)
+      const existingIndex = providers.findIndex((p) => p.id === provider.id)
 
       if (existingIndex >= 0) {
         providers[existingIndex] = provider
@@ -52,7 +52,7 @@ export class SimpleStorageService {
   async deleteModelProvider(providerId: string): Promise<void> {
     try {
       const providers = await this.getModelProviders()
-      const filteredProviders = providers.filter(p => p.id !== providerId)
+      const filteredProviders = providers.filter((p) => p.id !== providerId)
 
       localStorage.setItem(this.PROVIDERS_KEY, JSON.stringify(filteredProviders))
       console.log('🗑️ Deleted provider:', providerId)
@@ -71,7 +71,7 @@ export class SimpleStorageService {
       }
 
       const providers = await this.getModelProviders()
-      const activeProvider = providers.find(p => p.id === activeId)
+      const activeProvider = providers.find((p) => p.id === activeId)
 
       console.log('🎯 Active provider:', activeProvider?.name || 'Not found')
       return activeProvider || null
@@ -127,17 +127,23 @@ export class SimpleStorageService {
       const activeProvider = localStorage.getItem(this.ACTIVE_PROVIDER_KEY)
 
       console.log('📋 Storage items:')
-      console.log(`  - ${this.PROVIDERS_KEY}:`, providers ? JSON.parse(providers).length + ' items' : 'Not found')
+      console.log(
+        `  - ${this.PROVIDERS_KEY}:`,
+        providers ? JSON.parse(providers).length + ' items' : 'Not found',
+      )
       console.log(`  - ${this.ACTIVE_PROVIDER_KEY}:`, activeProvider || 'Not found')
 
       if (providers) {
         const parsed = JSON.parse(providers)
-        console.log('📊 Providers:', parsed.map((p: ModelProvider) => ({
-          id: p.id,
-          name: p.name,
-          active: p.isActive,
-          baseUrl: p.baseUrl
-        })))
+        console.log(
+          '📊 Providers:',
+          parsed.map((p: ModelProvider) => ({
+            id: p.id,
+            name: p.name,
+            active: p.isActive,
+            baseUrl: p.baseUrl,
+          })),
+        )
       }
     } catch (error) {
       console.error('❌ Failed to read storage info:', error)
@@ -150,7 +156,7 @@ export class SimpleStorageService {
   exportData(): object {
     return {
       providers: localStorage.getItem(this.PROVIDERS_KEY),
-      activeProvider: localStorage.getItem(this.ACTIVE_PROVIDER_KEY)
+      activeProvider: localStorage.getItem(this.ACTIVE_PROVIDER_KEY),
     }
   }
 

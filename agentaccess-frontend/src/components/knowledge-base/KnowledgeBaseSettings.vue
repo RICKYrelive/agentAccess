@@ -14,13 +14,13 @@
             @click="togglePublic"
             :class="[
               'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-              localConfig.settings.isPublic ? 'bg-blue-600' : 'bg-gray-200'
+              localConfig.settings.isPublic ? 'bg-blue-600' : 'bg-gray-200',
             ]"
           >
             <span
               :class="[
                 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
-                localConfig.settings.isPublic ? 'translate-x-5' : 'translate-x-0'
+                localConfig.settings.isPublic ? 'translate-x-5' : 'translate-x-0',
               ]"
             />
           </button>
@@ -36,13 +36,13 @@
             @click="toggleEnabled"
             :class="[
               'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-              localConfig.settings.isEnabled ? 'bg-green-600' : 'bg-gray-200'
+              localConfig.settings.isEnabled ? 'bg-green-600' : 'bg-gray-200',
             ]"
           >
             <span
               :class="[
                 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
-                localConfig.settings.isEnabled ? 'translate-x-5' : 'translate-x-0'
+                localConfig.settings.isEnabled ? 'translate-x-5' : 'translate-x-0',
               ]"
             />
           </button>
@@ -58,12 +58,14 @@
               class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
             >
               {{ tag }}
-              <button
-                @click="removeTag(index)"
-                class="ml-1.5 text-blue-600 hover:text-blue-800"
-              >
+              <button @click="removeTag(index)" class="ml-1.5 text-blue-600 hover:text-blue-800">
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </span>
@@ -133,7 +135,10 @@
         </div>
 
         <!-- Spreadsheet-specific options -->
-        <div v-if="knowledgeBase.type === 'spreadsheet'" class="space-y-4 pt-4 border-t border-gray-200">
+        <div
+          v-if="knowledgeBase.type === 'spreadsheet'"
+          class="space-y-4 pt-4 border-t border-gray-200"
+        >
           <!-- Split By -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">分割方式</label>
@@ -169,13 +174,13 @@
               @click="localConfig.chunking!.hasHeader = !localConfig.chunking!.hasHeader"
               :class="[
                 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-                localConfig.chunking?.hasHeader ? 'bg-blue-600' : 'bg-gray-200'
+                localConfig.chunking?.hasHeader ? 'bg-blue-600' : 'bg-gray-200',
               ]"
             >
               <span
                 :class="[
                   'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
-                  localConfig.chunking?.hasHeader ? 'translate-x-5' : 'translate-x-0'
+                  localConfig.chunking?.hasHeader ? 'translate-x-5' : 'translate-x-0',
                 ]"
               />
             </button>
@@ -198,13 +203,13 @@
             @click="localConfig.embedding.enabled = !localConfig.embedding.enabled"
             :class="[
               'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-              localConfig.embedding.enabled ? 'bg-green-600' : 'bg-gray-200'
+              localConfig.embedding.enabled ? 'bg-green-600' : 'bg-gray-200',
             ]"
           >
             <span
               :class="[
                 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
-                localConfig.embedding.enabled ? 'translate-x-5' : 'translate-x-0'
+                localConfig.embedding.enabled ? 'translate-x-5' : 'translate-x-0',
               ]"
             />
           </button>
@@ -244,13 +249,13 @@
             @click="localConfig.rerank.enabled = !localConfig.rerank.enabled"
             :class="[
               'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-              localConfig.rerank.enabled ? 'bg-green-600' : 'bg-gray-200'
+              localConfig.rerank.enabled ? 'bg-green-600' : 'bg-gray-200',
             ]"
           >
             <span
               :class="[
                 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
-                localConfig.rerank.enabled ? 'translate-x-5' : 'translate-x-0'
+                localConfig.rerank.enabled ? 'translate-x-5' : 'translate-x-0',
               ]"
             />
           </button>
@@ -362,13 +367,13 @@
             @click="localConfig.databaseSync!.enableCache = !localConfig.databaseSync!.enableCache"
             :class="[
               'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-              localConfig.databaseSync?.enableCache ? 'bg-green-600' : 'bg-gray-200'
+              localConfig.databaseSync?.enableCache ? 'bg-green-600' : 'bg-gray-200',
             ]"
           >
             <span
               :class="[
                 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
-                localConfig.databaseSync?.enableCache ? 'translate-x-5' : 'translate-x-0'
+                localConfig.databaseSync?.enableCache ? 'translate-x-5' : 'translate-x-0',
               ]"
             />
           </button>
@@ -407,7 +412,7 @@ import { useKnowledgeBaseStore } from '@/stores/knowledgeBase'
 import type { KnowledgeBase, KnowledgeBaseConfig } from '@/types/knowledge-base'
 
 // Deep clone utility
-const deepClone = <T>(obj: T): T => {
+const deepClone = <T,>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj))
 }
 
@@ -429,9 +434,13 @@ const newTag = ref('')
 const localConfig = reactive<KnowledgeBaseConfig>(deepClone(props.knowledgeBase.config))
 
 // Watch for prop changes to reset local config
-watch(() => props.knowledgeBase, (kb) => {
-  Object.assign(localConfig, deepClone(kb.config))
-}, { deep: true })
+watch(
+  () => props.knowledgeBase,
+  (kb) => {
+    Object.assign(localConfig, deepClone(kb.config))
+  },
+  { deep: true },
+)
 
 const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('zh-CN', {
@@ -439,7 +448,7 @@ const formatDate = (date: Date) => {
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   }).format(new Date(date))
 }
 

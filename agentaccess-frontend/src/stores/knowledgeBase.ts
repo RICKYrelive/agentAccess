@@ -1,6 +1,15 @@
 import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
-import type { KnowledgeBase, TextImportForm, SpreadsheetImportForm, DatabaseImportForm, DatabaseConnectionTest, KnowledgeBaseType, FileInfo, KnowledgeBaseConfig } from '@/types/knowledge-base'
+import type {
+  KnowledgeBase,
+  TextImportForm,
+  SpreadsheetImportForm,
+  DatabaseImportForm,
+  DatabaseConnectionTest,
+  KnowledgeBaseType,
+  FileInfo,
+  KnowledgeBaseConfig,
+} from '@/types/knowledge-base'
 
 const KNOWLEDGE_BASES_STORAGE_KEY = 'agentaccess-knowledge-bases'
 const MAX_FILES = 50
@@ -12,19 +21,19 @@ const getDefaultConfig = (type: KnowledgeBaseType): KnowledgeBaseConfig => {
     settings: {
       isPublic: false,
       isEnabled: true,
-      tags: []
+      tags: [],
     },
     embedding: {
       enabled: true,
       model: 'bge-large-zh',
-      dimension: 1024
+      dimension: 1024,
     },
     rerank: {
       enabled: false,
       model: 'bge-reranker-large',
       topK: 5,
-      scoreThreshold: 0.5
-    }
+      scoreThreshold: 0.5,
+    },
   }
 
   if (type === 'text') {
@@ -32,8 +41,8 @@ const getDefaultConfig = (type: KnowledgeBaseType): KnowledgeBaseConfig => {
       ...baseConfig,
       chunking: {
         chunkSize: 512,
-        chunkOverlap: 50
-      }
+        chunkOverlap: 50,
+      },
     }
   } else if (type === 'spreadsheet') {
     return {
@@ -42,8 +51,8 @@ const getDefaultConfig = (type: KnowledgeBaseType): KnowledgeBaseConfig => {
         chunkSize: 256,
         chunkOverlap: 0,
         splitBy: 'row',
-        hasHeader: true
-      }
+        hasHeader: true,
+      },
     }
   } else if (type === 'database') {
     return {
@@ -51,8 +60,8 @@ const getDefaultConfig = (type: KnowledgeBaseType): KnowledgeBaseConfig => {
       databaseSync: {
         frequency: 'daily',
         maxRowsPerQuery: 1000,
-        enableCache: true
-      }
+        enableCache: true,
+      },
     }
   }
 
@@ -71,13 +80,15 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
 
     // Migrate single file to files array
     if (migrated.sourceInfo.fileName && !migrated.sourceInfo.files) {
-      migrated.sourceInfo.files = [{
-        id: `file-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        fileType: migrated.sourceInfo.fileType || '',
-        fileName: migrated.sourceInfo.fileName,
-        fileSize: migrated.sourceInfo.fileSize || 0,
-        addedAt: new Date(kb.createdAt)
-      }]
+      migrated.sourceInfo.files = [
+        {
+          id: `file-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          fileType: migrated.sourceInfo.fileType || '',
+          fileName: migrated.sourceInfo.fileName,
+          fileSize: migrated.sourceInfo.fileSize || 0,
+          addedAt: new Date(kb.createdAt),
+        },
+      ]
       delete migrated.sourceInfo.fileType
       delete migrated.sourceInfo.fileName
       delete migrated.sourceInfo.fileSize
@@ -90,13 +101,16 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
     }
 
     // Migrate database connection info
-    if ((migrated.sourceInfo.dbType || migrated.sourceInfo.host) && !migrated.sourceInfo.connection) {
+    if (
+      (migrated.sourceInfo.dbType || migrated.sourceInfo.host) &&
+      !migrated.sourceInfo.connection
+    ) {
       migrated.sourceInfo.connection = {
         dbType: migrated.sourceInfo.dbType || 'mysql',
         host: migrated.sourceInfo.host || 'localhost',
         port: migrated.sourceInfo.port || 3306,
         username: migrated.sourceInfo.username || '',
-        database: migrated.sourceInfo.database || ''
+        database: migrated.sourceInfo.database || '',
       }
     }
 
@@ -135,9 +149,9 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
               ...migrated.sourceInfo,
               files: migrated.sourceInfo.files?.map((f: FileInfo) => ({
                 ...f,
-                addedAt: new Date(f.addedAt)
-              }))
-            }
+                addedAt: new Date(f.addedAt),
+              })),
+            },
           }
         })
       }
@@ -168,20 +182,20 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
               fileType: 'pdf',
               fileName: 'product_docs.pdf',
               fileSize: 1024 * 512,
-              addedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7)
+              addedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
             },
             {
               id: 'file-2',
               fileType: 'pdf',
               fileName: 'user_manual.pdf',
               fileSize: 1024 * 256,
-              addedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 6)
-            }
-          ]
+              addedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 6),
+            },
+          ],
         },
         config: getDefaultConfig('text'),
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
-        updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7)
+        updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
       },
       {
         id: 'kb-spreadsheet-1',
@@ -195,20 +209,20 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
               fileType: 'xlsx',
               fileName: 'sales_q1.xlsx',
               fileSize: 1024 * 128,
-              addedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5)
+              addedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
             },
             {
               id: 'file-4',
               fileType: 'xlsx',
               fileName: 'sales_q2.xlsx',
               fileSize: 1024 * 128,
-              addedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 4)
-            }
-          ]
+              addedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 4),
+            },
+          ],
         },
         config: getDefaultConfig('spreadsheet'),
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
-        updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5)
+        updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
       },
       {
         id: 'kb-database-1',
@@ -221,14 +235,14 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
             host: 'localhost',
             port: 3306,
             username: 'root',
-            database: 'user_db'
+            database: 'user_db',
           },
-          tables: ['users', 'profiles', 'permissions']
+          tables: ['users', 'profiles', 'permissions'],
         },
         config: getDefaultConfig('database'),
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
-        updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3)
-      }
+        updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
+      },
     ]
     knowledgeBases.value = demoKBs
     saveKnowledgeBases()
@@ -238,21 +252,23 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
   loadKnowledgeBases()
 
   // Watch for changes and auto-save
-  watch(knowledgeBases, () => {
-    saveKnowledgeBases()
-  }, { deep: true })
-
-  // Computed
-  const textKnowledgeBases = computed(() =>
-    knowledgeBases.value.filter(kb => kb.type === 'text')
+  watch(
+    knowledgeBases,
+    () => {
+      saveKnowledgeBases()
+    },
+    { deep: true },
   )
 
+  // Computed
+  const textKnowledgeBases = computed(() => knowledgeBases.value.filter((kb) => kb.type === 'text'))
+
   const spreadsheetKnowledgeBases = computed(() =>
-    knowledgeBases.value.filter(kb => kb.type === 'spreadsheet')
+    knowledgeBases.value.filter((kb) => kb.type === 'spreadsheet'),
   )
 
   const databaseKnowledgeBases = computed(() =>
-    knowledgeBases.value.filter(kb => kb.type === 'database')
+    knowledgeBases.value.filter((kb) => kb.type === 'database'),
   )
 
   // Actions
@@ -260,7 +276,7 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
     type: KnowledgeBaseType,
     name: string,
     description: string,
-    sourceInfo: Record<string, any>
+    sourceInfo: Record<string, any>,
   ): KnowledgeBase => {
     const newKB: KnowledgeBase = {
       id: `kb-${type}-${Date.now()}`,
@@ -270,7 +286,7 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
       sourceInfo,
       config: getDefaultConfig(type),
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
 
     knowledgeBases.value.unshift(newKB)
@@ -283,11 +299,11 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
       fileType: file.name.split('.').pop() || '',
       fileName: file.name,
       fileSize: file.size,
-      addedAt: new Date()
+      addedAt: new Date(),
     }))
 
     return createKnowledgeBase('text', form.name, form.description, {
-      files
+      files,
     })
   }
 
@@ -297,11 +313,11 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
       fileType: file.name.split('.').pop() || '',
       fileName: file.name,
       fileSize: file.size,
-      addedAt: new Date()
+      addedAt: new Date(),
     }))
 
     return createKnowledgeBase('spreadsheet', form.name, form.description, {
-      files
+      files,
     })
   }
 
@@ -312,25 +328,28 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
         host: form.host,
         port: form.port,
         username: form.username,
-        database: form.database
+        database: form.database,
       },
-      tables: form.tables
+      tables: form.tables,
     })
   }
 
-  const updateKnowledgeBase = (id: string, updates: Partial<Pick<KnowledgeBase, 'name' | 'description' | 'sourceInfo' | 'config'>>) => {
-    const index = knowledgeBases.value.findIndex(kb => kb.id === id)
+  const updateKnowledgeBase = (
+    id: string,
+    updates: Partial<Pick<KnowledgeBase, 'name' | 'description' | 'sourceInfo' | 'config'>>,
+  ) => {
+    const index = knowledgeBases.value.findIndex((kb) => kb.id === id)
     if (index > -1) {
       knowledgeBases.value[index] = {
         ...knowledgeBases.value[index],
         ...updates,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       } as KnowledgeBase
     }
   }
 
   const updateKnowledgeBaseConfig = (id: string, config: Partial<KnowledgeBaseConfig>) => {
-    const index = knowledgeBases.value.findIndex(kb => kb.id === id)
+    const index = knowledgeBases.value.findIndex((kb) => kb.id === id)
     if (index > -1) {
       const kb = knowledgeBases.value[index]
       knowledgeBases.value[index] = {
@@ -340,39 +359,43 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
           ...config,
           settings: {
             ...kb.config.settings,
-            ...(config.settings || {})
+            ...(config.settings || {}),
           },
           embedding: {
             ...kb.config.embedding,
-            ...(config.embedding || {})
+            ...(config.embedding || {}),
           },
           rerank: {
             ...kb.config.rerank,
-            ...(config.rerank || {})
+            ...(config.rerank || {}),
           },
-          chunking: config.chunking ? {
-            ...kb.config.chunking,
-            ...config.chunking
-          } : kb.config.chunking,
-          databaseSync: config.databaseSync ? {
-            ...kb.config.databaseSync,
-            ...config.databaseSync
-          } : kb.config.databaseSync
+          chunking: config.chunking
+            ? {
+                ...kb.config.chunking,
+                ...config.chunking,
+              }
+            : kb.config.chunking,
+          databaseSync: config.databaseSync
+            ? {
+                ...kb.config.databaseSync,
+                ...config.databaseSync,
+              }
+            : kb.config.databaseSync,
         },
-        updatedAt: new Date()
+        updatedAt: new Date(),
       } as KnowledgeBase
     }
   }
 
   const deleteKnowledgeBase = (id: string) => {
-    const index = knowledgeBases.value.findIndex(kb => kb.id === id)
+    const index = knowledgeBases.value.findIndex((kb) => kb.id === id)
     if (index > -1) {
       knowledgeBases.value.splice(index, 1)
     }
   }
 
   const addFileToKnowledgeBase = (id: string, file: File) => {
-    const kb = knowledgeBases.value.find(k => k.id === id)
+    const kb = knowledgeBases.value.find((k) => k.id === id)
     if (!kb || !kb.sourceInfo.files) return
 
     if (kb.sourceInfo.files.length >= MAX_FILES) {
@@ -384,7 +407,7 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
       fileType: file.name.split('.').pop() || '',
       fileName: file.name,
       fileSize: file.size,
-      addedAt: new Date()
+      addedAt: new Date(),
     }
 
     kb.sourceInfo.files.push(newFile)
@@ -392,19 +415,19 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
   }
 
   const removeFileFromKnowledgeBase = (id: string, fileId: string) => {
-    const kb = knowledgeBases.value.find(k => k.id === id)
+    const kb = knowledgeBases.value.find((k) => k.id === id)
     if (!kb || !kb.sourceInfo.files) return
 
     if (kb.sourceInfo.files.length <= 1) {
       throw new Error('知识库至少需要 1 个源文件')
     }
 
-    kb.sourceInfo.files = kb.sourceInfo.files.filter(f => f.id !== fileId)
+    kb.sourceInfo.files = kb.sourceInfo.files.filter((f) => f.id !== fileId)
     kb.updatedAt = new Date()
   }
 
   const addTableToKnowledgeBase = (id: string, table: string) => {
-    const kb = knowledgeBases.value.find(k => k.id === id)
+    const kb = knowledgeBases.value.find((k) => k.id === id)
     if (!kb || !kb.sourceInfo.tables) return
 
     if (kb.sourceInfo.tables.length >= MAX_TABLES) {
@@ -420,21 +443,23 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
   }
 
   const removeTableFromKnowledgeBase = (id: string, table: string) => {
-    const kb = knowledgeBases.value.find(k => k.id === id)
+    const kb = knowledgeBases.value.find((k) => k.id === id)
     if (!kb || !kb.sourceInfo.tables) return
 
     if (kb.sourceInfo.tables.length <= 1) {
       throw new Error('知识库至少需要 1 个表')
     }
 
-    kb.sourceInfo.tables = kb.sourceInfo.tables.filter(t => t !== table)
+    kb.sourceInfo.tables = kb.sourceInfo.tables.filter((t) => t !== table)
     kb.updatedAt = new Date()
   }
 
   // Mock database connection test
-  const testDatabaseConnection = async (config: Omit<DatabaseImportForm, 'name' | 'description' | 'tables'>): Promise<DatabaseConnectionTest> => {
+  const testDatabaseConnection = async (
+    config: Omit<DatabaseImportForm, 'name' | 'description' | 'tables'>,
+  ): Promise<DatabaseConnectionTest> => {
     // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1000))
 
     // Always succeed for demo
     const mockTables = [
@@ -447,13 +472,13 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
       'permissions',
       'settings',
       'logs',
-      'analytics'
+      'analytics',
     ]
 
     return {
       success: true,
       message: `成功连接到 ${config.dbType} 数据库`,
-      tables: mockTables
+      tables: mockTables,
     }
   }
 
@@ -481,6 +506,6 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
     removeTableFromKnowledgeBase,
     testDatabaseConnection,
     loadKnowledgeBases,
-    saveKnowledgeBases
+    saveKnowledgeBases,
   }
 })

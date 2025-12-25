@@ -55,16 +55,19 @@
 
     <!-- Private Agents Section -->
     <div class="mb-8">
-      <h2 class="text-lg font-semibold text-gray-900 mb-4">
-        私有Agent ({{ myAgents.length }})
-      </h2>
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">私有Agent ({{ myAgents.length }})</h2>
 
       <!-- Empty state -->
       <div
         v-if="myAgents.length === 0"
         class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
       >
-        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -119,7 +122,12 @@
         v-if="sharingGroups.length === 0"
         class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
       >
-        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -219,12 +227,8 @@ const emit = defineEmits<Emits>()
 
 const agentsStore = useAgentsStore()
 const { myAgents, sharingGroups } = storeToRefs(agentsStore)
-const {
-  addSharingGroup,
-  removeSharingGroup,
-  shareAgentWithGroup,
-  unshareAgentFromGroup
-} = agentsStore
+const { addSharingGroup, removeSharingGroup, shareAgentWithGroup, unshareAgentFromGroup } =
+  agentsStore
 
 // Dialog state
 const showAddGroupDialog = ref(false)
@@ -234,7 +238,7 @@ const newGroupDescription = ref('')
 // Toast state
 const toast = ref({
   show: false,
-  message: ''
+  message: '',
 })
 
 // Show toast notification

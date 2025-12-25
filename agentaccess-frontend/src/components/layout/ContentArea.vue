@@ -8,15 +8,27 @@
     </div>
 
     <!-- Main Chat Area - Two Column Layout -->
-    <div class="flex-1 overflow-y-auto px-8 py-12 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400">
+    <div
+      class="flex-1 overflow-y-auto px-8 py-12 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400"
+    >
       <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Left Column - Team Agents -->
         <div class="lg:col-span-2 space-y-8">
           <!-- Team Agent Cards -->
           <div>
             <h3 class="text-lg font-medium text-gray-900 mb-6 flex items-center">
-              <svg class="w-5 h-5 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              <svg
+                class="w-5 h-5 mr-2 text-primary-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                />
               </svg>
               选择团队Agent助手
             </h3>
@@ -32,7 +44,7 @@
                   <div
                     :class="[
                       'w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0',
-                      getAgentIconClass(agent.category)
+                      getAgentIconClass(agent.category),
                     ]"
                   >
                     <svg
@@ -58,7 +70,10 @@
                       {{ agent.description }}
                     </p>
                     <div class="flex items-center mt-2">
-                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" :class="getAgentBadgeClass(agent.category)">
+                      <span
+                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                        :class="getAgentBadgeClass(agent.category)"
+                      >
                         {{ getAgentCategoryName(agent.category) }}
                       </span>
                     </div>
@@ -74,8 +89,18 @@
           <!-- Message Input Area -->
           <div class="bg-gray-50 rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
-              <svg class="w-5 h-5 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              <svg
+                class="w-5 h-5 mr-2 text-primary-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
               </svg>
               发送消息
             </h3>
@@ -89,12 +114,13 @@
                   rows="6"
                   @keyup.enter.ctrl="sendMessage"
                 ></textarea>
-                <div class="absolute bottom-3 right-3 text-xs text-gray-400">
-                  Ctrl + Enter 发送
-                </div>
+                <div class="absolute bottom-3 right-3 text-xs text-gray-400">Ctrl + Enter 发送</div>
               </div>
 
-              <button @click="sendMessage" class="w-full btn-primary flex items-center justify-center space-x-2 px-6 py-3">
+              <button
+                @click="sendMessage"
+                class="w-full btn-primary flex items-center justify-center space-x-2 px-6 py-3"
+              >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
@@ -111,7 +137,12 @@
           <!-- Configuration Panel -->
           <div class="bg-gray-50 rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
-              <svg class="w-5 h-5 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                class="w-5 h-5 mr-2 text-primary-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -142,7 +173,7 @@
                 知识库
               </button>
               <button
-                @click="activeTab = 'mcp'; $emit('open-settings')"
+                @click="handleMcpTabClick"
                 :class="[
                   'pb-2 px-1 text-sm font-medium transition-colors',
                   activeTab === 'mcp'
@@ -160,7 +191,11 @@
               <div v-if="activeTab === 'knowledge'">
                 <h4 class="text-sm font-medium text-gray-900 mb-3">选择知识库</h4>
                 <div class="space-y-2">
-                  <div v-for="kb in knowledgeBases" :key="kb.id" class="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                  <div
+                    v-for="kb in knowledgeBases"
+                    :key="kb.id"
+                    class="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer"
+                  >
                     <input
                       type="radio"
                       :id="'kb-' + kb.id"
@@ -180,7 +215,12 @@
               <!-- MCP Settings -->
               <div v-else-if="activeTab === 'mcp'">
                 <div class="text-center py-6 text-gray-500">
-                  <svg class="mx-auto h-8 w-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg
+                    class="mx-auto h-8 w-8 text-gray-400 mb-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -195,7 +235,10 @@
                     />
                   </svg>
                   <p class="text-sm">请在用户设置中配置MCP服务</p>
-                  <button @click="$emit('open-settings')" class="mt-2 text-xs text-primary-600 hover:text-primary-700 underline">
+                  <button
+                    @click="$emit('open-settings')"
+                    class="mt-2 text-xs text-primary-600 hover:text-primary-700 underline"
+                  >
                     打开用户设置
                   </button>
                 </div>
@@ -230,22 +273,22 @@ const teamAgents = [
     name: '智能数据分析',
     description: '提供高质量洞察服务，帮助企业实时获取在风险检测、产品研究、品牌监控等洞察',
     icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
-    category: 'analysis' as 'analysis' | 'writing' | 'finance'
+    category: 'analysis' as 'analysis' | 'writing' | 'finance',
   },
   {
     id: '2',
     name: '写作助手',
     description: '智能写作辅助，帮助您快速创建高质量文档内容',
     icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
-    category: 'writing' as 'analysis' | 'writing' | 'finance'
+    category: 'writing' as 'analysis' | 'writing' | 'finance',
   },
   {
     id: '3',
     name: '股市基本面分析',
     description: '专业的股市分析工具，提供深度的基本面分析和投资建议',
     icon: 'M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3',
-    category: 'finance' as 'analysis' | 'writing' | 'finance'
-  }
+    category: 'finance' as 'analysis' | 'writing' | 'finance',
+  },
 ]
 
 // Knowledge Base data
@@ -253,18 +296,18 @@ const knowledgeBases = [
   {
     id: '1',
     name: '市场快速打法知识库',
-    documentCount: 45
+    documentCount: 45,
   },
   {
     id: '2',
     name: '产品速知知识库',
-    documentCount: 128
+    documentCount: 128,
   },
   {
     id: '3',
     name: '产品安装知识库',
-    documentCount: 67
-  }
+    documentCount: 67,
+  },
 ]
 
 // Agent styling methods
@@ -366,5 +409,10 @@ const sendMessage = async () => {
     messageInput.value = messageToSend
     alert(`发送消息失败: ${error instanceof Error ? error.message : '未知错误'}`)
   }
+}
+
+const handleMcpTabClick = () => {
+  activeTab.value = 'mcp'
+  emit('open-settings')
 }
 </script>

@@ -37,18 +37,21 @@ export class StorageMonitor {
 
       console.log('💾 Database status:')
       console.log(`  - Primary database: ${dbExists ? `${dbExists.length} bytes` : 'Not found'}`)
-      console.log(`  - Backup database: ${backupExists ? `${backupExists.length} bytes` : 'Not found'}`)
+      console.log(
+        `  - Backup database: ${backupExists ? `${backupExists.length} bytes` : 'Not found'}`,
+      )
 
       // Check storage quota
       if ('storage' in navigator && 'estimate' in navigator.storage) {
-        navigator.storage.estimate().then(estimate => {
+        navigator.storage.estimate().then((estimate) => {
           console.log('📈 Storage quota:')
           console.log(`  - Quota: ${((estimate.quota || 0) / 1024 / 1024).toFixed(2)} MB`)
           console.log(`  - Usage: ${((estimate.usage || 0) / 1024 / 1024).toFixed(2)} MB`)
-          console.log(`  - Available: ${(((estimate.quota || 0) - (estimate.usage || 0)) / 1024 / 1024).toFixed(2)} MB`)
+          console.log(
+            `  - Available: ${(((estimate.quota || 0) - (estimate.usage || 0)) / 1024 / 1024).toFixed(2)} MB`,
+          )
         })
       }
-
     } catch (error) {
       console.error('❌ Storage monitoring failed:', error)
     } finally {

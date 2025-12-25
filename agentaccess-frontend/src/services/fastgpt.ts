@@ -20,13 +20,13 @@ import type {
   FastGPTModel,
   FastGPTNode,
   FastGPTEdge,
-  FastGPTReferencedMaterial
+  FastGPTReferencedMaterial,
 } from '@/types/fastgpt'
 import {
   FastGPTError,
   FastGPTAuthError,
   FastGPTConnectionError,
-  FastGPTValidationError
+  FastGPTValidationError,
 } from '@/types/fastgpt'
 import type { Workflow, WorkflowNode, WorkflowConnection } from '@/types/workflow'
 
@@ -40,23 +40,23 @@ export class FastGPTService {
     this.client = axios.create({
       baseURL: config.apiUrl,
       headers: {
-        'Authorization': `Bearer ${config.apiKey}`,
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${config.apiKey}`,
+        'Content-Type': 'application/json',
       },
-      timeout: 30000
+      timeout: 30000,
     })
 
     // Add response interceptor for error handling
     this.client.interceptors.response.use(
       (response) => response,
-      (error: AxiosError) => this.handleError(error)
+      (error: AxiosError) => this.handleError(error),
     )
   }
 
   private handleError(error: AxiosError): never {
     if (error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK') {
       throw new FastGPTConnectionError(
-        'Unable to connect to FastGPT server. Please check if the server is running.'
+        'Unable to connect to FastGPT server. Please check if the server is running.',
       )
     }
 
@@ -67,27 +67,23 @@ export class FastGPTService {
       switch (status) {
         case 401:
           throw new FastGPTAuthError(
-            data?.message || 'Invalid API key. Please check your FastGPT API key.'
+            data?.message || 'Invalid API key. Please check your FastGPT API key.',
           )
         case 403:
           throw new FastGPTAuthError(
-            data?.message || 'Access denied. Please check your permissions.'
+            data?.message || 'Access denied. Please check your permissions.',
           )
         case 400:
           throw new FastGPTValidationError(
-            data?.message || 'Invalid request. Please check your input.'
+            data?.message || 'Invalid request. Please check your input.',
           )
         case 404:
-          throw new FastGPTError(
-            data?.message || 'Resource not found.',
-            'NOT_FOUND',
-            404
-          )
+          throw new FastGPTError(data?.message || 'Resource not found.', 'NOT_FOUND', 404)
         default:
           throw new FastGPTError(
             data?.message || `FastGPT server error: ${status}`,
             'SERVER_ERROR',
-            status
+            status,
           )
       }
     }
@@ -160,11 +156,11 @@ export class FastGPTService {
     const request: FastGPTExecutionRequest = {
       workflowId,
       input,
-      streaming: false
+      streaming: false,
     }
     const response = await this.client.post<FastGPTExecutionResponse>(
       `/v1/workflows/${workflowId}/run`,
-      request
+      request,
     )
     return response.data
   }
@@ -177,19 +173,19 @@ export class FastGPTService {
     input: string,
     onChunk: (chunk: string) => void,
     onComplete: (result: FastGPTExecutionResponse) => void,
-    onError: (error: Error) => void
+    onError: (error: Error) => void,
   ): Promise<void> {
     const request: FastGPTExecutionRequest = {
       workflowId,
       input,
-      streaming: true
+      streaming: true,
     }
 
     try {
       const response = await this.client.post<FastGPTExecutionResponse>(
         `/v1/workflows/${workflowId}/run`,
         request,
-        { responseType: 'text' }
+        { responseType: 'text' },
       )
 
       // For streaming, we'd use EventSource or similar
@@ -228,7 +224,7 @@ export class FastGPTService {
    * Convert AgentAccess workflow format to FastGPT format
    */
   convertToFastGPTFormat(workflow: Workflow): FastGPTWorkflowTemplate {
-    const nodes: FastGPTNode[] = workflow.nodes.map(node => ({
+    const nodes: FastGPTNode[] = workflow.nodes.map((node) => ({
       nodeId: node.id,
       name: node.configuration.name || node.type,
       intro: node.configuration.description || '',
@@ -236,15 +232,15 @@ export class FastGPTService {
       position: node.position,
       inputs: this.convertNodeInputs(node),
       outputs: this.convertNodeOutputs(node),
-      ...this.getNodeSpecificConfig(node)
+      ...this.getNodeSpecificConfig(node),
     }))
 
-    const edges: FastGPTEdge[] = workflow.connections.map(conn => ({
+    const edges: FastGPTEdge[] = workflow.connections.map((conn) => ({
       id: conn.id,
       source: conn.sourceNodeId,
       target: conn.targetNodeId,
       sourceHandle: conn.sourceOutput,
-      targetHandle: conn.targetInput
+      targetHandle: conn.targetInput,
     }))
 
     return {
@@ -255,7 +251,7 @@ export class FastGPTService {
       isPublic: false,
       permission: 'owner',
       nodes,
-      edges
+      edges,
     }
   }
 
@@ -263,8 +259,10 @@ export class FastGPTService {
    * Convert FastGPT format to AgentAccess format
    */
   convertFromFastGPTFormat(fastgptWorkflow: FastGPTWorkflowTemplate): Workflow {
-    const nodes: WorkflowNode[] = fastgptWorkflow.nodes.map(node => {
-      const nodeType = this.mapFastGPTNodeToAgentAccessType(node.flowNodeType) as WorkflowNode['type']
+    const nodes: WorkflowNode[] = fastgptWorkflow.nodes.map((node) => {
+      const nodeType = this.mapFastGPTNodeToAgentAccessType(
+        node.flowNodeType,
+      ) as WorkflowNode['type']
       return {
         id: node.nodeId,
         type: nodeType,
@@ -272,18 +270,18 @@ export class FastGPTService {
         configuration: {
           name: node.name,
           description: node.intro,
-          ...this.extractNodeConfig(node)
+          ...this.extractNodeConfig(node),
         },
-        status: 'idle'
+        status: 'idle',
       }
     })
 
-    const connections: WorkflowConnection[] = fastgptWorkflow.edges.map(edge => ({
+    const connections: WorkflowConnection[] = fastgptWorkflow.edges.map((edge) => ({
       id: edge.id,
       sourceNodeId: edge.source,
       targetNodeId: edge.target,
       sourceOutput: edge.sourceHandle || 'output',
-      targetInput: edge.targetHandle || 'input'
+      targetInput: edge.targetHandle || 'input',
     }))
 
     return {
@@ -295,7 +293,7 @@ export class FastGPTService {
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date(),
-      createdBy: 'fastgpt-import'
+      createdBy: 'fastgpt-import',
     }
   }
 
@@ -304,12 +302,12 @@ export class FastGPTService {
    */
   private mapNodeToFastGPTType(nodeType: string): string {
     const mapping: Record<string, string> = {
-      'start': 'StartNode',
-      'end': 'EndNode',
+      start: 'StartNode',
+      end: 'EndNode',
       'annotated-data-retrieval': 'DatasetSearchNode',
       'knowledge-retrieval': 'DatasetSearchNode',
       'question-rewrite': 'LLMNode',
-      'answer-generation': 'LLMNode'
+      'answer-generation': 'LLMNode',
     }
     return mapping[nodeType] || nodeType
   }
@@ -319,12 +317,12 @@ export class FastGPTService {
    */
   private mapFastGPTNodeToAgentAccessType(flowNodeType: string): string {
     const mapping: Record<string, string> = {
-      'StartNode': 'start',
-      'EndNode': 'end',
-      'DatasetSearchNode': 'knowledge-retrieval',
-      'LLMNode': 'answer-generation',
-      'HttpNode': 'annotated-data-retrieval',
-      'CodeNode': 'question-rewrite'
+      StartNode: 'start',
+      EndNode: 'end',
+      DatasetSearchNode: 'knowledge-retrieval',
+      LLMNode: 'answer-generation',
+      HttpNode: 'annotated-data-retrieval',
+      CodeNode: 'question-rewrite',
     }
     return mapping[flowNodeType] || flowNodeType.toLowerCase().replace('node', '-')
   }
@@ -343,19 +341,19 @@ export class FastGPTService {
           value: node.configuration.knowledgeBaseIds?.[0] || '',
           type: 'select',
           required: true,
-          description: 'Knowledge base to search'
+          description: 'Knowledge base to search',
         })
         inputs.push({
           key: 'retrievalMode',
           value: node.configuration.retrievalMode || 'hybrid',
           type: 'select',
-          description: 'Retrieval mode'
+          description: 'Retrieval mode',
         })
         inputs.push({
           key: 'limit',
           value: node.configuration.recallCount || 5,
           type: 'number',
-          description: 'Max results to return'
+          description: 'Max results to return',
         })
         break
       case 'question-rewrite':
@@ -365,25 +363,25 @@ export class FastGPTService {
           value: node.configuration.model || 'Qwen2.5-7B',
           type: 'select',
           required: true,
-          description: 'LLM model to use'
+          description: 'LLM model to use',
         })
         inputs.push({
           key: 'temperature',
           value: node.configuration.temperature || 0.5,
           type: 'number',
-          description: 'Temperature (0-1)'
+          description: 'Temperature (0-1)',
         })
         inputs.push({
           key: 'maxTokens',
           value: node.configuration.maxTokens || 1000,
           type: 'number',
-          description: 'Maximum tokens to generate'
+          description: 'Maximum tokens to generate',
         })
         inputs.push({
           key: 'prompt',
           value: node.configuration.prompt || '',
           type: 'textarea',
-          description: 'Custom prompt'
+          description: 'Custom prompt',
         })
         break
     }
@@ -402,7 +400,7 @@ export class FastGPTService {
         outputs.push({
           key: 'results',
           type: 'array',
-          description: 'Search results'
+          description: 'Search results',
         })
         break
       case 'question-rewrite':
@@ -410,7 +408,7 @@ export class FastGPTService {
         outputs.push({
           key: 'text',
           type: 'string',
-          description: 'Generated text'
+          description: 'Generated text',
         })
         break
     }

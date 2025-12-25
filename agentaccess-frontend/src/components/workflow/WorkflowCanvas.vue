@@ -6,14 +6,35 @@
         <div class="flex items-center space-x-4">
           <!-- Agent Name Editor -->
           <div class="flex items-center space-x-2">
-            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            <svg
+              class="w-5 h-5 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+              />
             </svg>
             <div v-if="!isEditingName" class="flex items-center space-x-2">
-              <h3 class="text-lg font-medium text-gray-900">{{ currentWorkflow?.name || '新Agent' }}</h3>
-              <button @click="startEditingName" class="text-gray-400 hover:text-gray-600" title="重命名">
+              <h3 class="text-lg font-medium text-gray-900">
+                {{ currentWorkflow?.name || '新Agent' }}
+              </h3>
+              <button
+                @click="startEditingName"
+                class="text-gray-400 hover:text-gray-600"
+                title="重命名"
+              >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
                 </svg>
               </button>
             </div>
@@ -25,7 +46,7 @@
               @keyup.enter="saveName"
               @keyup.esc="cancelEditName"
               class="text-lg font-medium text-gray-900 border border-primary-500 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-500"
-              style="width: 200px;"
+              style="width: 200px"
             />
           </div>
           <div class="flex items-center space-x-2 text-sm text-gray-500">
@@ -36,12 +57,14 @@
         </div>
         <div class="flex items-center space-x-2">
           <!-- Save Button -->
-          <button
-            @click="saveAgent"
-            class="btn-primary text-sm flex items-center space-x-1"
-          >
+          <button @click="saveAgent" class="btn-primary text-sm flex items-center space-x-1">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
+              />
             </svg>
             <span>保存到我的Agent</span>
           </button>
@@ -60,12 +83,28 @@
             :disabled="!fastgptConnected || isSyncing"
             :class="[
               'btn-secondary text-sm',
-              (!fastgptConnected || isSyncing) && 'opacity-50 cursor-not-allowed'
+              (!fastgptConnected || isSyncing) && 'opacity-50 cursor-not-allowed',
             ]"
           >
-            <svg v-if="isSyncing" class="w-4 h-4 animate-spin inline mr-1" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+            <svg
+              v-if="isSyncing"
+              class="w-4 h-4 animate-spin inline mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              />
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              />
             </svg>
             {{ isSyncing ? '同步中...' : '同步到FastGPT' }}
           </button>
@@ -74,29 +113,16 @@
             :disabled="!fastgptConnected || isSyncing"
             :class="[
               'btn-secondary text-sm',
-              (!fastgptConnected || isSyncing) && 'opacity-50 cursor-not-allowed'
+              (!fastgptConnected || isSyncing) && 'opacity-50 cursor-not-allowed',
             ]"
           >
             从FastGPT导入
           </button>
-          <button
-            @click="exportWorkflow"
-            class="btn-secondary text-sm"
-          >
-            导出
-          </button>
-          <button
-            @click="togglePreviewPanel"
-            class="btn-secondary text-sm"
-          >
+          <button @click="exportWorkflow" class="btn-secondary text-sm">导出</button>
+          <button @click="togglePreviewPanel" class="btn-secondary text-sm">
             {{ isPreviewPanelVisible ? '隐藏预览' : '验证工作流' }}
           </button>
-          <button
-            @click="clearCanvas"
-            class="btn-secondary text-sm"
-          >
-            清空画布
-          </button>
+          <button @click="clearCanvas" class="btn-secondary text-sm">清空画布</button>
         </div>
       </div>
     </div>
@@ -118,7 +144,7 @@
               <div
                 :class="[
                   'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0',
-                  nodeType.bgColor
+                  nodeType.bgColor,
                 ]"
               >
                 <svg
@@ -151,15 +177,11 @@
           @fit-to-screen="handleFitToScreen"
           @locate-start="handleLocateStart"
         />
-        <MiniMap
-          :width="200"
-          :height="150"
-          @pan-to="(x, y) => workflowStore.setCanvasPan(x, y)"
-        />
+        <MiniMap :width="200" :height="150" @pan-to="(x, y) => workflowStore.setCanvasPan(x, y)" />
         <div
           ref="canvasRef"
           class="workflow-canvas w-full h-full relative"
-          style="min-height: 400px; z-index: 10;"
+          style="min-height: 400px; z-index: 10"
           tabindex="0"
           @drop="onDrop"
           @dragover="onDragOver"
@@ -178,12 +200,7 @@
             class="absolute inset-0 flex items-center justify-center text-gray-400 pointer-events-none"
           >
             <div class="text-center">
-              <svg
-                class="mx-auto h-12 w-12"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg class="mx-auto h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -204,7 +221,7 @@
               left: '0',
               top: '0',
               width: `${canvasBounds.width}px`,
-              height: `${canvasBounds.height}px`
+              height: `${canvasBounds.height}px`,
             }"
           />
 
@@ -218,90 +235,90 @@
               left: '0',
               top: '0',
               width: `${canvasBounds.width}px`,
-              height: `${canvasBounds.height}px`
-            }"
-          >
-          <svg
-            class="absolute"
-            :style="{
-              zIndex: 1,
-              left: '0',
-              top: '0',
-              width: `${canvasBounds.width}px`,
               height: `${canvasBounds.height}px`,
-              overflow: 'visible',
-              pointerEvents: 'none'
             }"
-            @click="clearConnectionSelection"
           >
-            <!-- Connection lines -->
-            <path
-              v-for="connection in currentConnections"
-              :key="connection.id"
-              :d="getConnectionPath(connection)"
-              :stroke="selectedConnectionId === connection.id ? '#3b82f6' : '#9ca3af'"
-              :stroke-width="selectedConnectionId === connection.id ? '3' : '2'"
-              fill="none"
-              stroke-dasharray="6,4"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="transition-all duration-200 hover:stroke-primary-500 cursor-pointer"
-              style="pointer-events: stroke;"
-              @click.stop="selectConnection(connection.id)"
-              @dblclick.stop="deleteConnection(connection.id)"
-            />
-            <!-- Active connection line being drawn -->
-            <path
-              v-if="connectionState.isActive && connectionState.sourceNodeId"
-              :d="getActiveConnectionPath()"
-              stroke="#3b82f6"
-              stroke-width="2"
-              fill="none"
-              stroke-dasharray="6,4"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="animate-pulse"
-              style="pointer-events: none;"
-            />
-          </svg>
+            <svg
+              class="absolute"
+              :style="{
+                zIndex: 1,
+                left: '0',
+                top: '0',
+                width: `${canvasBounds.width}px`,
+                height: `${canvasBounds.height}px`,
+                overflow: 'visible',
+                pointerEvents: 'none',
+              }"
+              @click="clearConnectionSelection"
+            >
+              <!-- Connection lines -->
+              <path
+                v-for="connection in currentConnections"
+                :key="connection.id"
+                :d="getConnectionPath(connection)"
+                :stroke="selectedConnectionId === connection.id ? '#3b82f6' : '#9ca3af'"
+                :stroke-width="selectedConnectionId === connection.id ? '3' : '2'"
+                fill="none"
+                stroke-dasharray="6,4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="transition-all duration-200 hover:stroke-primary-500 cursor-pointer"
+                style="pointer-events: stroke"
+                @click.stop="selectConnection(connection.id)"
+                @dblclick.stop="deleteConnection(connection.id)"
+              />
+              <!-- Active connection line being drawn -->
+              <path
+                v-if="connectionState.isActive && connectionState.sourceNodeId"
+                :d="getActiveConnectionPath()"
+                stroke="#3b82f6"
+                stroke-width="2"
+                fill="none"
+                stroke-dasharray="6,4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="animate-pulse"
+                style="pointer-events: none"
+              />
+            </svg>
 
-          <!-- Workflow Nodes -->
-          <div
-            v-for="node in currentNodes"
-            :key="node.id"
-            :ref="el => setNodeRef(node.id, el)"
-            :style="{
-              position: 'absolute',
-              left: `${node.position.x}px`,
-              top: `${node.position.y}px`,
-              zIndex: 20
-            }"
-            class="workflow-node"
-            @click.stop
-            @contextmenu.prevent="showNodeContextMenu($event, node)"
-          >
-            <WorkflowNode
-              :node="node"
-              :isSelected="selectedNodeId === node.id"
-              @select="selectNode"
-              @update="updateNode"
-              @delete="deleteNode"
-              @connect="startConnection"
-              @connect-output="onOutputConnection"
-              @connect-input="onInputConnection"
-            />
-          </div>
+            <!-- Workflow Nodes -->
+            <div
+              v-for="node in currentNodes"
+              :key="node.id"
+              :ref="(el) => setNodeRef(node.id, el)"
+              :style="{
+                position: 'absolute',
+                left: `${node.position.x}px`,
+                top: `${node.position.y}px`,
+                zIndex: 20,
+              }"
+              class="workflow-node"
+              @click.stop
+              @contextmenu.prevent="showNodeContextMenu($event, node)"
+            >
+              <WorkflowNode
+                :node="node"
+                :isSelected="selectedNodeId === node.id"
+                @select="selectNode"
+                @update="updateNode"
+                @delete="deleteNode"
+                @connect="startConnection"
+                @connect-output="onOutputConnection"
+                @connect-input="onInputConnection"
+              />
+            </div>
 
-          <!-- Connection Indicator -->
-          <div
-            v-if="connectionState.isActive"
-            class="connection-indicator"
-            :style="{
-              position: 'absolute',
-              left: `${connectionState.x}px`,
-              top: `${connectionState.y}px`
-            }"
-          />
+            <!-- Connection Indicator -->
+            <div
+              v-if="connectionState.isActive"
+              class="connection-indicator"
+              :style="{
+                position: 'absolute',
+                left: `${connectionState.x}px`,
+                top: `${connectionState.y}px`,
+              }"
+            />
           </div>
         </div>
       </div>
@@ -313,7 +330,12 @@
       class="absolute bottom-4 left-4 bg-red-50 border border-red-200 rounded-lg p-3 max-w-md"
     >
       <div class="flex items-start space-x-2">
-        <svg class="w-5 h-5 text-red-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          class="w-5 h-5 text-red-400 mt-0.5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -337,7 +359,10 @@ import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useWorkflowStore } from '@/stores/workflow'
 import { downloadWorkflowAsJson } from '@/utils/workflowExport'
-import type { WorkflowNode as WorkflowNodeType, WorkflowNodeType as NodeOptionType } from '@/types/workflow'
+import type {
+  WorkflowNode as WorkflowNodeType,
+  WorkflowNodeType as NodeOptionType,
+} from '@/types/workflow'
 import WorkflowNode from './WorkflowNode.vue'
 import FloatingCanvasControls from './FloatingCanvasControls.vue'
 import MiniMap from './MiniMap.vue'
@@ -347,7 +372,17 @@ const canvasRef = ref<HTMLElement>()
 const nodeRefs = ref<Map<string, HTMLElement>>(new Map())
 
 // Use storeToRefs to maintain reactivity
-const { currentNodes, currentConnections, selectedNodeId, fastgptConnected, syncStatus, isPreviewPanelVisible, canvasScale, canvasPan, currentWorkflow } = storeToRefs(workflowStore)
+const {
+  currentNodes,
+  currentConnections,
+  selectedNodeId,
+  fastgptConnected,
+  syncStatus,
+  isPreviewPanelVisible,
+  canvasScale,
+  canvasPan,
+  currentWorkflow,
+} = storeToRefs(workflowStore)
 
 // Agent name editing state
 const isEditingName = ref(false)
@@ -361,7 +396,7 @@ const connectionState = ref({
   x: 0,
   y: 0,
   sourceNodeId: null as string | null,
-  targetNodeId: null as string | null
+  targetNodeId: null as string | null,
 })
 
 const selectedConnectionId = ref<string | null>(null)
@@ -380,15 +415,20 @@ const getNodeDimensions = (nodeId: string) => {
   const nodeEl = nodeRefs.value.get(nodeId)
   return {
     width: nodeEl?.offsetWidth || 200,
-    height: nodeEl?.offsetHeight || 100
+    height: nodeEl?.offsetHeight || 100,
   }
 }
 
 // Helper function to check if a point is inside a node's bounds
-const isPointInNode = (x: number, y: number, nodeId: string, excludeIds: string[] = []): boolean => {
+const isPointInNode = (
+  x: number,
+  y: number,
+  nodeId: string,
+  excludeIds: string[] = [],
+): boolean => {
   if (excludeIds.includes(nodeId)) return false
 
-  const node = currentNodes.value.find(n => n.id === nodeId)
+  const node = currentNodes.value.find((n) => n.id === nodeId)
   if (!node) return false
 
   const dimensions = getNodeDimensions(nodeId)
@@ -401,7 +441,13 @@ const isPointInNode = (x: number, y: number, nodeId: string, excludeIds: string[
 }
 
 // Helper function to check if a line segment intersects with a node's bounds
-const lineIntersectsNode = (x1: number, y1: number, x2: number, y2: number, excludeIds: string[] = []): string | null => {
+const lineIntersectsNode = (
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  excludeIds: string[] = [],
+): string | null => {
   for (const node of currentNodes.value) {
     if (excludeIds.includes(node.id)) continue
 
@@ -413,8 +459,10 @@ const lineIntersectsNode = (x1: number, y1: number, x2: number, y2: number, excl
 
     // Check if line segment intersects with node rectangle
     // Using a simplified approach: check if either endpoint is inside the node
-    if ((x1 >= nodeLeft && x1 <= nodeRight && y1 >= nodeTop && y1 <= nodeBottom) ||
-        (x2 >= nodeLeft && x2 <= nodeRight && y2 >= nodeTop && y2 <= nodeBottom)) {
+    if (
+      (x1 >= nodeLeft && x1 <= nodeRight && y1 >= nodeTop && y1 <= nodeBottom) ||
+      (x2 >= nodeLeft && x2 <= nodeRight && y2 >= nodeTop && y2 <= nodeBottom)
+    ) {
       return node.id
     }
 
@@ -460,13 +508,13 @@ const generateAvoidancePath = (
   endX: number,
   endY: number,
   sourceNodeId: string,
-  targetNodeId: string
+  targetNodeId: string,
 ): string => {
   const padding = 20 // Padding around nodes
 
   // Get bounding boxes of all nodes except source and target
   const blockingNodes = currentNodes.value.filter(
-    n => n.id !== sourceNodeId && n.id !== targetNodeId
+    (n) => n.id !== sourceNodeId && n.id !== targetNodeId,
   )
 
   if (blockingNodes.length === 0) {
@@ -477,10 +525,12 @@ const generateAvoidancePath = (
   const isPointBlocked = (x: number, y: number): boolean => {
     for (const node of blockingNodes) {
       const dimensions = getNodeDimensions(node.id)
-      if (x >= node.position.x - padding &&
-          x <= node.position.x + dimensions.width + padding &&
-          y >= node.position.y - padding &&
-          y <= node.position.y + dimensions.height + padding) {
+      if (
+        x >= node.position.x - padding &&
+        x <= node.position.x + dimensions.width + padding &&
+        y >= node.position.y - padding &&
+        y <= node.position.y + dimensions.height + padding
+      ) {
         return true
       }
     }
@@ -533,14 +583,16 @@ const generateAvoidancePath = (
     const midX = (startX + endX) / 2
 
     // Check if horizontal segments are clear
-    if (!isHorizontalSegmentBlocked(startX, midX, startY) &&
-        !isHorizontalSegmentBlocked(midX, endX, endY) &&
-        !isVerticalSegmentBlocked(startY, endY, midX)) {
+    if (
+      !isHorizontalSegmentBlocked(startX, midX, startY) &&
+      !isHorizontalSegmentBlocked(midX, endX, endY) &&
+      !isVerticalSegmentBlocked(startY, endY, midX)
+    ) {
       return generateSimplePath(startX, startY, endX, endY)
     }
 
     // Try going above all blocking nodes
-    const minTop = Math.min(...blockingNodes.map(n => n.position.y))
+    const minTop = Math.min(...blockingNodes.map((n) => n.position.y))
     const aboveY = minTop - padding - 30
 
     if (!isHorizontalSegmentBlocked(startX, endX, aboveY)) {
@@ -549,7 +601,7 @@ const generateAvoidancePath = (
     }
 
     // Try going below all blocking nodes
-    const maxBottom = Math.max(...blockingNodes.map(n => n.position.y + nodeHeight))
+    const maxBottom = Math.max(...blockingNodes.map((n) => n.position.y + nodeHeight))
     const belowY = maxBottom + padding + 30
 
     if (!isHorizontalSegmentBlocked(startX, endX, belowY)) {
@@ -614,10 +666,11 @@ const isSyncing = computed(() => syncStatus.value === 'syncing')
 // Calculate canvas bounds based on node positions
 const canvasBounds = computed(() => {
   // Always start from 0,0 and calculate bounds from there
-  let maxX = 0, maxY = 0
+  let maxX = 0,
+    maxY = 0
 
   if (currentNodes.value.length > 0) {
-    currentNodes.value.forEach(node => {
+    currentNodes.value.forEach((node) => {
       maxX = Math.max(maxX, node.position.x + 200) // Node width
       maxY = Math.max(maxY, node.position.y + 100) // Node height
     })
@@ -631,7 +684,7 @@ const canvasBounds = computed(() => {
     minX: 0,
     minY: 0,
     width: Math.max(minWidth, maxX + padding),
-    height: Math.max(minHeight, maxY + padding)
+    height: Math.max(minHeight, maxY + padding),
   }
 })
 
@@ -643,7 +696,7 @@ const nodeTypes = [
     description: '接收用户输入',
     icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
     bgColor: 'bg-purple-100',
-    textColor: 'text-purple-600'
+    textColor: 'text-purple-600',
   },
   {
     type: 'web-search' as NodeOptionType,
@@ -651,7 +704,7 @@ const nodeTypes = [
     description: '搜索网络信息',
     icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
     bgColor: 'bg-cyan-100',
-    textColor: 'text-cyan-600'
+    textColor: 'text-cyan-600',
   },
   {
     type: 'annotated-data-retrieval' as NodeOptionType,
@@ -659,7 +712,7 @@ const nodeTypes = [
     description: '检索标注数据',
     icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',
     bgColor: 'bg-blue-100',
-    textColor: 'text-blue-600'
+    textColor: 'text-blue-600',
   },
   {
     type: 'question-rewrite' as NodeOptionType,
@@ -667,7 +720,7 @@ const nodeTypes = [
     description: '重写用户问题',
     icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
     bgColor: 'bg-indigo-100',
-    textColor: 'text-indigo-600'
+    textColor: 'text-indigo-600',
   },
   {
     type: 'knowledge-retrieval' as NodeOptionType,
@@ -675,7 +728,7 @@ const nodeTypes = [
     description: '从知识库检索信息',
     icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
     bgColor: 'bg-orange-100',
-    textColor: 'text-orange-600'
+    textColor: 'text-orange-600',
   },
   {
     type: 'llm-call' as NodeOptionType,
@@ -683,7 +736,7 @@ const nodeTypes = [
     description: '调用大语言模型',
     icon: 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z',
     bgColor: 'bg-rose-100',
-    textColor: 'text-rose-600'
+    textColor: 'text-rose-600',
   },
   {
     type: 'data-processing' as NodeOptionType,
@@ -691,7 +744,7 @@ const nodeTypes = [
     description: '处理和转换数据',
     icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4',
     bgColor: 'bg-amber-100',
-    textColor: 'text-amber-600'
+    textColor: 'text-amber-600',
   },
   {
     type: 'condition' as NodeOptionType,
@@ -699,7 +752,7 @@ const nodeTypes = [
     description: '根据条件分支',
     icon: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4',
     bgColor: 'bg-yellow-100',
-    textColor: 'text-yellow-600'
+    textColor: 'text-yellow-600',
   },
   {
     type: 'code-execution' as NodeOptionType,
@@ -707,7 +760,7 @@ const nodeTypes = [
     description: '执行自定义代码',
     icon: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
     bgColor: 'bg-emerald-100',
-    textColor: 'text-emerald-600'
+    textColor: 'text-emerald-600',
   },
   {
     type: 'output' as NodeOptionType,
@@ -715,8 +768,8 @@ const nodeTypes = [
     description: '输出最终结果',
     icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
     bgColor: 'bg-teal-100',
-    textColor: 'text-teal-600'
-  }
+    textColor: 'text-teal-600',
+  },
 ]
 
 // Methods
@@ -791,7 +844,7 @@ const deleteNode = (nodeId: string) => {
 }
 
 const getNodePosition = (nodeId: string) => {
-  const node = currentNodes.value.find(n => n.id === nodeId)
+  const node = currentNodes.value.find((n) => n.id === nodeId)
   if (!node) return null
 
   // Try to get actual dimensions from DOM element
@@ -801,12 +854,12 @@ const getNodePosition = (nodeId: string) => {
 
   // Return edge positions for connection points
   return {
-    x: node.position.x + nodeWidth / 2,  // Center x
+    x: node.position.x + nodeWidth / 2, // Center x
     y: node.position.y + nodeHeight / 2, // Center y
-    leftX: node.position.x,               // Left edge
-    rightX: node.position.x + nodeWidth,  // Right edge
-    topY: node.position.y,                // Top edge
-    bottomY: node.position.y + nodeHeight // Bottom edge
+    leftX: node.position.x, // Left edge
+    rightX: node.position.x + nodeWidth, // Right edge
+    topY: node.position.y, // Top edge
+    bottomY: node.position.y + nodeHeight, // Bottom edge
   }
 }
 
@@ -825,14 +878,21 @@ const getConnectionPath = (connection: any) => {
   const endY = targetPos.y
 
   // Check if the direct path intersects with any nodes
-  const intersectingNodeId = lineIntersectsNode(
-    startX, startY, endX, endY,
-    [connection.sourceNodeId, connection.targetNodeId]
-  )
+  const intersectingNodeId = lineIntersectsNode(startX, startY, endX, endY, [
+    connection.sourceNodeId,
+    connection.targetNodeId,
+  ])
 
   if (intersectingNodeId) {
     // Use avoidance path to go around blocking nodes
-    return generateAvoidancePath(startX, startY, endX, endY, connection.sourceNodeId, connection.targetNodeId)
+    return generateAvoidancePath(
+      startX,
+      startY,
+      endX,
+      endY,
+      connection.sourceNodeId,
+      connection.targetNodeId,
+    )
   }
 
   // No intersection, use simple path
@@ -877,7 +937,7 @@ const startConnection = (nodeId: string) => {
     x: 0,
     y: 0,
     sourceNodeId: nodeId,
-    targetNodeId: null
+    targetNodeId: null,
   }
 }
 
@@ -888,13 +948,17 @@ const onOutputConnection = (nodeId: string) => {
     x: 0,
     y: 0,
     sourceNodeId: nodeId,
-    targetNodeId: null
+    targetNodeId: null,
   }
 }
 
 const onInputConnection = (nodeId: string) => {
   // Complete the connection to this node's input
-  if (connectionState.value.isActive && connectionState.value.sourceNodeId && connectionState.value.sourceNodeId !== nodeId) {
+  if (
+    connectionState.value.isActive &&
+    connectionState.value.sourceNodeId &&
+    connectionState.value.sourceNodeId !== nodeId
+  ) {
     workflowStore.addConnection(connectionState.value.sourceNodeId, nodeId)
 
     // Reset connection state
@@ -903,7 +967,7 @@ const onInputConnection = (nodeId: string) => {
       x: 0,
       y: 0,
       sourceNodeId: null,
-      targetNodeId: null
+      targetNodeId: null,
     }
   }
 }
@@ -928,7 +992,7 @@ const cancelConnection = () => {
     x: 0,
     y: 0,
     sourceNodeId: null,
-    targetNodeId: null
+    targetNodeId: null,
   }
 }
 
@@ -960,8 +1024,8 @@ const clearCanvas = () => {
         type: 'start',
         position: { x: 100, y: 100 },
         configuration: {},
-        status: 'idle'
-      }
+        status: 'idle',
+      },
     ]
     workflowStore.currentWorkflow.connections = []
     clearSelection()
@@ -1022,10 +1086,7 @@ const handleCanvasWheel = (event: WheelEvent) => {
     workflowStore.setCanvasScale(newScale)
   } else {
     // Pan with scroll
-    workflowStore.setCanvasPan(
-      canvasPan.value.x - event.deltaX,
-      canvasPan.value.y - event.deltaY
-    )
+    workflowStore.setCanvasPan(canvasPan.value.x - event.deltaX, canvasPan.value.y - event.deltaY)
   }
 }
 
@@ -1036,7 +1097,7 @@ const handleCanvasMouseDown = (event: MouseEvent) => {
     workflowStore.isCanvasPanning = true
     workflowStore.panStart = {
       x: event.clientX - canvasPan.value.x,
-      y: event.clientY - canvasPan.value.y
+      y: event.clientY - canvasPan.value.y,
     }
   }
 }
@@ -1045,7 +1106,7 @@ const handleCanvasMouseMove = (event: MouseEvent) => {
   if (workflowStore.isCanvasPanning) {
     workflowStore.setCanvasPan(
       event.clientX - workflowStore.panStart.x,
-      event.clientY - workflowStore.panStart.y
+      event.clientY - workflowStore.panStart.y,
     )
   }
 }
@@ -1141,7 +1202,7 @@ const importFromFastGPT = async () => {
       // List available workflows
       const workflows = await workflowStore.fastgptService?.listWorkflows()
       if (workflows && workflows.length > 0) {
-        const workflowList = workflows.map(w => `${w.id}: ${w.name}`).join('\n')
+        const workflowList = workflows.map((w) => `${w.id}: ${w.name}`).join('\n')
         alert(`可用的FastGPT工作流:\n${workflowList}`)
       } else {
         alert('FastGPT中没有可用的工作流')

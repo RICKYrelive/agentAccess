@@ -19,10 +19,10 @@ export interface Agent {
 
 // Extended agent type with additional properties for agent management
 export interface ExtendedAgent extends Agent {
-  isThirdParty?: boolean        // Imported from external source
-  tags?: string[]               // Up to 3 tags
-  sharedGroups?: string[]        // Which groups this agent is shared with
-  lastUsedAt?: Date             // For recent agents sorting
+  isThirdParty?: boolean // Imported from external source
+  tags?: string[] // Up to 3 tags
+  sharedGroups?: string[] // Which groups this agent is shared with
+  lastUsedAt?: Date // For recent agents sorting
   createdAt: Date
   updatedAt: Date
 }
@@ -30,7 +30,7 @@ export interface ExtendedAgent extends Agent {
 // Sharing group for agent collaboration
 export interface SharingGroup {
   id: string
-  name: string                   // e.g., "研发部", "市场部"
+  name: string // e.g., "研发部", "市场部"
   description?: string
   createdAt: Date
 }

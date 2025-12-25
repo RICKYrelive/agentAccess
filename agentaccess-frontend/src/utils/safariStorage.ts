@@ -22,7 +22,7 @@ export class SafariStorageService {
         const data = {
           providers: this.memoryProviders,
           activeProviderId: this.memoryActiveProviderId,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         }
 
         // Try multiple storage methods
@@ -101,7 +101,7 @@ export class SafariStorageService {
             savedData = {
               providers: JSON.parse(oldProviders),
               activeProviderId: oldActive || '',
-              timestamp: Date.now()
+              timestamp: Date.now(),
             }
             console.log('🔄 Migrated from old format')
           }
@@ -115,7 +115,7 @@ export class SafariStorageService {
         this.memoryProviders = savedData.providers.map((p: any) => ({
           ...p,
           createdAt: new Date(p.createdAt),
-          updatedAt: new Date(p.updatedAt)
+          updatedAt: new Date(p.updatedAt),
         }))
         this.memoryActiveProviderId = savedData.activeProviderId || ''
         console.log('✅ Safari storage loaded, providers:', this.memoryProviders.length)
@@ -127,7 +127,6 @@ export class SafariStorageService {
 
       // Initial save
       this.saveToAllStorages()
-
     } catch (error) {
       console.error('❌ Safari storage initialization failed:', error)
       // Start with empty data
@@ -142,7 +141,7 @@ export class SafariStorageService {
       const data = {
         providers: this.memoryProviders,
         activeProviderId: this.memoryActiveProviderId,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       }
 
       const jsonData = JSON.stringify(data)
@@ -186,7 +185,7 @@ export class SafariStorageService {
   async saveModelProvider(provider: ModelProvider): Promise<void> {
     await this.initialize()
 
-    const existingIndex = this.memoryProviders.findIndex(p => p.id === provider.id)
+    const existingIndex = this.memoryProviders.findIndex((p) => p.id === provider.id)
 
     if (existingIndex >= 0) {
       this.memoryProviders[existingIndex] = provider
@@ -203,14 +202,13 @@ export class SafariStorageService {
   async deleteModelProvider(providerId: string): Promise<void> {
     await this.initialize()
 
-    this.memoryProviders = this.memoryProviders.filter(p => p.id !== providerId)
+    this.memoryProviders = this.memoryProviders.filter((p) => p.id !== providerId)
     console.log('🗑️ Deleted provider from memory:', providerId)
 
     // Clear active provider if it was deleted
     if (this.memoryActiveProviderId === providerId) {
-      this.memoryActiveProviderId = this.memoryProviders.length > 0
-        ? this.memoryProviders[0].id
-        : ''
+      this.memoryActiveProviderId =
+        this.memoryProviders.length > 0 ? this.memoryProviders[0].id : ''
     }
 
     // Immediate save
@@ -225,7 +223,7 @@ export class SafariStorageService {
       return null
     }
 
-    const activeProvider = this.memoryProviders.find(p => p.id === this.memoryActiveProviderId)
+    const activeProvider = this.memoryProviders.find((p) => p.id === this.memoryActiveProviderId)
     console.log('🎯 Active provider from Safari storage:', activeProvider?.name || 'Not found')
     return activeProvider || null
   }
@@ -236,7 +234,7 @@ export class SafariStorageService {
     this.memoryActiveProviderId = providerId
 
     // Update provider active status
-    this.memoryProviders.forEach(p => {
+    this.memoryProviders.forEach((p) => {
       p.isActive = p.id === providerId
     })
 
@@ -294,7 +292,7 @@ export class SafariStorageService {
 
       if (this.memoryProviders.length > 0) {
         console.log('📊 Providers in memory:')
-        this.memoryProviders.forEach(p => {
+        this.memoryProviders.forEach((p) => {
           console.log(`  - ${p.name} (${p.id}): ${p.isActive ? 'ACTIVE' : 'Inactive'}`)
         })
       }
@@ -309,7 +307,7 @@ export class SafariStorageService {
   exportData(): object {
     return {
       providers: this.memoryProviders,
-      activeProviderId: this.memoryActiveProviderId
+      activeProviderId: this.memoryActiveProviderId,
     }
   }
 

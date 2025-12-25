@@ -9,7 +9,12 @@
           title="返回"
         >
           <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
         </button>
         <div class="flex-1">
@@ -39,12 +44,7 @@
             <div>
               <div class="flex items-center space-x-3 mb-2">
                 <h2 class="text-2xl font-semibold text-gray-900">{{ knowledgeBase.name }}</h2>
-                <span
-                  :class="[
-                    'px-2.5 py-0.5 text-sm font-medium rounded-full',
-                    typeBadgeClass
-                  ]"
-                >
+                <span :class="['px-2.5 py-0.5 text-sm font-medium rounded-full', typeBadgeClass]">
                   {{ typeLabel }}
                 </span>
                 <span
@@ -60,28 +60,53 @@
                   公开
                 </span>
               </div>
-              <p v-if="knowledgeBase.description" class="text-gray-600">{{ knowledgeBase.description }}</p>
+              <p v-if="knowledgeBase.description" class="text-gray-600">
+                {{ knowledgeBase.description }}
+              </p>
               <p v-else class="text-gray-400 italic">暂无描述</p>
             </div>
           </div>
           <div class="flex items-center space-x-6 text-sm text-gray-500">
             <div class="flex items-center space-x-1">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               <span>创建于 {{ formatDate(knowledgeBase.createdAt) }}</span>
             </div>
             <div class="flex items-center space-x-1">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               <span>更新于 {{ formatDate(knowledgeBase.updatedAt) }}</span>
             </div>
           </div>
           <!-- Tags -->
-          <div v-if="knowledgeBase.config.settings.tags.length > 0" class="flex items-center space-x-2 mt-3">
-            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+          <div
+            v-if="knowledgeBase.config.settings.tags.length > 0"
+            class="flex items-center space-x-2 mt-3"
+          >
+            <svg
+              class="w-4 h-4 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+              />
             </svg>
             <div class="flex flex-wrap gap-1.5">
               <span
@@ -106,7 +131,7 @@
                   'px-6 py-3 text-sm font-medium border-b-2 transition-colors',
                   activeTab === 'sources'
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                 ]"
               >
                 数据源
@@ -117,7 +142,7 @@
                   'px-6 py-3 text-sm font-medium border-b-2 transition-colors',
                   activeTab === 'settings'
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                 ]"
               >
                 配置
@@ -136,14 +161,21 @@
                   class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-1"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 4v16m8-8H4"
+                    />
                   </svg>
                   <span>添加数据源</span>
                 </button>
               </div>
 
               <!-- Text/Spreadsheet Files -->
-              <div v-if="knowledgeBase.sourceInfo.files && knowledgeBase.sourceInfo.files.length > 0">
+              <div
+                v-if="knowledgeBase.sourceInfo.files && knowledgeBase.sourceInfo.files.length > 0"
+              >
                 <p class="text-sm text-gray-500 mb-3">
                   共 {{ knowledgeBase.sourceInfo.files.length }} 个文件
                 </p>
@@ -154,11 +186,23 @@
                     class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
                     <div class="flex items-center space-x-3 flex-1 min-w-0">
-                      <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      <svg
+                        class="w-5 h-5 text-gray-400 flex-shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
                       </svg>
                       <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-900 truncate">{{ file.fileName }}</p>
+                        <p class="text-sm font-medium text-gray-900 truncate">
+                          {{ file.fileName }}
+                        </p>
                         <p class="text-xs text-gray-500">
                           {{ formatSize(file.fileSize) }} · 添加于 {{ formatDate(file.addedAt) }}
                         </p>
@@ -170,7 +214,12 @@
                       title="删除文件"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
                       </svg>
                     </button>
                   </div>
@@ -178,27 +227,42 @@
               </div>
 
               <!-- Database Tables -->
-              <div v-else-if="knowledgeBase.sourceInfo.tables && knowledgeBase.sourceInfo.tables.length > 0">
+              <div
+                v-else-if="
+                  knowledgeBase.sourceInfo.tables && knowledgeBase.sourceInfo.tables.length > 0
+                "
+              >
                 <div class="space-y-4">
                   <!-- Connection Info -->
-                  <div v-if="knowledgeBase.sourceInfo.connection" class="p-4 bg-purple-50 rounded-lg">
+                  <div
+                    v-if="knowledgeBase.sourceInfo.connection"
+                    class="p-4 bg-purple-50 rounded-lg"
+                  >
                     <h4 class="text-sm font-medium text-purple-900 mb-2">数据库连接信息</h4>
                     <div class="grid grid-cols-2 gap-2 text-sm">
                       <div>
                         <span class="text-purple-700">类型:</span>
-                        <span class="text-purple-900 ml-1">{{ knowledgeBase.sourceInfo.connection.dbType }}</span>
+                        <span class="text-purple-900 ml-1">{{
+                          knowledgeBase.sourceInfo.connection.dbType
+                        }}</span>
                       </div>
                       <div>
                         <span class="text-purple-700">主机:</span>
-                        <span class="text-purple-900 ml-1">{{ knowledgeBase.sourceInfo.connection.host }}</span>
+                        <span class="text-purple-900 ml-1">{{
+                          knowledgeBase.sourceInfo.connection.host
+                        }}</span>
                       </div>
                       <div>
                         <span class="text-purple-700">端口:</span>
-                        <span class="text-purple-900 ml-1">{{ knowledgeBase.sourceInfo.connection.port }}</span>
+                        <span class="text-purple-900 ml-1">{{
+                          knowledgeBase.sourceInfo.connection.port
+                        }}</span>
                       </div>
                       <div>
                         <span class="text-purple-700">数据库:</span>
-                        <span class="text-purple-900 ml-1">{{ knowledgeBase.sourceInfo.connection.database }}</span>
+                        <span class="text-purple-900 ml-1">{{
+                          knowledgeBase.sourceInfo.connection.database
+                        }}</span>
                       </div>
                     </div>
                   </div>
@@ -214,8 +278,18 @@
                         :key="table"
                         class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium bg-purple-50 text-purple-700 group"
                       >
-                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                        <svg
+                          class="w-4 h-4 mr-1.5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+                          />
                         </svg>
                         {{ table }}
                         <button
@@ -223,8 +297,18 @@
                           class="ml-2 opacity-0 group-hover:opacity-100 text-purple-500 hover:text-red-600 transition-opacity"
                           title="删除表"
                         >
-                          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                          <svg
+                            class="w-3.5 h-3.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M6 18L18 6M6 6l12 12"
+                            />
                           </svg>
                         </button>
                       </span>
@@ -235,8 +319,18 @@
 
               <!-- Empty State -->
               <div v-else class="text-center py-8 text-gray-500">
-                <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                <svg
+                  class="mx-auto h-12 w-12 text-gray-400 mb-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                  />
                 </svg>
                 <p>暂无数据源</p>
                 <button
@@ -250,10 +344,7 @@
 
             <!-- Settings Tab -->
             <div v-else-if="activeTab === 'settings' && knowledgeBase">
-              <KnowledgeBaseSettings
-                :knowledge-base="knowledgeBase"
-                @close="handleSettingsSaved"
-              />
+              <KnowledgeBaseSettings :knowledge-base="knowledgeBase" @close="handleSettingsSaved" />
             </div>
           </div>
         </div>
@@ -288,7 +379,9 @@
     >
       <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-2">确认删除</h3>
-        <p class="text-gray-600 mb-6">确定要删除知识库"{{ knowledgeBase?.name }}"吗？此操作不可恢复。</p>
+        <p class="text-gray-600 mb-6">
+          确定要删除知识库"{{ knowledgeBase?.name }}"吗？此操作不可恢复。
+        </p>
         <div class="flex space-x-3">
           <button
             @click="showDeleteConfirm = false"
@@ -395,7 +488,7 @@ const typeLabel = computed(() => {
   const typeMap: Record<string, string> = {
     text: '文本',
     spreadsheet: '表格',
-    database: '数据库'
+    database: '数据库',
   }
   return typeMap[knowledgeBase.value.type] || knowledgeBase.value.type
 })
@@ -405,7 +498,7 @@ const typeBadgeClass = computed(() => {
   const classMap: Record<string, string> = {
     text: 'bg-green-100 text-green-700',
     spreadsheet: 'bg-blue-100 text-blue-700',
-    database: 'bg-purple-100 text-purple-700'
+    database: 'bg-purple-100 text-purple-700',
   }
   return classMap[knowledgeBase.value.type] || 'bg-gray-100 text-gray-700'
 })
@@ -416,7 +509,7 @@ const formatDate = (date: Date) => {
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   }).format(new Date(date))
 }
 
@@ -432,7 +525,9 @@ const handleSaveInfo = (updates: { name?: string; description?: string }) => {
   if (knowledgeBase.value) {
     knowledgeBaseStore.updateKnowledgeBase(knowledgeBase.value.id, updates)
     // Reload the knowledge base data
-    const updated = knowledgeBaseStore.knowledgeBases.find(kb => kb.id === knowledgeBase.value!.id)
+    const updated = knowledgeBaseStore.knowledgeBases.find(
+      (kb) => kb.id === knowledgeBase.value!.id,
+    )
     if (updated) {
       knowledgeBase.value = updated
     }
@@ -442,13 +537,13 @@ const handleSaveInfo = (updates: { name?: string; description?: string }) => {
 
 const handleSettingsSaved = () => {
   // Reload the knowledge base data
-  const updated = knowledgeBaseStore.knowledgeBases.find(kb => kb.id === knowledgeBase.value!.id)
+  const updated = knowledgeBaseStore.knowledgeBases.find((kb) => kb.id === knowledgeBase.value!.id)
   if (updated) {
     knowledgeBase.value = updated
   }
 }
 
-const handleAddSource = (source: { type: 'file' | 'table', data: any }) => {
+const handleAddSource = (source: { type: 'file' | 'table'; data: any }) => {
   if (!knowledgeBase.value) return
 
   try {
@@ -458,7 +553,9 @@ const handleAddSource = (source: { type: 'file' | 'table', data: any }) => {
       knowledgeBaseStore.addTableToKnowledgeBase(knowledgeBase.value.id, source.data)
     }
     // Reload the knowledge base data
-    const updated = knowledgeBaseStore.knowledgeBases.find(kb => kb.id === knowledgeBase.value!.id)
+    const updated = knowledgeBaseStore.knowledgeBases.find(
+      (kb) => kb.id === knowledgeBase.value!.id,
+    )
     if (updated) {
       knowledgeBase.value = updated
     }
@@ -490,7 +587,9 @@ const handleRemoveFile = () => {
     try {
       knowledgeBaseStore.removeFileFromKnowledgeBase(knowledgeBase.value.id, fileToRemove.value.id)
       // Reload the knowledge base data
-      const updated = knowledgeBaseStore.knowledgeBases.find(kb => kb.id === knowledgeBase.value!.id)
+      const updated = knowledgeBaseStore.knowledgeBases.find(
+        (kb) => kb.id === knowledgeBase.value!.id,
+      )
       if (updated) {
         knowledgeBase.value = updated
       }
@@ -512,7 +611,9 @@ const handleRemoveTable = () => {
     try {
       knowledgeBaseStore.removeTableFromKnowledgeBase(knowledgeBase.value.id, tableToRemove.value)
       // Reload the knowledge base data
-      const updated = knowledgeBaseStore.knowledgeBases.find(kb => kb.id === knowledgeBase.value!.id)
+      const updated = knowledgeBaseStore.knowledgeBases.find(
+        (kb) => kb.id === knowledgeBase.value!.id,
+      )
       if (updated) {
         knowledgeBase.value = updated
       }
@@ -525,7 +626,7 @@ const handleRemoveTable = () => {
 }
 
 onMounted(() => {
-  const kb = knowledgeBaseStore.knowledgeBases.find(kb => kb.id === props.knowledgeBaseId)
+  const kb = knowledgeBaseStore.knowledgeBases.find((kb) => kb.id === props.knowledgeBaseId)
   if (kb) {
     knowledgeBase.value = kb
   }

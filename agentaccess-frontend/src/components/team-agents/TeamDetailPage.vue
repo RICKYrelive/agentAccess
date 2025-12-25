@@ -7,7 +7,12 @@
         class="flex items-center space-x-2 text-gray-600 hover:text-gray-900 mb-4 transition-colors"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
         <span>返回团队列表</span>
       </button>
@@ -20,7 +25,12 @@
         <div class="flex items-center space-x-3 text-sm text-gray-500">
           <div class="flex items-center space-x-1">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+              />
             </svg>
             <span>{{ team?.members.length }} 成员</span>
           </div>
@@ -59,9 +69,7 @@
     <!-- Agents section -->
     <div>
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-semibold text-gray-900">
-          团队 Agent ({{ teamAgents.length }})
-        </h2>
+        <h2 class="text-lg font-semibold text-gray-900">团队 Agent ({{ teamAgents.length }})</h2>
       </div>
 
       <!-- Empty state -->
@@ -69,7 +77,12 @@
         v-if="teamAgents.length === 0"
         class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
       >
-        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -91,22 +104,55 @@
           @click="$emit('edit-agent', agent.id)"
         >
           <div class="flex items-start space-x-3">
-            <div :class="`w-12 h-12 rounded-lg ${getAgentBgClass(agent.category)} flex items-center justify-center flex-shrink-0`">
-              <svg v-if="agent.icon" class="w-6 h-6" :class="getAgentIconClass(agent.category)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="agent.icon" />
+            <div
+              :class="`w-12 h-12 rounded-lg ${getAgentBgClass(agent.category)} flex items-center justify-center flex-shrink-0`"
+            >
+              <svg
+                v-if="agent.icon"
+                class="w-6 h-6"
+                :class="getAgentIconClass(agent.category)"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  :d="agent.icon"
+                />
               </svg>
-              <svg v-else class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              <svg
+                v-else
+                class="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
               </svg>
             </div>
             <div class="flex-1 min-w-0">
               <h3 class="font-semibold text-gray-900 truncate">{{ agent.name }}</h3>
-              <p v-if="agent.description" class="text-sm text-gray-500 truncate mt-1">{{ agent.description }}</p>
+              <p v-if="agent.description" class="text-sm text-gray-500 truncate mt-1">
+                {{ agent.description }}
+              </p>
               <div class="flex items-center space-x-2 mt-2">
-                <span v-if="agent.category" :class="`text-xs px-2 py-1 ${getCategoryBadgeClass(agent.category)} rounded-full`">
+                <span
+                  v-if="agent.category"
+                  :class="`text-xs px-2 py-1 ${getCategoryBadgeClass(agent.category)} rounded-full`"
+                >
                   {{ getCategoryName(agent.category) }}
                 </span>
-                <span v-if="isExtendedAgent(agent) && agent.tags && agent.tags.length > 0" class="text-xs text-gray-500">
+                <span
+                  v-if="isExtendedAgent(agent) && agent.tags && agent.tags.length > 0"
+                  class="text-xs text-gray-500"
+                >
                   {{ agent.tags.slice(0, 2).join(', ') }}
                   <span v-if="agent.tags.length > 2">等</span>
                 </span>
@@ -144,7 +190,7 @@ const { myAgents } = storeToRefs(agentsStore)
 
 // Get team by ID
 const team = computed(() => {
-  return teamsStore.teams.find(t => t.id === props.teamId)
+  return teamsStore.teams.find((t) => t.id === props.teamId)
 })
 
 // Get agents in this team (use store method which already handles all agent types)
@@ -161,61 +207,96 @@ const isExtendedAgent = (agent: ExtendedAgent | Agent): agent is ExtendedAgent =
 // Helper functions for agent styling
 const getAgentBorderClass = (category?: string) => {
   switch (category) {
-    case 'analysis': return 'border-blue-500'
-    case 'writing': return 'border-green-500'
-    case 'finance': return 'border-orange-500'
-    case 'coding': return 'border-purple-500'
-    case 'personal': return 'border-gray-500'
-    case 'specialized': return 'border-indigo-500'
-    default: return 'border-gray-500'
+    case 'analysis':
+      return 'border-blue-500'
+    case 'writing':
+      return 'border-green-500'
+    case 'finance':
+      return 'border-orange-500'
+    case 'coding':
+      return 'border-purple-500'
+    case 'personal':
+      return 'border-gray-500'
+    case 'specialized':
+      return 'border-indigo-500'
+    default:
+      return 'border-gray-500'
   }
 }
 
 const getAgentBgClass = (category?: string) => {
   switch (category) {
-    case 'analysis': return 'bg-blue-100'
-    case 'writing': return 'bg-green-100'
-    case 'finance': return 'bg-orange-100'
-    case 'coding': return 'bg-purple-100'
-    case 'personal': return 'bg-gray-100'
-    case 'specialized': return 'bg-indigo-100'
-    default: return 'bg-gray-100'
+    case 'analysis':
+      return 'bg-blue-100'
+    case 'writing':
+      return 'bg-green-100'
+    case 'finance':
+      return 'bg-orange-100'
+    case 'coding':
+      return 'bg-purple-100'
+    case 'personal':
+      return 'bg-gray-100'
+    case 'specialized':
+      return 'bg-indigo-100'
+    default:
+      return 'bg-gray-100'
   }
 }
 
 const getAgentIconClass = (category?: string) => {
   switch (category) {
-    case 'analysis': return 'text-blue-600'
-    case 'writing': return 'text-green-600'
-    case 'finance': return 'text-orange-600'
-    case 'coding': return 'text-purple-600'
-    case 'personal': return 'text-gray-600'
-    case 'specialized': return 'text-indigo-600'
-    default: return 'text-gray-600'
+    case 'analysis':
+      return 'text-blue-600'
+    case 'writing':
+      return 'text-green-600'
+    case 'finance':
+      return 'text-orange-600'
+    case 'coding':
+      return 'text-purple-600'
+    case 'personal':
+      return 'text-gray-600'
+    case 'specialized':
+      return 'text-indigo-600'
+    default:
+      return 'text-gray-600'
   }
 }
 
 const getCategoryBadgeClass = (category?: string) => {
   switch (category) {
-    case 'analysis': return 'bg-blue-100 text-blue-700'
-    case 'writing': return 'bg-green-100 text-green-700'
-    case 'finance': return 'bg-orange-100 text-orange-700'
-    case 'coding': return 'bg-purple-100 text-purple-700'
-    case 'personal': return 'bg-gray-100 text-gray-700'
-    case 'specialized': return 'bg-indigo-100 text-indigo-700'
-    default: return 'bg-gray-100 text-gray-700'
+    case 'analysis':
+      return 'bg-blue-100 text-blue-700'
+    case 'writing':
+      return 'bg-green-100 text-green-700'
+    case 'finance':
+      return 'bg-orange-100 text-orange-700'
+    case 'coding':
+      return 'bg-purple-100 text-purple-700'
+    case 'personal':
+      return 'bg-gray-100 text-gray-700'
+    case 'specialized':
+      return 'bg-indigo-100 text-indigo-700'
+    default:
+      return 'bg-gray-100 text-gray-700'
   }
 }
 
 const getCategoryName = (category?: string) => {
   switch (category) {
-    case 'analysis': return '数据分析'
-    case 'writing': return '写作助手'
-    case 'finance': return '金融分析'
-    case 'coding': return '编程开发'
-    case 'personal': return '个人助手'
-    case 'specialized': return '专业助手'
-    default: return '通用助手'
+    case 'analysis':
+      return '数据分析'
+    case 'writing':
+      return '写作助手'
+    case 'finance':
+      return '金融分析'
+    case 'coding':
+      return '编程开发'
+    case 'personal':
+      return '个人助手'
+    case 'specialized':
+      return '专业助手'
+    default:
+      return '通用助手'
   }
 }
 </script>

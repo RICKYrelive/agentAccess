@@ -3,16 +3,23 @@
     class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
     @click.self="$emit('close')"
   >
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto" @click.stop>
+    <div
+      class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto"
+      @click.stop
+    >
       <!-- Header -->
-      <div class="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white">
+      <div
+        class="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white"
+      >
         <h2 class="text-xl font-semibold text-gray-900">导入数据库知识库</h2>
-        <button
-          @click="$emit('close')"
-          class="text-gray-400 hover:text-gray-600"
-        >
+        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -36,9 +43,7 @@
 
         <!-- Description -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            描述
-          </label>
+          <label class="block text-sm font-medium text-gray-700 mb-1"> 描述 </label>
           <textarea
             v-model="form.description"
             rows="2"
@@ -144,12 +149,27 @@
             class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
           >
             <svg v-if="isTesting" class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
             </svg>
             <span>{{ isTesting ? '连接中...' : '测试连接' }}</span>
           </button>
-          <span v-if="connectionTestResult" :class="connectionTestResult.success ? 'text-green-600' : 'text-red-600'" class="text-sm">
+          <span
+            v-if="connectionTestResult"
+            :class="connectionTestResult.success ? 'text-green-600' : 'text-red-600'"
+            class="text-sm"
+          >
             {{ connectionTestResult.message }}
           </span>
         </div>
@@ -241,7 +261,7 @@ const form = ref<DatabaseImportForm>({
   username: '',
   password: '',
   database: '',
-  tables: []
+  tables: [],
 })
 
 const isTesting = ref(false)
@@ -263,17 +283,25 @@ const updateDefaultPort = () => {
 }
 
 const canTestConnection = computed(() => {
-  return form.value.host && form.value.port && form.value.username && form.value.password && form.value.database
+  return (
+    form.value.host &&
+    form.value.port &&
+    form.value.username &&
+    form.value.password &&
+    form.value.database
+  )
 })
 
 const isFormValid = computed(() => {
-  return form.value.name.trim() !== '' &&
-         form.value.host &&
-         form.value.port &&
-         form.value.username &&
-         form.value.password &&
-         form.value.database &&
-         form.value.tables.length > 0
+  return (
+    form.value.name.trim() !== '' &&
+    form.value.host &&
+    form.value.port &&
+    form.value.username &&
+    form.value.password &&
+    form.value.database &&
+    form.value.tables.length > 0
+  )
 })
 
 const testConnection = async () => {
@@ -290,7 +318,7 @@ const testConnection = async () => {
       username: form.value.username,
       password: form.value.password,
       database: form.value.database,
-      tables: []
+      tables: [],
     })
 
     connectionTestResult.value = result
@@ -306,7 +334,7 @@ const testConnection = async () => {
   } catch (error) {
     connectionTestResult.value = {
       success: false,
-      message: '连接测试失败'
+      message: '连接测试失败',
     }
   } finally {
     isTesting.value = false
@@ -320,7 +348,10 @@ const handleSubmit = () => {
 }
 
 // Watch for database type change to update port
-watch(() => form.value.dbType, () => {
-  updateDefaultPort()
-})
+watch(
+  () => form.value.dbType,
+  () => {
+    updateDefaultPort()
+  },
+)
 </script>

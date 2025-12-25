@@ -92,11 +92,7 @@
               @change="onProviderChange"
               class="w-full input-field text-sm"
             >
-              <option
-                v-for="provider in activeProviders"
-                :key="provider.id"
-                :value="provider.id"
-              >
+              <option v-for="provider in activeProviders" :key="provider.id" :value="provider.id">
                 {{ provider.name }} ({{ provider.model }})
               </option>
             </select>
@@ -110,7 +106,9 @@
                 v-for="provider in providers"
                 :key="provider.id"
                 class="border border-gray-200 rounded-lg p-4"
-                :class="{ 'ring-2 ring-primary-500': provider.id === settingsStore.selectedProviderId }"
+                :class="{
+                  'ring-2 ring-primary-500': provider.id === settingsStore.selectedProviderId,
+                }"
               >
                 <div class="flex items-start justify-between">
                   <div class="flex-1">
@@ -118,13 +116,21 @@
                       <h4 class="text-sm font-medium text-gray-900">{{ provider.name }}</h4>
                       <span
                         class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
-                        :class="provider.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
+                        :class="
+                          provider.isActive
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-gray-100 text-gray-800'
+                        "
                       >
                         {{ provider.isActive ? '启用' : '禁用' }}
                       </span>
                       <span
                         class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
-                        :class="provider.id === settingsStore.selectedProviderId ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600'"
+                        :class="
+                          provider.id === settingsStore.selectedProviderId
+                            ? 'bg-blue-100 text-blue-800'
+                            : 'bg-gray-100 text-gray-600'
+                        "
                       >
                         {{ provider.id === settingsStore.selectedProviderId ? '默认' : '' }}
                       </span>
@@ -144,7 +150,12 @@
                       title="编辑"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
                       </svg>
                     </button>
                     <button
@@ -160,9 +171,17 @@
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                       >
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
                       </svg>
-                      <div v-else class="w-4 h-4 animate-spin rounded-full border-2 border-gray-300 border-t-primary-600"></div>
+                      <div
+                        v-else
+                        class="w-4 h-4 animate-spin rounded-full border-2 border-gray-300 border-t-primary-600"
+                      ></div>
                     </button>
                     <button
                       @click="setAsDefault(provider.id)"
@@ -171,7 +190,12 @@
                       title="设为默认"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                        />
                       </svg>
                     </button>
                     <button
@@ -180,7 +204,12 @@
                       title="删除"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
                       </svg>
                     </button>
                   </div>
@@ -195,7 +224,12 @@
             class="w-full btn-secondary flex items-center justify-center space-x-2"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              />
             </svg>
             <span>添加模型提供商</span>
           </button>
@@ -204,8 +238,18 @@
         <!-- MCP Services Tab -->
         <div v-else-if="activeTab === 'mcp-global'" class="p-6">
           <div class="text-center py-12">
-            <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            <svg
+              class="mx-auto h-12 w-12 text-gray-400 mb-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+              />
             </svg>
             <h3 class="text-lg font-medium text-gray-900 mb-2">MCP服务管理</h3>
             <p class="text-sm text-gray-500 mb-6">在这里配置全局可用的MCP服务</p>
@@ -213,20 +257,44 @@
               <h4 class="font-medium text-gray-900 mb-3">功能说明</h4>
               <ul class="text-sm text-gray-600 space-y-2">
                 <li class="flex items-start">
-                  <svg class="w-4 h-4 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  <svg
+                    class="w-4 h-4 text-green-500 mt-0.5 mr-2 flex-shrink-0"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clip-rule="evenodd"
+                    />
                   </svg>
                   <span>添加和管理全局MCP服务配置</span>
                 </li>
                 <li class="flex items-start">
-                  <svg class="w-4 h-4 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  <svg
+                    class="w-4 h-4 text-green-500 mt-0.5 mr-2 flex-shrink-0"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clip-rule="evenodd"
+                    />
                   </svg>
                   <span>配置MCP服务的连接参数和权限</span>
                 </li>
                 <li class="flex items-start">
-                  <svg class="w-4 h-4 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  <svg
+                    class="w-4 h-4 text-green-500 mt-0.5 mr-2 flex-shrink-0"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clip-rule="evenodd"
+                    />
                   </svg>
                   <span>服务将在所有对话中可用</span>
                 </li>
@@ -243,9 +311,24 @@
         <!-- General Settings Tab -->
         <div v-else-if="activeTab === 'general'" class="p-6">
           <div class="text-center py-12">
-            <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <svg
+              class="mx-auto h-12 w-12 text-gray-400 mb-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
             </svg>
             <h3 class="text-lg font-medium text-gray-900 mb-2">通用设置</h3>
             <p class="text-sm text-gray-500">更多通用设置功能即将推出</p>
@@ -282,7 +365,12 @@
                 class="w-full btn-secondary flex items-center justify-center space-x-2"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
                 </svg>
                 <span>重置数据库并创建默认提供商</span>
               </button>
@@ -318,7 +406,10 @@
       </div>
 
       <!-- Add/Edit Provider Dialog -->
-      <div v-if="showAddProviderDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60">
+      <div
+        v-if="showAddProviderDialog"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60"
+      >
         <div class="bg-white rounded-lg p-6 w-full max-w-md">
           <h3 class="text-lg font-medium text-gray-900 mb-4">
             {{ editingProvider ? '编辑模型提供商' : '添加模型提供商' }}
@@ -432,7 +523,7 @@ const providerForm = ref({
   model: 'gpt-4',
   maxTokens: 4000,
   temperature: 0.7,
-  isActive: true
+  isActive: true,
 })
 
 // Computed
@@ -453,7 +544,7 @@ const editProvider = (provider: ModelProvider) => {
     model: provider.model,
     maxTokens: provider.maxTokens || 4000,
     temperature: provider.temperature || 0.7,
-    isActive: provider.isActive
+    isActive: provider.isActive,
   }
   showAddProviderDialog.value = true
 }
@@ -520,7 +611,7 @@ const cancelProviderEdit = () => {
     model: 'gpt-4',
     maxTokens: 4000,
     temperature: 0.7,
-    isActive: true
+    isActive: true,
   }
 }
 
@@ -570,7 +661,6 @@ const handleResetAndCreateDefault = async () => {
         console.error('❌ No providers were created')
         alert('重置完成，但没有创建提供商')
       }
-
     } catch (error) {
       console.error('❌ Reset failed:', error)
       console.error('❌ Stack trace:', error.stack)

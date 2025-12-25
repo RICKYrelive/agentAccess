@@ -27,8 +27,8 @@ export const SYSTEM_PLUGINS: SystemPlugin[] = [
     isEnabled: true,
     configuration: {
       timeout: 30000,
-      memoryLimit: 512
-    }
+      memoryLimit: 512,
+    },
   },
   {
     id: 'plugin-browser-sandbox',
@@ -37,14 +37,14 @@ export const SYSTEM_PLUGINS: SystemPlugin[] = [
     description: '安全的浏览器环境用于网页抓取和测试',
     isEnabled: true,
     configuration: {
-      timeout: 60000
-    }
+      timeout: 60000,
+    },
   },
   {
     id: 'plugin-calendar',
     name: '日历插件',
     type: 'code_execution',
     description: '管理日历事件和提醒',
-    isEnabled: true
-  }
+    isEnabled: true,
+  },
 ]

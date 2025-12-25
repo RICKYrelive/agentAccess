@@ -87,11 +87,11 @@ function validateFastGPTWorkflow(workflow: FastGPTWorkflowTemplate): void {
     'DatasetSearchNode',
     'LLMNode',
     'HttpNode',
-    'CodeNode'
+    'CodeNode',
   ]
 
   const unsupportedNodes: string[] = []
-  workflow.nodes?.forEach(node => {
+  workflow.nodes?.forEach((node) => {
     if (!supportedNodeTypes.includes(node.flowNodeType)) {
       unsupportedNodes.push(`${node.flowNodeType} (${node.name})`)
     }
@@ -119,19 +119,20 @@ export function getUnsupportedNodesSummary(workflow: FastGPTWorkflowTemplate): {
     'DatasetSearchNode',
     'LLMNode',
     'HttpNode',
-    'CodeNode'
+    'CodeNode',
   ]
 
-  const unsupportedNodes = workflow.nodes
-    ?.filter(node => !supportedNodeTypes.includes(node.flowNodeType))
-    .map(node => ({
-      name: node.name,
-      type: node.flowNodeType
-    })) || []
+  const unsupportedNodes =
+    workflow.nodes
+      ?.filter((node) => !supportedNodeTypes.includes(node.flowNodeType))
+      .map((node) => ({
+        name: node.name,
+        type: node.flowNodeType,
+      })) || []
 
   return {
     count: unsupportedNodes.length,
-    nodes: unsupportedNodes
+    nodes: unsupportedNodes,
   }
 }
 
@@ -166,5 +167,5 @@ export function isValidWorkflowFile(file: File): boolean {
   const validExtensions = ['.json', '.fastgpt']
   const fileName = file.name.toLowerCase()
 
-  return validExtensions.some(ext => fileName.endsWith(ext))
+  return validExtensions.some((ext) => fileName.endsWith(ext))
 }

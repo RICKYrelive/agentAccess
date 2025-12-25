@@ -13,25 +13,29 @@ export const useSettingsStore = defineStore('settings', () => {
   const isInitialized = ref(false)
 
   // Force use DB storage for debugging, but keep Safari detection for logging
-  const isSafari = typeof navigator !== 'undefined' &&
+  const isSafari =
+    typeof navigator !== 'undefined' &&
     (/^((?!chrome|android).)*safari/i.test(navigator.userAgent) ||
-     /iPad|iPhone|iPod/.test(navigator.userAgent))
+      /iPad|iPhone|iPod/.test(navigator.userAgent))
 
   const useSimpleStorage = ref(false) // Always use DB for now
-  const useSafariStorage = ref(false)  // Disable Safari storage for debugging
+  const useSafariStorage = ref(false) // Disable Safari storage for debugging
 
   console.log('🌐 Browser detected:', {
     userAgent: navigator.userAgent,
     isSafari,
     useSimpleStorage: useSimpleStorage.value,
     useSafariStorage: useSafariStorage.value,
-    message: 'Forcing DB storage for debugging'
+    message: 'Forcing DB storage for debugging',
   })
 
   // Computed
-  const activeProviders = computed(() => providers.value.filter(p => p.isActive))
-  const selectedProvider = computed(() =>
-    providers.value.find(p => p.id === selectedProviderId.value) || activeProviders.value[0] || null
+  const activeProviders = computed(() => providers.value.filter((p) => p.isActive))
+  const selectedProvider = computed(
+    () =>
+      providers.value.find((p) => p.id === selectedProviderId.value) ||
+      activeProviders.value[0] ||
+      null,
   )
 
   // Actions
@@ -46,12 +50,20 @@ export const useSettingsStore = defineStore('settings', () => {
         console.log('🦓 Using Safari-compatible storage')
         // Load providers from Safari storage
         providers.value = await safariStorageService.getModelProviders()
-        console.log('📊 Loaded providers from Safari storage:', providers.value.length, providers.value)
+        console.log(
+          '📊 Loaded providers from Safari storage:',
+          providers.value.length,
+          providers.value,
+        )
       } else if (useSimpleStorage.value) {
         console.log('📦 Using simple localStorage storage')
         // Load providers from simple storage
         providers.value = await simpleStorageService.getModelProviders()
-        console.log('📊 Loaded providers from simple storage:', providers.value.length, providers.value)
+        console.log(
+          '📊 Loaded providers from simple storage:',
+          providers.value.length,
+          providers.value,
+        )
       } else {
         console.log('📦 Using SQL.js database storage')
         await dbService.initialize()
@@ -111,8 +123,8 @@ export const useSettingsStore = defineStore('settings', () => {
         const activeProvider = useSafariStorage.value
           ? await safariStorageService.getActiveModelProvider()
           : useSimpleStorage.value
-          ? await simpleStorageService.getActiveModelProvider()
-          : await dbService.getActiveModelProvider()
+            ? await simpleStorageService.getActiveModelProvider()
+            : await dbService.getActiveModelProvider()
         console.log('🎯 Active provider from storage:', activeProvider)
 
         if (activeProvider) {
@@ -126,7 +138,12 @@ export const useSettingsStore = defineStore('settings', () => {
 
       isInitialized.value = true
       console.log('🎉 Settings store initialization complete')
-      console.log('📊 Final state - Providers:', providers.value.length, 'Selected:', selectedProviderId.value)
+      console.log(
+        '📊 Final state - Providers:',
+        providers.value.length,
+        'Selected:',
+        selectedProviderId.value,
+      )
     } catch (error) {
       console.error('❌ Failed to initialize settings store:', error)
       console.error('❌ Stack trace:', error.stack)
@@ -171,7 +188,7 @@ export const useSettingsStore = defineStore('settings', () => {
       temperature: 0.7,
       isActive: true,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
 
     console.log('✅ Default MiniMax provider created:', defaultProvider.name)
@@ -191,7 +208,7 @@ export const useSettingsStore = defineStore('settings', () => {
       temperature: 0.7,
       isActive: false,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
 
     console.log('✅ Fallback DeepSeek provider created:', fallbackProvider.name)
@@ -205,7 +222,7 @@ export const useSettingsStore = defineStore('settings', () => {
       ...provider,
       id: `provider-${Date.now()}`,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
 
     try {
@@ -226,13 +243,13 @@ export const useSettingsStore = defineStore('settings', () => {
   }
 
   const updateProvider = async (providerId: string, updates: Partial<ModelProvider>) => {
-    const providerIndex = providers.value.findIndex(p => p.id === providerId)
+    const providerIndex = providers.value.findIndex((p) => p.id === providerId)
     if (providerIndex === -1) return
 
     const updatedProvider: ModelProvider = {
       ...providers.value[providerIndex],
       ...updates,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     }
 
     try {
@@ -262,13 +279,14 @@ export const useSettingsStore = defineStore('settings', () => {
       } else {
         await dbService.deleteModelProvider(providerId)
       }
-      providers.value = providers.value.filter(p => p.id !== providerId)
+      providers.value = providers.value.filter((p) => p.id !== providerId)
       console.log('Providers after deletion:', providers.value.length)
 
       // If the deleted provider was selected, select another one
       if (selectedProviderId.value === providerId) {
-        const remainingActiveProviders = providers.value.filter(p => p.isActive)
-        selectedProviderId.value = remainingActiveProviders.length > 0 ? remainingActiveProviders[0].id : ''
+        const remainingActiveProviders = providers.value.filter((p) => p.isActive)
+        selectedProviderId.value =
+          remainingActiveProviders.length > 0 ? remainingActiveProviders[0].id : ''
         console.log('Selected provider updated to:', selectedProviderId.value)
       }
     } catch (error) {
@@ -289,7 +307,7 @@ export const useSettingsStore = defineStore('settings', () => {
       selectedProviderId.value = providerId
 
       // Update active status for all providers
-      providers.value.forEach(p => {
+      providers.value.forEach((p) => {
         p.isActive = p.id === providerId
       })
     } catch (error) {
@@ -299,7 +317,7 @@ export const useSettingsStore = defineStore('settings', () => {
   }
 
   const setActiveProvider = async (providerId: string, isActive: boolean) => {
-    const provider = providers.value.find(p => p.id === providerId)
+    const provider = providers.value.find((p) => p.id === providerId)
     if (!provider) return
 
     try {
@@ -312,7 +330,9 @@ export const useSettingsStore = defineStore('settings', () => {
 
         // If deactivating the selected provider, select another active one
         if (selectedProviderId.value === providerId) {
-          const remainingActiveProviders = providers.value.filter(p => p.isActive && p.id !== providerId)
+          const remainingActiveProviders = providers.value.filter(
+            (p) => p.isActive && p.id !== providerId,
+          )
           if (remainingActiveProviders.length > 0) {
             await selectProvider(remainingActiveProviders[0].id)
           } else {
@@ -326,7 +346,9 @@ export const useSettingsStore = defineStore('settings', () => {
     }
   }
 
-  const testProviderConnection = async (provider: ModelProvider): Promise<{ success: boolean; error?: string }> => {
+  const testProviderConnection = async (
+    provider: ModelProvider,
+  ): Promise<{ success: boolean; error?: string }> => {
     if (!provider.baseUrl || !provider.apiKey) {
       return { success: false, error: '缺少必要的配置信息' }
     }
@@ -336,9 +358,9 @@ export const useSettingsStore = defineStore('settings', () => {
       const response = await fetch(`${provider.baseUrl}/models`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${provider.apiKey}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${provider.apiKey}`,
+          'Content-Type': 'application/json',
+        },
       })
 
       if (!response.ok) {
@@ -350,7 +372,7 @@ export const useSettingsStore = defineStore('settings', () => {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : '连接失败'
+        error: error instanceof Error ? error.message : '连接失败',
       }
     }
   }
@@ -403,9 +425,14 @@ export const useSettingsStore = defineStore('settings', () => {
     toggleStorageMode: () => {
       useSafariStorage.value = !useSafariStorage.value
       useSimpleStorage.value = !useSimpleStorage.value
-      console.log('Switched storage mode to:',
-        useSafariStorage.value ? 'Safari Storage' :
-        useSimpleStorage.value ? 'Simple Storage' : 'SQL.js')
+      console.log(
+        'Switched storage mode to:',
+        useSafariStorage.value
+          ? 'Safari Storage'
+          : useSimpleStorage.value
+            ? 'Simple Storage'
+            : 'SQL.js',
+      )
     },
     storageInfo: () => {
       if (useSafariStorage.value) {
@@ -417,10 +444,13 @@ export const useSettingsStore = defineStore('settings', () => {
         console.log('agentaccess-db:', localStorage.getItem('agentaccess-db'))
         console.log('agentaccess-db-backup:', localStorage.getItem('agentaccess-db-backup'))
         console.log('agentaccess-providers:', localStorage.getItem('agentaccess-providers'))
-        console.log('agentaccess-active-provider:', localStorage.getItem('agentaccess-active-provider'))
+        console.log(
+          'agentaccess-active-provider:',
+          localStorage.getItem('agentaccess-active-provider'),
+        )
         console.log('DB initialized:', !!dbService.db)
         console.log('DB initialized flag:', dbService.initialized)
       }
-    }
+    },
   }
 })

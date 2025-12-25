@@ -1,31 +1,60 @@
 <template>
-  <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" @click="handleCardClick">
+  <div
+    class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+    @click="handleCardClick"
+  >
     <!-- Header with team name and badge -->
     <div class="flex items-start justify-between mb-3">
       <div class="flex items-center space-x-2 flex-1 min-w-0">
-        <svg class="w-5 h-5 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        <svg
+          class="w-5 h-5 text-primary-500 flex-shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+          />
         </svg>
         <div class="flex-1 min-w-0">
           <h3 class="font-semibold text-gray-900 truncate">{{ team.name }}</h3>
-          <p v-if="team.description" class="text-sm text-gray-500 truncate">{{ team.description }}</p>
+          <p v-if="team.description" class="text-sm text-gray-500 truncate">
+            {{ team.description }}
+          </p>
         </div>
       </div>
       <!-- Admin badge -->
-      <span v-if="isAdmin" class="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded-full ml-2">管理员</span>
+      <span
+        v-if="isAdmin"
+        class="text-xs bg-primary-100 text-primary-700 px-2 py-1 rounded-full ml-2"
+        >管理员</span
+      >
     </div>
 
     <!-- Team info -->
     <div class="flex items-center space-x-4 text-sm text-gray-500 mb-3">
       <div class="flex items-center space-x-1">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+          />
         </svg>
         <span>{{ team.members.length }} 成员</span>
       </div>
       <div class="flex items-center space-x-1">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+          />
         </svg>
         <span>{{ agents.length }} Agent</span>
       </div>
@@ -40,7 +69,10 @@
       >
         {{ agent.name }}
       </span>
-      <span v-if="agents.length > 3" class="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
+      <span
+        v-if="agents.length > 3"
+        class="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full"
+      >
         +{{ agents.length - 3 }}
       </span>
     </div>
@@ -107,7 +139,7 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
   showJoinButton: false,
-  hasPendingRequest: false
+  hasPendingRequest: false,
 })
 const emit = defineEmits<Emits>()
 

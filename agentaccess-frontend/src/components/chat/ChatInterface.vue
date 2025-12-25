@@ -1,18 +1,9 @@
 <template>
   <div class="h-full flex flex-col bg-white">
     <!-- Chat Header -->
-    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-gray-900">对话</h3>
-      <div class="flex items-center space-x-2">
-        <div class="text-sm text-gray-500">
-          {{ currentConversation?.title || '新对话' }}
-        </div>
-
-        <!-- Debug Info -->
-        <div class="text-xs bg-gray-100 px-2 py-1 rounded">
-          Loading: {{ isLoading ? '是' : '否' }}
-        </div>
-
+    <div class="px-6 py-4 border-b border-gray-200">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-lg font-semibold text-gray-900">对话</h3>
         <button
           @click="clearConversation"
           class="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md"
@@ -23,70 +14,122 @@
           </svg>
         </button>
       </div>
+      <div class="flex items-center space-x-2">
+        <div class="text-sm text-gray-500">
+          {{ currentConversation?.title || '新对话' }}
+        </div>
+
+        <!-- Debug Info -->
+        <div class="text-xs bg-gray-100 px-2 py-1 rounded">
+          Loading: {{ isLoading ? '是' : '否' }}
+        </div>
+      </div>
+
+      <!-- Tool Tags -->
+      <ConversationTags
+        v-if="currentConversation"
+        :settings="currentConversation.settings"
+        class="mt-2"
+      />
     </div>
 
     <!-- Chat Messages -->
     <div class="flex-1 overflow-y-auto px-6 py-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400">
       <!-- Render messages -->
       <template v-for="(message, index) in currentMessages" :key="message.id">
-        <!-- Show reasoning before the last assistant message when not streaming -->
-        <template v-if="index === currentMessages.length - 1 && message.role === 'assistant' && completedReasoning && !streamingMessage">
-          <!-- Completed Reasoning Content (Compact Mode) -->
-          <div v-if="!showFullReasoning" class="flex justify-start">
-            <div class="bg-blue-100 border border-blue-300 text-blue-800 px-3 py-2 rounded-full max-w-3xl inline-flex items-center space-x-2 text-sm">
-              <span class="font-medium">🧠 思维过程</span>
-              <button
-                @click="chatStore.toggleReasoningDisplay()"
-                class="text-blue-600 hover:text-blue-800 font-normal underline"
-              >
-                展开
-              </button>
-            </div>
-          </div>
-
-          <!-- Completed Reasoning Content (Full Mode) -->
-          <div v-else class="flex justify-start">
-            <div class="bg-blue-50 border-l-4 border-blue-400 text-blue-900 px-4 py-3 rounded-lg max-w-3xl">
-              <div class="flex items-center justify-between mb-2">
-                <div class="text-sm font-medium text-blue-700">思维过程</div>
-                <button
-                  @click="chatStore.toggleReasoningDisplay()"
-                  class="text-xs text-blue-600 hover:text-blue-800 underline"
-                >
-                  收起
-                </button>
-              </div>
-              <div class="whitespace-pre-wrap break-words text-sm">{{ completedReasoning }}</div>
-            </div>
-          </div>
-        </template>
-
-        <!-- Message -->
-        <div
-          class="flex"
-          :class="message.role === 'user' ? 'justify-end' : 'justify-start'"
-        >
-          <div
-            class="max-w-3xl"
-            :class="[
-              'px-4 py-3 rounded-lg',
-              message.role === 'user'
-                ? 'bg-primary-600 text-white'
-                : 'bg-gray-100 text-gray-900'
-            ]"
-          >
-            <!-- Message Content -->
+        <!-- User message (simple rendering) -->
+        <div v-if="message.role === 'user'" class="flex justify-end">
+          <div class="max-w-3xl px-4 py-3 rounded-lg bg-primary-600 text-white">
             <div class="whitespace-pre-wrap break-words">{{ message.content }}</div>
-
-            <!-- Message Metadata -->
             <div
               v-if="message.timestamp"
-              class="text-xs mt-2"
-              :class="message.role === 'user' ? 'text-primary-200' : 'text-gray-500'"
+              class="text-xs mt-2 text-primary-200"
             >
               {{ formatTime(message.timestamp) }}
-              <span v-if="message.model" class="ml-2">{{ message.model }}</span>
             </div>
+          </div>
+        </div>
+
+        <!-- Assistant message with blocks -->
+        <div v-else class="flex flex-col space-y-3 items-start max-w-3xl">
+          <!-- Render blocks if available -->
+          <template v-if="message.blocks && message.blocks.length > 0">
+            <template v-for="(block, blockIndex) in message.blocks" :key="`block-${index}-${blockIndex}`">
+              <!-- Reasoning Block -->
+              <div v-if="block.type === 'reasoning'" class="w-full">
+                <div
+                  v-if="!isBlockExpanded(index, blockIndex)"
+                  class="bg-blue-100 border border-blue-300 text-blue-800 px-3 py-2 rounded-full inline-flex items-center space-x-2 text-sm cursor-pointer hover:bg-blue-200 transition-colors"
+                  @click="toggleBlockExpansion(index, blockIndex)"
+                >
+                  <span class="font-medium">🧠 思维过程</span>
+                  <span class="text-blue-600 hover:text-blue-800 underline">展开</span>
+                </div>
+                <div
+                  v-else
+                  class="bg-blue-50 border-l-4 border-blue-400 text-blue-900 px-4 py-3 rounded-lg"
+                >
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="text-sm font-medium text-blue-700">思维过程</div>
+                    <button
+                      @click="toggleBlockExpansion(index, blockIndex)"
+                      class="text-xs text-blue-600 hover:text-blue-800 underline"
+                    >
+                      收起
+                    </button>
+                  </div>
+                  <div class="whitespace-pre-wrap break-words text-sm">{{ block.content }}</div>
+                </div>
+              </div>
+
+              <!-- Text Block -->
+              <div v-else-if="block.type === 'text'" class="w-full">
+                <div class="bg-gray-100 text-gray-900 px-4 py-3 rounded-lg">
+                  <div class="whitespace-pre-wrap break-words">{{ block.content }}</div>
+                  <div class="text-xs text-gray-500 mt-2">
+                    {{ formatTime(block.timestamp) }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tool Calls Block -->
+              <div v-else-if="block.type === 'tool_calls'" class="w-full space-y-2">
+                <ToolCallIndicator
+                  v-for="toolCall in block.toolCalls"
+                  :key="toolCall.id"
+                  :tool-call="toolCall"
+                  class="w-full"
+                />
+              </div>
+            </template>
+          </template>
+
+          <!-- Legacy rendering for messages without blocks -->
+          <template v-else>
+            <div class="bg-gray-100 text-gray-900 px-4 py-3 rounded-lg">
+              <div class="whitespace-pre-wrap break-words">{{ message.content }}</div>
+              <div
+                v-if="message.timestamp"
+                class="text-xs mt-2 text-gray-500"
+              >
+                {{ formatTime(message.timestamp) }}
+                <span v-if="message.model" class="ml-2">{{ message.model }}</span>
+              </div>
+            </div>
+
+            <!-- Legacy Tool Call Indicators -->
+            <ToolCallIndicator
+              v-for="toolCall in message.toolCalls"
+              :key="toolCall.id"
+              :tool-call="toolCall"
+              class="max-w-3xl"
+            />
+          </template>
+
+          <!-- Message metadata at the end -->
+          <div class="text-xs text-gray-400">
+            {{ formatTime(message.timestamp) }}
+            <span v-if="message.model" class="ml-2">{{ message.model }}</span>
           </div>
         </div>
       </template>
@@ -209,6 +252,8 @@
 <script setup lang="ts">
 import { ref, nextTick, computed } from 'vue'
 import { useChatStore } from '@/stores/chat'
+import ConversationTags from './ConversationTags.vue'
+import ToolCallIndicator from './ToolCallIndicator.vue'
 
 const chatStore = useChatStore()
 
@@ -222,6 +267,19 @@ const completedReasoning = computed(() => chatStore.completedReasoning)
 const showFullReasoning = computed(() => chatStore.showFullReasoning)
 
 const messageInput = ref('')
+
+// Block expansion state: Map<messageIndex-blockIndex, boolean>
+const expandedBlocks = ref<Record<string, boolean>>({})
+
+const isBlockExpanded = (messageIndex: number, blockIndex: number) => {
+  const key = `${messageIndex}-${blockIndex}`
+  return expandedBlocks.value[key] || false
+}
+
+const toggleBlockExpansion = (messageIndex: number, blockIndex: number) => {
+  const key = `${messageIndex}-${blockIndex}`
+  expandedBlocks.value[key] = !expandedBlocks.value[key]
+}
 
 const formatTime = (date: Date) => {
   return new Intl.DateTimeFormat('zh-CN', {

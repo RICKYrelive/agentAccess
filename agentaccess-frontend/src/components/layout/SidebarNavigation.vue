@@ -287,7 +287,7 @@
             <span class="truncate flex-1">{{ conv.title }}</span>
             <button
               @click.stop="deleteRecentConversation(conv.id)"
-              class="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-red-600 transition-opacity"
+              class="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-red-600 transition-opacity flex-shrink-0"
               title="删除对话"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

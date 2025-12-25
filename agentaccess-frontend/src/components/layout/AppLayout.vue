@@ -129,7 +129,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useChatStore } from '@/stores/chat'
 import { useWorkflowStore } from '@/stores/workflow'
 import { useAgentsStore } from '@/stores/agents'
@@ -233,8 +233,12 @@ const selectRecentConversation = (conversation: any) => {
   // Select the conversation (it already exists in the store)
   chatStore.selectConversation(conversation.id)
   activeView.value = 'home'
-  showChatInterface.value = true
+  // Force show chat interface even if there are no messages yet
   showContentArea.value = false
+  // Use nextTick to ensure the watch doesn't override our state
+  nextTick(() => {
+    showChatInterface.value = true
+  })
 }
 
 const handleDeleteConversation = (conversationId: string) => {

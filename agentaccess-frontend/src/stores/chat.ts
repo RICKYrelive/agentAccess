@@ -250,6 +250,13 @@ export const useChatStore = defineStore('chat', () => {
       } else {
         // Even if conversation exists, ensure it's marked as demo
         DEMO_CONVERSATION_IDS.add(demoConv.id)
+        // If the existing conversation has no messages but the demo definition does, update it
+        if (exists.messages.length === 0 && demoConv.messages && demoConv.messages.length > 0) {
+          exists.messages = demoConv.messages
+          exists.title = demoConv.title
+          exists.updatedAt = new Date()
+          console.log('✅ Updated demo conversation with messages:', demoConv.title)
+        }
       }
     })
 

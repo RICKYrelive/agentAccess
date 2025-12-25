@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+  <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" @click="handleCardClick">
     <!-- Header with team name and badge -->
     <div class="flex items-start justify-between mb-3">
       <div class="flex items-center space-x-2 flex-1 min-w-0">
@@ -46,7 +46,7 @@
     </div>
 
     <!-- Action buttons -->
-    <div class="flex items-center space-x-2 pt-3 border-t border-gray-100">
+    <div class="flex items-center space-x-2 pt-3 border-t border-gray-100" @click.stop>
       <!-- Member of team -->
       <template v-if="!showJoinButton">
         <button
@@ -102,6 +102,7 @@ interface Emits {
   (e: 'leave-team', teamId: string): void
   (e: 'join-team', teamId: string): void
   (e: 'cancel-request', teamId: string): void
+  (e: 'view-team', teamId: string): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -109,4 +110,11 @@ const props = withDefaults(defineProps<Props>(), {
   hasPendingRequest: false
 })
 const emit = defineEmits<Emits>()
+
+// Handle card click - only navigate to team detail if already a member
+const handleCardClick = () => {
+  if (!props.showJoinButton) {
+    emit('view-team', props.team.id)
+  }
+}
 </script>

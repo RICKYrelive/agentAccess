@@ -11,7 +11,9 @@
       @go-to-home="goToHome"
       @start-chat-with-agent="startChatWithAgent"
       @select-recent-conversation="selectRecentConversation"
+      @delete-conversation="handleDeleteConversation"
       @open-agent-in-editor="openAgentInEditor"
+      @view-team="handleViewTeam"
     />
 
     <!-- Main Content Area - Independent Scroll -->
@@ -63,6 +65,22 @@
         v-else-if="activeView === 'team-agents'"
         class="flex-1 h-full overflow-hidden"
         @edit-agent="handleEditAgent"
+        @view-team="handleViewTeam"
+      />
+
+      <!-- Team Detail Page View -->
+      <TeamDetailPage
+        v-else-if="activeView === 'team-detail' && selectedTeamId"
+        :team-id="selectedTeamId"
+        class="flex-1 h-full overflow-hidden"
+        @back="handleBackFromTeamDetail"
+        @edit-agent="handleEditAgent"
+      />
+
+      <!-- Knowledge Base Page View -->
+      <KnowledgeBasePage
+        v-else-if="activeView === 'knowledge-base'"
+        class="flex-1 h-full overflow-hidden"
       />
     </div>
 
@@ -117,8 +135,11 @@ import HomePage from '../home/HomePage.vue'
 import UserSettingsDialog from '../settings/UserSettingsDialog.vue'
 import MyAgentsPage from '../my-agents/MyAgentsPage.vue'
 import TeamAgentsPage from '../team-agents/TeamAgentsPage.vue'
+import TeamDetailPage from '../team-agents/TeamDetailPage.vue'
+import KnowledgeBasePage from '../knowledge-base/KnowledgeBasePage.vue'
 
-const activeView = ref<'home' | 'workflow' | 'my-agents' | 'team-agents'>('home')
+const activeView = ref<'home' | 'workflow' | 'my-agents' | 'team-agents' | 'team-detail' | 'knowledge-base'>('home')
+const selectedTeamId = ref<string | null>(null)
 const showSettingsPanel = ref(false)
 const showUserSettingsDialog = ref(false)
 const showChatInterface = ref(false)
@@ -148,7 +169,7 @@ const isShowingHomePage = computed(() => {
   return activeView.value === 'home' && !showChatInterface.value && !showContentArea.value
 })
 
-const handleViewChange = (view: 'home' | 'workflow') => {
+const handleViewChange = (view: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'knowledge-base') => {
   activeView.value = view
 }
 
@@ -197,18 +218,15 @@ const startChatWithAgent = (agent: any) => {
 }
 
 const selectRecentConversation = (conversation: any) => {
-  // Load the recent conversation into the chat store
-  chatStore.conversations.unshift({
-    id: conversation.id,
-    title: conversation.title,
-    messages: conversation.messages,
-    settings: {},
-    createdAt: new Date(),
-    updatedAt: new Date()
-  })
-  chatStore.currentConversationId = conversation.id
+  // Select the conversation (it already exists in the store)
+  chatStore.selectConversation(conversation.id)
+  activeView.value = 'home'
   showChatInterface.value = true
   showContentArea.value = false
+}
+
+const handleDeleteConversation = (conversationId: string) => {
+  chatStore.deleteConversation(conversationId)
 }
 
 const goToHome = () => {
@@ -220,6 +238,9 @@ const goToHome = () => {
 
 // Initialize display logic on mount
 onMounted(() => {
+  // Initialize demo conversations (first 5 conversations that cannot be deleted)
+  chatStore.initializeDemoConversations()
+
   // Check if there are existing messages
   if (currentMessages.value.length > 0) {
     showChatInterface.value = true
@@ -270,6 +291,18 @@ const handleEditAgent = (agentId: string) => {
 // Open agent in editor from sidebar recent agents
 const openAgentInEditor = (agentId: string) => {
   handleEditAgent(agentId)
+}
+
+// View team detail page
+const handleViewTeam = (teamId: string) => {
+  selectedTeamId.value = teamId
+  activeView.value = 'team-detail'
+}
+
+// Go back from team detail page
+const handleBackFromTeamDetail = () => {
+  selectedTeamId.value = null
+  activeView.value = 'team-agents'
 }
 
 // Make method available to child components

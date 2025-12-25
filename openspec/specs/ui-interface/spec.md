@@ -19,19 +19,24 @@ Documents the UI/UX design specifications for the Agent Access system based on a
 - **AND** the right panel SHALL be hidden or show agent-related settings
 
 ### Requirement: Knowledge Base Integration
-The system SHALL provide knowledge base selection and integration functionality for contextual AI responses.
+[MODIFIED] The system SHALL provide knowledge base selection and management functionality through a dedicated Knowledge Base page accessible from the sidebar.
 
-#### Scenario: User selects knowledge base
-- **WHEN** user clicks "知识库" dropdown
-- **THEN** the system SHALL display available knowledge repositories
-- **AND** options SHALL include categories like "市场快速打法知识库" and "产品速知知识库"
-- **WHEN** user selects a knowledge base
-- **THEN** subsequent AI responses SHALL be grounded in the selected knowledge base
+#### Scenario: User accesses knowledge base management
+- **WHEN** user clicks "知识库" in the sidebar
+- **THEN** the system SHALL navigate to the Knowledge Base management page (instead of showing a dropdown)
+- **AND** the page SHALL display all knowledge bases organized by type
+- **AND** the page SHALL provide options to create new knowledge bases from different sources
 
-#### Scenario: User accesses function cards
-- **WHEN** user clicks on a function card (e.g., "智能数据分析")
-- **THEN** the system SHALL activate the corresponding AI capability
-- **AND** the system SHALL provide task-specific interface for that function
+#### Scenario: User creates knowledge base from files
+- **WHEN** user clicks on import method button (text, spreadsheet, or database)
+- **THEN** the system SHALL display an import modal dialog
+- **AND** the dialog SHALL contain relevant fields for the selected import type
+- **AND** upon submission, the system SHALL create a new knowledge base entry
+
+#### Scenario: User manages existing knowledge bases
+- **WHEN** user views the Knowledge Base page
+- **THEN** the system SHALL display knowledge base cards with name, description, and type
+- **AND** each card SHALL provide options to view, edit, or delete the knowledge base
 
 ### Requirement: MCP Service Configuration
 The system SHALL provide configurable MCP (Model Context Protocol) services that users can enable or disable based on their needs.
@@ -382,4 +387,20 @@ The system SHALL adapt the My Agents page layout for different screen sizes.
 - **THEN** agent cards SHALL be displayed in a single column
 - **AND** creation bar buttons SHALL stack vertically
 - **AND** sidebar SHALL be hidden behind a hamburger menu
+
+### Requirement: Knowledge Base Management Page
+The system SHALL provide a dedicated Knowledge Base management page accessible from the sidebar navigation.
+
+#### Scenario: User navigates to Knowledge Base page from sidebar
+- **WHEN** user clicks "知识库" menu item in the sidebar
+- **THEN** the system SHALL navigate to the Knowledge Base management page
+- **AND** the central content area SHALL display the Knowledge Base page
+- **AND** the sidebar SHALL highlight "知识库" as the active item
+- **AND** the right settings panel SHALL be hidden
+
+#### Scenario: Knowledge Base page layout
+- **WHEN** user views the Knowledge Base page
+- **THEN** the page SHALL display a header with title "知识库管理"
+- **AND** the page SHALL display a creation section with three import method buttons
+- **AND** the page SHALL display three category sections: "文本知识库", "表格知识库", "数据库知识库"
 

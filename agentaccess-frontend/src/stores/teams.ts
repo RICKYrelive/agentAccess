@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import type { ExtendedAgent } from '@/types'
+import type { ExtendedAgent, Agent } from '@/types'
+import { useAgentsStore } from './agents'
 
 export interface TeamMember {
   id: string
@@ -34,7 +35,7 @@ export const useTeamsStore = defineStore('teams', () => {
         { id: 'user-2', name: '李四', role: 'member', joinedAt: new Date('2024-02-15') },
         { id: '03928', name: '用户03928', role: 'admin', joinedAt: new Date('2024-03-01') }
       ],
-      sharedAgentIds: []
+      sharedAgentIds: ['team-1', 'team-2', 'team-3']
     },
     {
       id: 'team-2',
@@ -83,11 +84,20 @@ export const useTeamsStore = defineStore('teams', () => {
     return pendingJoinRequests.value.hasOwnProperty(teamId)
   }
 
-  // Get agents shared with a specific team
-  const getAgentsInTeam = (teamId: string, allAgents: ExtendedAgent[]): ExtendedAgent[] => {
+  // Get agents shared with a specific team (both personal agents and homepage team agents)
+  const getAgentsInTeam = (teamId: string, allAgents: ExtendedAgent[]): (ExtendedAgent | Agent)[] => {
     const team = teams.value.find(t => t.id === teamId)
     if (!team) return []
-    return allAgents.filter(agent => team.sharedAgentIds.includes(agent.id))
+
+    // Get shared personal agents
+    const sharedPersonalAgents = allAgents.filter(agent => team.sharedAgentIds.includes(agent.id))
+
+    // Also get homepage team agents that are shared with this team
+    const agentsStore = useAgentsStore()
+    const sharedTeamAgents = agentsStore.teamAgents.filter(agent => team.sharedAgentIds.includes(agent.id))
+
+    // Combine both types
+    return [...sharedPersonalAgents, ...sharedTeamAgents]
   }
 
   // Check if current user is admin of a team

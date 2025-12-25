@@ -193,6 +193,7 @@
             :key="team.id"
             class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer flex items-center space-x-2"
             :title="team.description || team.name"
+            @click="handleTeamClick(team.id)"
           >
             <svg class="w-4 h-4 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -209,28 +210,16 @@
       <!-- Knowledge Base -->
       <div class="space-y-1 pb-4">
         <button
-          @click="toggleKnowledgeBase"
-          class="w-full text-left px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-gray-900 flex items-center justify-between"
+          @click="handleKnowledgeBaseClick"
+          :class="[
+            'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center space-x-3 transition-colors',
+            activeView === 'knowledge-base'
+              ? 'bg-primary-100 text-primary-700'
+              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+          ]"
         >
-          <div class="flex items-center space-x-3">
-            <svg
-              class="w-5 h-5 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-              />
-            </svg>
-            <span>知识库</span>
-          </div>
           <svg
-            class="w-4 h-4 text-gray-400 transform transition-transform"
-            :class="{ 'rotate-90': isKnowledgeBaseOpen }"
+            class="w-5 h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -239,21 +228,11 @@
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M9 5l7 7-7 7"
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
             />
           </svg>
+          <span>知识库</span>
         </button>
-
-        <!-- Knowledge Base Items -->
-        <div v-if="isKnowledgeBaseOpen" class="mt-1 ml-8 space-y-1">
-          <div
-            v-for="kb in knowledgeBases"
-            :key="kb.id"
-            class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer"
-          >
-            {{ kb.name }}
-          </div>
-        </div>
       </div>
 
       <!-- Separator -->
@@ -302,10 +281,19 @@
           <div
             v-for="conv in recentConversations"
             :key="conv.id"
-            class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer"
+            class="group px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer flex items-center justify-between"
             @click="selectRecentConversation(conv)"
           >
-            {{ conv.title }}
+            <span class="truncate flex-1">{{ conv.title }}</span>
+            <button
+              @click.stop="deleteRecentConversation(conv.id)"
+              class="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-red-600 transition-opacity"
+              title="删除对话"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
@@ -401,18 +389,20 @@ import { useChatStore } from '@/stores/chat'
 import { useTeamsStore } from '@/stores/teams'
 
 interface Props {
-  activeView: 'home' | 'workflow' | 'my-agents' | 'team-agents'
+  activeView: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'team-detail' | 'knowledge-base'
   isShowingHome: boolean
 }
 
 interface Emits {
-  (e: 'view-change', view: 'home' | 'workflow' | 'my-agents' | 'team-agents'): void
+  (e: 'view-change', view: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'knowledge-base'): void
   (e: 'open-user-settings'): void
   (e: 'start-new-conversation'): void
   (e: 'go-to-home'): void
   (e: 'start-chat-with-agent', agent: any): void
   (e: 'select-recent-conversation', conversation: any): void
   (e: 'open-agent-in-editor', agentId: string): void
+  (e: 'view-team', teamId: string): void
+  (e: 'delete-conversation', conversationId: string): void
 }
 
 const props = defineProps<Props>()
@@ -427,6 +417,7 @@ const { fastgptConnected } = storeToRefs(workflowStore)
 
 const chatStore = useChatStore()
 const { conversations } = storeToRefs(chatStore)
+const { isDemoConversation } = chatStore
 
 const teamsStore = useTeamsStore()
 const { myTeams } = storeToRefs(teamsStore)
@@ -438,7 +429,6 @@ const recentAgents = computed(() => getRecentAgents(3))
 // Get recent conversations from store (limit to 10)
 const recentConversations = computed(() => conversations.value.slice(0, 10))
 
-const isKnowledgeBaseOpen = ref(false)
 const isRecentConversationsOpen = ref(false)
 const isTeamAgentsOpen = ref(false)
 const isMyAgentsOpen = ref(false)
@@ -449,13 +439,7 @@ const user: User = {
   name: '用户03928',
 }
 
-const knowledgeBases = [
-  { id: '1', name: '市场快速打法知识库' },
-  { id: '2', name: '产品速知知识库' },
-  { id: '3', name: '产品安装知识库' },
-]
-
-const switchToView = (view: 'home' | 'workflow' | 'my-agents' | 'team-agents') => {
+const switchToView = (view: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'knowledge-base') => {
   emit('view-change', view)
 }
 
@@ -476,8 +460,8 @@ const openAgentInEditor = (agentId: string) => {
   emit('open-agent-in-editor', agentId)
 }
 
-const toggleKnowledgeBase = () => {
-  isKnowledgeBaseOpen.value = !isKnowledgeBaseOpen.value
+const handleKnowledgeBaseClick = () => {
+  switchToView('knowledge-base')
 }
 
 const toggleRecentConversations = () => {
@@ -500,12 +484,28 @@ const handleTeamAgentsClick = () => {
   // Submenu will auto-expand via watch
 }
 
+const handleTeamClick = (teamId: string) => {
+  emit('view-team', teamId)
+}
+
 const startChatWithAgent = (agent: any) => {
   emit('start-chat-with-agent', agent)
 }
 
 const selectRecentConversation = (conversation: any) => {
   emit('select-recent-conversation', conversation)
+}
+
+const deleteRecentConversation = (conversationId: string) => {
+  // Check if this is a demo conversation that cannot be deleted
+  if (isDemoConversation(conversationId)) {
+    alert('演示中，该对话不支持删除')
+    return
+  }
+
+  if (confirm('确定要删除这个对话吗？')) {
+    emit('delete-conversation', conversationId)
+  }
 }
 
 const toggleUserMenu = () => {
@@ -537,16 +537,19 @@ watch(() => props.activeView, (newView) => {
   if (newView === 'my-agents') {
     // Auto-expand when entering my-agents view
     isMyAgentsOpen.value = true
+  } else if (newView === 'workflow') {
+    // Keep expanded when editing an agent in workflow view
+    // Don't collapse when going to workflow editor from my-agents
   } else {
     // Auto-collapse when leaving my-agents view
     isMyAgentsOpen.value = false
   }
 
-  if (newView === 'team-agents') {
-    // Auto-expand when entering team-agents view
+  if (newView === 'team-agents' || newView === 'team-detail') {
+    // Auto-expand when entering team-agents or team-detail view
     isTeamAgentsOpen.value = true
   } else {
-    // Auto-collapse when leaving team-agents view
+    // Auto-collapse when leaving team views
     isTeamAgentsOpen.value = false
   }
 })

@@ -200,11 +200,11 @@
             :style="{
               transform: `translate(${canvasPan.x}px, ${canvasPan.y}px) scale(${canvasScale})`,
               transformOrigin: '0 0',
-              width: '20000px',
-              height: '20000px',
               position: 'absolute',
-              left: '-10000px',
-              top: '-10000px'
+              left: '0',
+              top: '0',
+              width: `${canvasBounds.width}px`,
+              height: `${canvasBounds.height}px`
             }"
           />
 
@@ -215,13 +215,25 @@
               transform: `translate(${canvasPan.x}px, ${canvasPan.y}px) scale(${canvasScale})`,
               transformOrigin: '0 0',
               position: 'absolute',
-              width: '100%',
-              height: '100%',
               left: '0',
-              top: '0'
+              top: '0',
+              width: `${canvasBounds.width}px`,
+              height: `${canvasBounds.height}px`
             }"
           >
-          <svg class="absolute inset-0 w-full h-full" style="z-index: 1;" @click="clearConnectionSelection">
+          <svg
+            class="absolute"
+            :style="{
+              zIndex: 1,
+              left: '0',
+              top: '0',
+              width: `${canvasBounds.width}px`,
+              height: `${canvasBounds.height}px`,
+              overflow: 'visible',
+              pointerEvents: 'none'
+            }"
+            @click="clearConnectionSelection"
+          >
             <!-- Connection lines -->
             <path
               v-for="connection in currentConnections"
@@ -257,6 +269,7 @@
           <div
             v-for="node in currentNodes"
             :key="node.id"
+            :ref="el => setNodeRef(node.id, el)"
             :style="{
               position: 'absolute',
               left: `${node.position.x}px`,
@@ -331,6 +344,7 @@ import MiniMap from './MiniMap.vue'
 
 const workflowStore = useWorkflowStore()
 const canvasRef = ref<HTMLElement>()
+const nodeRefs = ref<Map<string, HTMLElement>>(new Map())
 
 // Use storeToRefs to maintain reactivity
 const { currentNodes, currentConnections, selectedNodeId, fastgptConnected, syncStatus, isPreviewPanelVisible, canvasScale, canvasPan, currentWorkflow } = storeToRefs(workflowStore)
@@ -352,6 +366,24 @@ const connectionState = ref({
 
 const selectedConnectionId = ref<string | null>(null)
 
+// Helper function to set node ref
+const setNodeRef = (nodeId: string, el: any) => {
+  if (el) {
+    nodeRefs.value.set(nodeId, el as HTMLElement)
+  } else {
+    nodeRefs.value.delete(nodeId)
+  }
+}
+
+// Helper function to get node dimensions
+const getNodeDimensions = (nodeId: string) => {
+  const nodeEl = nodeRefs.value.get(nodeId)
+  return {
+    width: nodeEl?.offsetWidth || 200,
+    height: nodeEl?.offsetHeight || 100
+  }
+}
+
 // Helper function to check if a point is inside a node's bounds
 const isPointInNode = (x: number, y: number, nodeId: string, excludeIds: string[] = []): boolean => {
   if (excludeIds.includes(nodeId)) return false
@@ -359,10 +391,11 @@ const isPointInNode = (x: number, y: number, nodeId: string, excludeIds: string[
   const node = currentNodes.value.find(n => n.id === nodeId)
   if (!node) return false
 
+  const dimensions = getNodeDimensions(nodeId)
   const nodeLeft = node.position.x
-  const nodeRight = node.position.x + 200
+  const nodeRight = node.position.x + dimensions.width
   const nodeTop = node.position.y
-  const nodeBottom = node.position.y + 100
+  const nodeBottom = node.position.y + dimensions.height
 
   return x >= nodeLeft && x <= nodeRight && y >= nodeTop && y <= nodeBottom
 }
@@ -372,10 +405,11 @@ const lineIntersectsNode = (x1: number, y1: number, x2: number, y2: number, excl
   for (const node of currentNodes.value) {
     if (excludeIds.includes(node.id)) continue
 
+    const dimensions = getNodeDimensions(node.id)
     const nodeLeft = node.position.x
-    const nodeRight = node.position.x + 200
+    const nodeRight = node.position.x + dimensions.width
     const nodeTop = node.position.y
-    const nodeBottom = node.position.y + 100
+    const nodeBottom = node.position.y + dimensions.height
 
     // Check if line segment intersects with node rectangle
     // Using a simplified approach: check if either endpoint is inside the node
@@ -419,7 +453,7 @@ const lineIntersectsNode = (x1: number, y1: number, x2: number, y2: number, excl
   return null
 }
 
-// Generate a path that avoids intersecting nodes
+// Generate a path that avoids intersecting nodes - simplified Manhattan routing
 const generateAvoidancePath = (
   startX: number,
   startY: number,
@@ -428,98 +462,149 @@ const generateAvoidancePath = (
   sourceNodeId: string,
   targetNodeId: string
 ): string => {
-  const nodeWidth = 200
-  const nodeHeight = 100
-  const padding = 30 // Extra padding around nodes
+  const padding = 20 // Padding around nodes
 
-  // Get all nodes that could block the path
+  // Get bounding boxes of all nodes except source and target
   const blockingNodes = currentNodes.value.filter(
     n => n.id !== sourceNodeId && n.id !== targetNodeId
   )
 
   if (blockingNodes.length === 0) {
-    // No blocking nodes, use simple path
     return generateSimplePath(startX, startY, endX, endY)
   }
 
-  // Determine horizontal direction
-  const goingRight = endX > startX
-
-  // Try to find a clear vertical level
-  const getYLevels = () => {
-    const levels = new Set<number>()
-    levels.add(startY)
-    levels.add(endY)
-    blockingNodes.forEach(n => {
-      levels.add(n.position.y - padding)
-      levels.add(n.position.y + n.position.y + nodeHeight + padding)
-    })
-    return Array.from(levels).sort((a, b) => a - b)
-  }
-
-  const yLevels = getYLevels()
-
-  // Find a clear Y level (above or below blocking nodes)
-  const findClearYLevel = (preferredY: number): number => {
-    // Check if preferred Y is clear
-    let isClear = true
+  // Helper to check if a point is inside any blocking node
+  const isPointBlocked = (x: number, y: number): boolean => {
     for (const node of blockingNodes) {
-      const nodeTop = node.position.y - padding
-      const nodeBottom = node.position.y + nodeHeight + padding
-      if (preferredY >= nodeTop && preferredY <= nodeBottom) {
-        isClear = false
-        break
+      const dimensions = getNodeDimensions(node.id)
+      if (x >= node.position.x - padding &&
+          x <= node.position.x + dimensions.width + padding &&
+          y >= node.position.y - padding &&
+          y <= node.position.y + dimensions.height + padding) {
+        return true
       }
     }
-    if (isClear) return preferredY
-
-    // Try above all blocking nodes
-    const minTop = Math.min(...blockingNodes.map(n => n.position.y))
-    const aboveY = minTop - padding - 50
-    if (aboveY > 0) return aboveY
-
-    // Try below all blocking nodes
-    const maxBottom = Math.max(...blockingNodes.map(n => n.position.y + nodeHeight))
-    const belowY = maxBottom + padding + 50
-    return belowY
+    return false
   }
 
-  // Use the midpoint Y as preferred, adjusted if needed
-  const midY = (startY + endY) / 2
-  const clearY = findClearYLevel(midY)
+  // Helper to check if a horizontal segment is blocked
+  const isHorizontalSegmentBlocked = (x1: number, x2: number, y: number): boolean => {
+    const minX = Math.min(x1, x2)
+    const maxX = Math.max(x1, x2)
+    for (const node of blockingNodes) {
+      const dimensions = getNodeDimensions(node.id)
+      const nodeLeft = node.position.x - padding
+      const nodeRight = node.position.x + dimensions.width + padding
+      const nodeTop = node.position.y - padding
+      const nodeBottom = node.position.y + dimensions.height + padding
 
-  const midX = (startX + endX) / 2
+      // Check for overlap in both x and y dimensions
+      if (maxX >= nodeLeft && minX <= nodeRight && y >= nodeTop && y <= nodeBottom) {
+        return true
+      }
+    }
+    return false
+  }
+
+  // Helper to check if a vertical segment is blocked
+  const isVerticalSegmentBlocked = (y1: number, y2: number, x: number): boolean => {
+    const minY = Math.min(y1, y2)
+    const maxY = Math.max(y1, y2)
+    for (const node of blockingNodes) {
+      const dimensions = getNodeDimensions(node.id)
+      const nodeLeft = node.position.x - padding
+      const nodeRight = node.position.x + dimensions.width + padding
+      const nodeTop = node.position.y - padding
+      const nodeBottom = node.position.y + dimensions.height + padding
+
+      // Check for overlap in both x and y dimensions
+      if (x >= nodeLeft && x <= nodeRight && maxY >= nodeTop && minY <= nodeBottom) {
+        return true
+      }
+    }
+    return false
+  }
+
   const radius = 20
+  const goingRight = endX > startX
 
-  // Check if we need vertical first or horizontal first
-  const needsVerticalFirst = Math.abs(startY - clearY) > 50
+  // Strategy 1: Try simple horizontal-first path (go right, then up/down, then right)
+  if (goingRight) {
+    const midX = (startX + endX) / 2
 
-  if (needsVerticalFirst) {
-    // Go vertical first, then horizontal, then vertical to target
-    const firstCornerX = startX + (goingRight ? 50 : -50)
-    return `M ${startX} ${startY} L ${firstCornerX - radius} ${startY} Q ${firstCornerX} ${startY} ${firstCornerX} ${startY + (clearY > startY ? radius : -radius)} L ${firstCornerX} ${clearY - (clearY > startY ? radius : -radius)} Q ${firstCornerX} ${clearY} ${firstCornerX + radius} ${clearY} L ${midX - radius} ${clearY} Q ${midX} ${clearY} ${midX} ${clearY + (endY > clearY ? radius : -radius)} L ${midX} ${endY - (endY > clearY ? radius : -radius)} Q ${midX} ${endY} ${midX + radius} ${endY} L ${endX} ${endY}`
+    // Check if horizontal segments are clear
+    if (!isHorizontalSegmentBlocked(startX, midX, startY) &&
+        !isHorizontalSegmentBlocked(midX, endX, endY) &&
+        !isVerticalSegmentBlocked(startY, endY, midX)) {
+      return generateSimplePath(startX, startY, endX, endY)
+    }
+
+    // Try going above all blocking nodes
+    const minTop = Math.min(...blockingNodes.map(n => n.position.y))
+    const aboveY = minTop - padding - 30
+
+    if (!isHorizontalSegmentBlocked(startX, endX, aboveY)) {
+      // Route: start -> up -> above -> across -> down -> end
+      return `M ${startX} ${startY} L ${startX + radius} ${startY} Q ${startX + radius} ${startY} ${startX + radius} ${startY - radius} L ${startX + radius} ${aboveY} Q ${startX + radius} ${aboveY} ${startX + radius + radius} ${aboveY} L ${endX - radius} ${aboveY} Q ${endX} ${aboveY} ${endX} ${aboveY + radius} L ${endX} ${endY - radius} Q ${endX} ${endY} ${endX - radius} ${endY} L ${startX + radius} ${endY}`
+    }
+
+    // Try going below all blocking nodes
+    const maxBottom = Math.max(...blockingNodes.map(n => n.position.y + nodeHeight))
+    const belowY = maxBottom + padding + 30
+
+    if (!isHorizontalSegmentBlocked(startX, endX, belowY)) {
+      return `M ${startX} ${startY} L ${startX + radius} ${startY} Q ${startX + radius} ${startY} ${startX + radius} ${startY + radius} L ${startX + radius} ${belowY} Q ${startX + radius} ${belowY} ${startX + radius + radius} ${belowY} L ${endX - radius} ${belowY} Q ${endX} ${belowY} ${endX} ${belowY - radius} L ${endX} ${endY + radius} Q ${endX} ${endY} ${endX - radius} ${endY} L ${startX + radius} ${endY}`
+    }
   } else {
-    // Go horizontal first, then vertical, then horizontal to target
-    return `M ${startX} ${startY} L ${midX - radius} ${startY} Q ${midX} ${startY} ${midX} ${startY + (clearY > startY ? radius : -radius)} L ${midX} ${clearY - (clearY > startY ? radius : -radius)} Q ${midX} ${clearY} ${midX + radius} ${clearY} L ${endX - (endX > midX ? radius : -radius)} ${clearY} Q ${endX} ${clearY} ${endX} ${clearY + (endY > clearY ? radius : -radius)} L ${endX} ${endY - (endY > clearY ? radius : -radius)} Q ${endX} ${endY} ${endX - (endX > midX ? radius : -radius)} ${endY}`
+    // Target is to the left - route around
+    const stepX = Math.max(startX, endX) + 60
+
+    if (!isVerticalSegmentBlocked(startY, endY, stepX)) {
+      return `M ${startX} ${startY} L ${stepX - radius} ${startY} Q ${stepX} ${startY} ${stepX} ${startY + (endY > startY ? radius : -radius)} L ${stepX} ${endY - (endY > startY ? radius : -radius)} Q ${stepX} ${endY} ${stepX - radius} ${endY} L ${endX} ${endY}`
+    }
   }
+
+  // Fallback to simple path
+  return generateSimplePath(startX, startY, endX, endY)
 }
 
 const generateSimplePath = (startX: number, startY: number, endX: number, endY: number): string => {
   const radius = 20
+  const dx = endX - startX
+  const dy = endY - startY
   const midX = (startX + endX) / 2
-  const verticalDist = Math.abs(endY - startY)
 
-  if (endX > startX + 20) {
-    // Target is to the right - simple L-shape with rounded corner
+  // If target is to the right of source
+  if (dx > 20) {
+    // Standard L-shaped path with rounded corner at midpoint
+    // Small vertical distance adjustment for smooth curves
+    const verticalDist = Math.abs(dy)
+
     if (verticalDist < radius * 2) {
+      // Too close for full radius, use smaller radius
       const smallRadius = Math.max(5, verticalDist / 2)
-      return `M ${startX} ${startY} L ${midX - smallRadius} ${startY} Q ${midX} ${startY} ${midX} ${startY + (endY > startY ? smallRadius : -smallRadius)} L ${midX} ${endY - (endY > startY ? smallRadius : -smallRadius)} Q ${midX} ${endY} ${midX + smallRadius} ${endY} L ${endX} ${endY}`
+      return `M ${startX} ${startY} L ${midX - smallRadius} ${startY} Q ${midX} ${startY} ${midX} ${startY + (dy > 0 ? smallRadius : -smallRadius)} L ${midX} ${endY - (dy > 0 ? smallRadius : -smallRadius)} Q ${midX} ${endY} ${midX + smallRadius} ${endY} L ${endX} ${endY}`
     }
-    return `M ${startX} ${startY} L ${midX - radius} ${startY} Q ${midX} ${startY} ${midX} ${startY + (endY > startY ? radius : -radius)} L ${midX} ${endY - (endY > startY ? radius : -radius)} Q ${midX} ${endY} ${midX + radius} ${endY} L ${endX} ${endY}`
-  } else {
-    // Target is to the left - step-around path with rounded corners
+
+    return `M ${startX} ${startY} L ${midX - radius} ${startY} Q ${midX} ${startY} ${midX} ${startY + (dy > 0 ? radius : -radius)} L ${midX} ${endY - (dy > 0 ? radius : -radius)} Q ${midX} ${endY} ${midX + radius} ${endY} L ${endX} ${endY}`
+  } else if (dx < -20) {
+    // Target is to the left - step-around path
+    // Go out to the right, then vertically, then back to target
     const stepX = Math.max(startX, endX) + 50
-    return `M ${startX} ${startY} L ${stepX - radius} ${startY} Q ${stepX} ${startY} ${stepX} ${startY + radius} L ${stepX} ${endY - radius} Q ${stepX} ${endY} ${stepX - radius} ${endY} L ${endX} ${endY}`
+
+    if (Math.abs(dy) < radius * 2) {
+      const smallRadius = Math.max(5, Math.abs(dy) / 2)
+      return `M ${startX} ${startY} L ${stepX - smallRadius} ${startY} Q ${stepX} ${startY} ${stepX} ${startY + (dy > 0 ? smallRadius : -smallRadius)} L ${stepX} ${endY - (dy > 0 ? smallRadius : -smallRadius)} Q ${stepX} ${endY} ${stepX - smallRadius} ${endY} L ${endX} ${endY}`
+    }
+
+    return `M ${startX} ${startY} L ${stepX - radius} ${startY} Q ${stepX} ${startY} ${stepX} ${startY + (dy > 0 ? radius : -radius)} L ${stepX} ${endY - (dy > 0 ? radius : -radius)} Q ${stepX} ${endY} ${stepX - radius} ${endY} L ${endX} ${endY}`
+  } else {
+    // Target is roughly vertically aligned
+    // Just draw a straight line with rounded ends
+    if (Math.abs(dy) > 0) {
+      return `M ${startX} ${startY} L ${startX} ${endY}`
+    }
+    return `M ${startX} ${startY} L ${endX} ${endY}`
   }
 }
 
@@ -528,27 +613,26 @@ const isSyncing = computed(() => syncStatus.value === 'syncing')
 
 // Calculate canvas bounds based on node positions
 const canvasBounds = computed(() => {
-  if (currentNodes.value.length === 0) {
-    return { minX: 0, minY: 0, width: 2000, height: 2000 }
-  }
+  // Always start from 0,0 and calculate bounds from there
+  let maxX = 0, maxY = 0
 
-  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity
-  currentNodes.value.forEach(node => {
-    minX = Math.min(minX, node.position.x)
-    minY = Math.min(minY, node.position.y)
-    maxX = Math.max(maxX, node.position.x + 200) // Node width
-    maxY = Math.max(maxY, node.position.y + 100) // Node height
-  })
+  if (currentNodes.value.length > 0) {
+    currentNodes.value.forEach(node => {
+      maxX = Math.max(maxX, node.position.x + 200) // Node width
+      maxY = Math.max(maxY, node.position.y + 100) // Node height
+    })
+  }
 
   const padding = 500 // Large padding for dragging nodes
-  const bounds = {
-    minX: Math.min(0, minX - padding),
-    minY: Math.min(0, minY - padding),
-    width: Math.max(2000, maxX + padding * 2),
-    height: Math.max(2000, maxY + padding * 2)
-  }
+  const minWidth = 2000
+  const minHeight = 2000
 
-  return bounds
+  return {
+    minX: 0,
+    minY: 0,
+    width: Math.max(minWidth, maxX + padding),
+    height: Math.max(minHeight, maxY + padding)
+  }
 })
 
 // Node types available in the palette
@@ -708,11 +792,12 @@ const deleteNode = (nodeId: string) => {
 
 const getNodePosition = (nodeId: string) => {
   const node = currentNodes.value.find(n => n.id === nodeId)
-  if (!node) return { x: 0, y: 0, leftX: 0, rightX: 0 }
+  if (!node) return null
 
-  // Node dimensions (approximate based on WorkflowNode.vue)
-  const nodeWidth = 200
-  const nodeHeight = 60
+  // Try to get actual dimensions from DOM element
+  const nodeEl = nodeRefs.value.get(nodeId)
+  const nodeWidth = nodeEl?.offsetWidth || 200
+  const nodeHeight = nodeEl?.offsetHeight || 100
 
   // Return edge positions for connection points
   return {
@@ -729,7 +814,7 @@ const getConnectionPath = (connection: any) => {
   const sourcePos = getNodePosition(connection.sourceNodeId)
   const targetPos = getNodePosition(connection.targetNodeId)
 
-  if (sourcePos.x === 0 || sourcePos.y === 0 || targetPos.x === 0 || targetPos.y === 0) {
+  if (!sourcePos || !targetPos) {
     return ''
   }
 
@@ -759,7 +844,7 @@ const getActiveConnectionPath = () => {
 
   const sourcePos = getNodePosition(connectionState.value.sourceNodeId)
 
-  if (sourcePos.x === 0 || sourcePos.y === 0) return ''
+  if (!sourcePos) return ''
 
   // Start from right edge of source node
   const startX = sourcePos.rightX
@@ -830,6 +915,8 @@ const onCanvasMouseMove = (event: MouseEvent) => {
   // Convert screen coordinates to canvas coordinates (accounting for pan and scale)
   const screenX = event.clientX - rect.left
   const screenY = event.clientY - rect.top
+
+  // Account for transform: (screen - pan) / scale
   connectionState.value.x = (screenX - canvasPan.value.x) / canvasScale.value
   connectionState.value.y = (screenY - canvasPan.value.y) / canvasScale.value
 }
@@ -1108,11 +1195,8 @@ const handleGlobalMouseMove = (event: MouseEvent) => {
   const screenY = event.clientY - rect.top
 
   // Account for transform: (screen - pan) / scale
-  const contentX = (screenX - canvasPan.value.x) / canvasScale.value
-  const contentY = (screenY - canvasPan.value.y) / canvasScale.value
-
-  connectionState.value.x = contentX
-  connectionState.value.y = contentY
+  connectionState.value.x = (screenX - canvasPan.value.x) / canvasScale.value
+  connectionState.value.y = (screenY - canvasPan.value.y) / canvasScale.value
 }
 
 // Global mouse up handler to cancel connection

@@ -18,36 +18,28 @@ The system SHALL provide a complete Vue.js + TypeScript web application implemen
 - **AND** the system SHALL maintain full functionality across all device types
 
 ### Requirement: Three-Column Layout Implementation
-The system SHALL provide a responsive three-column layout with left navigation sidebar, central content area, and right settings panel.
+[MODIFIED] The system SHALL provide a responsive three-column layout where the central content area can display home page, workflow editor, My Agents page, Team Agents page, Team Detail page, or Knowledge Base page.
 
-#### Scenario: Main interface display
-- **WHEN** user opens the application
-- **THEN** the system SHALL display the left sidebar with navigation items
-- **AND** the system SHALL display the central content area for interactions
-- **AND** the system SHALL provide the right settings panel for configuration
-- **AND** the layout SHALL be responsive and collapsible on smaller screens
-
-#### Scenario: Panel interaction
-- **WHEN** user clicks navigation items in the sidebar
-- **THEN** the central content SHALL update accordingly
-- **WHEN** user adjusts settings in the right panel
-- **THEN** configuration changes SHALL be applied immediately
+#### Scenario: Main interface display with Knowledge Base page
+- **WHEN** user navigates to the Knowledge Base page
+- **THEN** the central content area SHALL display the KnowledgeBasePage component
+- **AND** the left sidebar SHALL remain visible with navigation options
+- **AND** the right settings panel SHALL be hidden on Knowledge Base page
 
 ### Requirement: Navigation and User Management
-The system SHALL provide comprehensive navigation functionality and user management interface.
+[MODIFIED] The system SHALL provide comprehensive navigation functionality including access to the Knowledge Base management page.
 
-#### Scenario: User navigation
-- **WHEN** user clicks "新对话" (New Conversation)
-- **THEN** the system SHALL start a fresh conversation session
-- **WHEN** user expands knowledge base menu
-- **THEN** the system SHALL display categorized knowledge repositories
-- **WHEN** user views recent conversations
-- **THEN** the system SHALL display conversation history with timestamps
+#### Scenario: User navigates to Knowledge Base page
+- **WHEN** user clicks "知识库" menu item in the sidebar
+- **THEN** the system SHALL emit a view-change event with 'knowledge-base'
+- **AND** the central content area SHALL display the KnowledgeBasePage component
+- **AND** the system SHALL update the activeView state to 'knowledge-base'
 
-#### Scenario: User profile management
-- **WHEN** user views profile in sidebar
-- **THEN** the system SHALL display username "用户03928" and avatar
-- **AND** the system SHALL provide menu for additional user options
+#### Scenario: Sidebar knowledge base menu behavior
+- **WHEN** user interacts with "知识库" menu item
+- **THEN** the system SHALL navigate to Knowledge Base page (not expand a submenu)
+- **AND** the menu item SHALL show active state when on Knowledge Base page
+- **AND** the menu item SHALL remove the previous expand/collapse behavior
 
 ### Requirement: Knowledge Base Integration Interface
 The system SHALL provide an intuitive interface for knowledge base selection and management.
@@ -527,4 +519,45 @@ The system SHALL migrate existing workflows to the new agent format.
 - **AND** the agent's `name` SHALL match the workflow name
 - **AND** the agent's `id` SHALL match the workflow id
 - **AND** the agent SHALL be added to the agents store
+
+### Requirement: Knowledge Base Page Components
+The system SHALL provide Vue.js components for the Knowledge Base management page including the main page, knowledge base cards, and import dialogs.
+
+#### Scenario: Knowledge Base page component initialization
+- **WHEN** user navigates to the Knowledge Base page
+- **THEN** the system SHALL initialize the KnowledgeBasePage component
+- **AND** the system SHALL load knowledge bases from the Pinia store
+- **AND** the system SHALL render knowledge base cards organized by type
+
+#### Scenario: Import dialog component rendering
+- **WHEN** user clicks an import method button
+- **THEN** the system SHALL initialize the appropriate import dialog component (TextImportDialog, SpreadsheetImportDialog, or DatabaseImportDialog)
+- **AND** the dialog SHALL render as a modal overlay
+- **AND** the dialog SHALL contain form fields specific to the import type
+
+### Requirement: Knowledge Base State Management
+The system SHALL provide a Pinia store for managing knowledge base state and operations.
+
+#### Scenario: Knowledge base store initialization
+- **WHEN** the application initializes
+- **THEN** the system SHALL create the knowledge base Pinia store
+- **AND** the store SHALL contain an array of knowledge bases
+- **AND** the store SHALL provide actions for creating, updating, and deleting knowledge bases
+
+#### Scenario: Knowledge base CRUD operations
+- **WHEN** user creates a new knowledge base
+- **THEN** the store SHALL add the new knowledge base to the array
+- **WHEN** user updates a knowledge base
+- **THEN** the store SHALL update the knowledge base in the array
+- **WHEN** user deletes a knowledge base
+- **THEN** the store SHALL remove the knowledge base from the array
+
+### Requirement: Knowledge Base Type Definitions
+The system SHALL provide TypeScript type definitions for knowledge base entities.
+
+#### Scenario: Type system for knowledge bases
+- **WHEN** components interact with knowledge base data
+- **THEN** the system SHALL enforce type safety with KnowledgeBase interface
+- **AND** the interface SHALL define properties: id, name, description, type, sourceInfo, createdAt, updatedAt
+- **AND** the type property SHALL be a union of 'text' | 'spreadsheet' | 'database'
 

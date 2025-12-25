@@ -52,6 +52,7 @@
           :is-admin="isTeamAdmin(team.id)"
           @manage-team="handleManageTeam"
           @leave-team="handleLeaveTeam"
+          @view-team="handleViewTeam"
         />
       </div>
     </div>
@@ -151,6 +152,7 @@ import TeamManagementDialog from './TeamManagementDialog.vue'
 
 interface Emits {
   (e: 'edit-agent', agentId: string): void
+  (e: 'view-team', teamId: string): void
 }
 
 const emit = defineEmits<Emits>()
@@ -226,6 +228,11 @@ const handleManageTeam = (teamId: string) => {
     managingTeam.value = team
     showTeamManagementDialog.value = true
   }
+}
+
+// Handle view team detail
+const handleViewTeam = (teamId: string) => {
+  emit('view-team', teamId)
 }
 </script>
 

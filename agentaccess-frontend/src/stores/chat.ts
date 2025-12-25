@@ -6,6 +6,9 @@ import { useSettingsStore } from './settings'
 const CONVERSATIONS_STORAGE_KEY = 'agentaccess-conversations'
 const CURRENT_CONVERSATION_KEY = 'agentaccess-current-conversation'
 
+// Demo conversation IDs that cannot be deleted (first 5 initial conversations)
+const DEMO_CONVERSATION_IDS = new Set<string>()
+
 export const useChatStore = defineStore('chat', () => {
   // State
   const conversations = ref<ChatConversation[]>([])
@@ -58,7 +61,7 @@ export const useChatStore = defineStore('chat', () => {
         const data = JSON.parse(saved)
         console.log('📦 Raw data from localStorage:', data.length, 'conversations')
 
-        conversations.value = data.map((conv: any) => ({
+        const loadedConversations = data.map((conv: any) => ({
           ...conv,
           createdAt: new Date(conv.createdAt),
           updatedAt: new Date(conv.updatedAt),
@@ -67,6 +70,20 @@ export const useChatStore = defineStore('chat', () => {
             timestamp: new Date(msg.timestamp)
           }))
         }))
+
+        // Remove duplicates by keeping only the first occurrence of each ID
+        const uniqueConversations: ChatConversation[] = []
+        const seenIds = new Set<string>()
+        for (const conv of loadedConversations) {
+          if (!seenIds.has(conv.id)) {
+            seenIds.add(conv.id)
+            uniqueConversations.push(conv)
+          } else {
+            console.log('⚠️ Duplicate conversation removed:', conv.id, conv.title)
+          }
+        }
+
+        conversations.value = uniqueConversations
 
         console.log('📦 Loaded conversations:', conversations.value.length)
         conversations.value.forEach((conv, i) => {
@@ -135,6 +152,11 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   const deleteConversation = (id: string) => {
+    // Check if this is a demo conversation that cannot be deleted
+    if (DEMO_CONVERSATION_IDS.has(id)) {
+      throw new Error('演示中，该对话不支持删除')
+    }
+
     const index = conversations.value.findIndex(c => c.id === id)
     if (index > -1) {
       conversations.value.splice(index, 1)
@@ -142,6 +164,97 @@ export const useChatStore = defineStore('chat', () => {
         currentConversationId.value = null
       }
     }
+  }
+
+  // Mark a conversation as demo (protected from deletion)
+  const markConversationAsDemo = (id: string) => {
+    DEMO_CONVERSATION_IDS.add(id)
+  }
+
+  // Check if a conversation is a demo conversation
+  const isDemoConversation = (id: string): boolean => {
+    return DEMO_CONVERSATION_IDS.has(id)
+  }
+
+  // Initialize demo conversations (called on app startup if no conversations exist)
+  const initializeDemoConversations = () => {
+    // Define demo conversation data
+    const demoConversations = [
+      {
+        id: 'conv-1',
+        title: '帮我生成一个PPT',
+        messages: [
+          { role: 'user', content: '帮我生成一个PPT', timestamp: new Date() },
+          { role: 'assistant', content: '好的，我可以帮您生成PPT。请告诉我PPT的主题是什么？', timestamp: new Date() },
+          { role: 'user', content: '关于人工智能发展趋势', timestamp: new Date() },
+          { role: 'assistant', content: '明白了！我将为您创建一个关于人工智能发展趋势的PPT。我已经为您生成了演示文稿，包含以下内容：\n\n1. 人工智能发展历程\n2. 当前主流AI技术\n3. 未来发展趋势\n4. 行业应用案例\n\n您可以通过以下链接下载PPT：https://example.com/download/ppt-ai-trends.pptx', timestamp: new Date() }
+        ],
+        settings: {},
+        createdAt: new Date(Date.now() - 1000 * 60 * 30),
+        updatedAt: new Date(Date.now() - 1000 * 60 * 30)
+      },
+      {
+        id: 'conv-2',
+        title: '给我设置一个明天8点的会议提醒',
+        messages: [
+          { role: 'user', content: '给我设置一个明天8点的会议提醒', timestamp: new Date() },
+          { role: 'assistant', content: '好的，我已经为您设置了明天上午8点的会议提醒。提醒内容：\n\n📅 时间：明天 8:00 AM\n⏰ 提醒：会议提醒\n\n我会准时提醒您参加会议。需要我添加会议备注吗？', timestamp: new Date() }
+        ],
+        settings: {},
+        createdAt: new Date(Date.now() - 1000 * 60 * 60),
+        updatedAt: new Date(Date.now() - 1000 * 60 * 60)
+      },
+      {
+        id: 'conv-3',
+        title: '写一封产品介绍邮件',
+        messages: [
+          { role: 'user', content: '写一封产品介绍邮件', timestamp: new Date() },
+          { role: 'assistant', content: '好的，以下是一封产品介绍邮件的草稿：\n\n主题：全新智能产品介绍\n\n尊敬的客户，\n\n您好！我们很高兴向您介绍我们最新推出的智能产品...\n\n请告诉我您想介绍什么产品，我可以帮您定制更具体的内容。', timestamp: new Date() }
+        ],
+        settings: {},
+        createdAt: new Date(Date.now() - 1000 * 60 * 120),
+        updatedAt: new Date(Date.now() - 1000 * 60 * 120)
+      },
+      {
+        id: 'conv-4',
+        title: '分析这个数据报表',
+        messages: [
+          { role: 'user', content: '分析这个数据报表', timestamp: new Date() },
+          { role: 'assistant', content: '我看到您上传了数据报表。让我来帮您分析一下...\n\n根据报表数据，我发现了以下几个关键趋势：\n1. 销售额比去年同期增长了25%\n2. 用户活跃度提升了15%\n3. 新用户转化率达到了8%\n\n需要我深入分析某个特定指标吗？', timestamp: new Date() }
+        ],
+        settings: {},
+        createdAt: new Date(Date.now() - 1000 * 60 * 180),
+        updatedAt: new Date(Date.now() - 1000 * 60 * 180)
+      },
+      {
+        id: 'conv-5',
+        title: '翻译这段文字到英文',
+        messages: [
+          { role: 'user', content: '翻译这段文字到英文', timestamp: new Date() },
+          { role: 'assistant', content: '请提供您需要翻译的文字内容，我会帮您翻译成地道的英文。', timestamp: new Date() }
+        ],
+        settings: {},
+        createdAt: new Date(Date.now() - 1000 * 60 * 240),
+        updatedAt: new Date(Date.now() - 1000 * 60 * 240)
+      }
+    ]
+
+    // Add demo conversations if they don't already exist
+    demoConversations.forEach(demoConv => {
+      const exists = conversations.value.find(c => c.id === demoConv.id)
+      if (!exists) {
+        conversations.value.push(demoConv as ChatConversation)
+        // Mark as demo (protected from deletion)
+        DEMO_CONVERSATION_IDS.add(demoConv.id)
+        console.log('✅ Initialized demo conversation:', demoConv.title)
+      } else {
+        // Even if conversation exists, ensure it's marked as demo
+        DEMO_CONVERSATION_IDS.add(demoConv.id)
+      }
+    })
+
+    // Force save to ensure demo conversations are persisted
+    saveConversations()
   }
 
   const selectConversation = (id: string) => {
@@ -511,6 +624,9 @@ export const useChatStore = defineStore('chat', () => {
     forceReset,
     toggleReasoningDisplay,
     loadConversations,
-    saveConversations
+    saveConversations,
+    markConversationAsDemo,
+    isDemoConversation,
+    initializeDemoConversations
   }
 })

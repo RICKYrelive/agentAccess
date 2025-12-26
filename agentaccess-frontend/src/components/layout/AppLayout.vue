@@ -71,6 +71,66 @@
         @edit-agent="handleEditAgent"
       />
 
+      <!-- MCP Tools Page View -->
+      <MCPToolsPage
+        v-else-if="activeView === 'mcp-tools'"
+        class="flex-1 h-full overflow-hidden"
+      />
+
+      <!-- MCP Gateway Page View -->
+      <MCPGatewayPage
+        v-else-if="activeView === 'mcp-gateway'"
+        class="flex-1 h-full overflow-hidden"
+      />
+
+      <!-- System Tools Page View -->
+      <div
+        v-else-if="activeView === 'system-tools'"
+        class="flex-1 h-full overflow-hidden flex items-center justify-center bg-gray-50"
+      >
+        <div class="text-center">
+          <div class="w-16 h-16 mx-auto mb-4 text-gray-400">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+          </div>
+          <h2 class="text-xl font-semibold text-gray-700 mb-2">系统工具</h2>
+          <p class="text-gray-500">沙箱环境和系统内置工具</p>
+        </div>
+      </div>
+
+      <!-- Memory Page View -->
+      <div
+        v-else-if="activeView === 'memory'"
+        class="flex-1 h-full overflow-hidden flex items-center justify-center bg-gray-50"
+      >
+        <div class="text-center">
+          <div class="w-16 h-16 mx-auto mb-4 text-gray-400">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+              />
+            </svg>
+          </div>
+          <h2 class="text-xl font-semibold text-gray-700 mb-2">记忆体</h2>
+          <p class="text-gray-500">管理短期、长期和向量记忆</p>
+        </div>
+      </div>
+
       <!-- Knowledge Base Page View -->
       <KnowledgeBasePage
         v-else-if="activeView === 'knowledge-base'"
@@ -142,6 +202,8 @@ import TeamAgentsPage from '../team-agents/TeamAgentsPage.vue'
 import TeamDetailPage from '../team-agents/TeamDetailPage.vue'
 import KnowledgeBasePage from '../knowledge-base/KnowledgeBasePage.vue'
 import KnowledgeBaseDetailPage from '../knowledge-base/KnowledgeBaseDetailPage.vue'
+import MCPToolsPage from '../mcp-management/MCPToolsPage.vue'
+import MCPGatewayPage from '../mcp-management/MCPGatewayPage.vue'
 
 const activeView = ref<
   | 'home'
@@ -149,6 +211,10 @@ const activeView = ref<
   | 'my-agents'
   | 'team-agents'
   | 'team-detail'
+  | 'mcp-tools'
+  | 'mcp-gateway'
+  | 'system-tools'
+  | 'memory'
   | 'knowledge-base'
   | 'knowledge-base-detail'
 >('home')
@@ -184,7 +250,16 @@ const isShowingHomePage = computed(() => {
 })
 
 const handleViewChange = (
-  view: 'home' | 'workflow' | 'my-agents' | 'team-agents' | 'knowledge-base',
+  view:
+    | 'home'
+    | 'workflow'
+    | 'my-agents'
+    | 'team-agents'
+    | 'mcp-tools'
+    | 'mcp-gateway'
+    | 'system-tools'
+    | 'memory'
+    | 'knowledge-base',
 ) => {
   activeView.value = view
 }

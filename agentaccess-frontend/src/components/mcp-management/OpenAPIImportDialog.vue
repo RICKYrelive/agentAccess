@@ -1,105 +1,107 @@
 <template>
-  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click.self="$emit('close')">
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden">
-      <!-- Header -->
-      <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-        <h3 class="text-lg font-semibold text-gray-900">导入 OpenAPI 文件</h3>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Content -->
-      <div class="px-6 py-4 overflow-y-auto max-h-[60vh]">
-        <!-- Step 1: File Upload -->
-        <div v-if="step === 1">
-          <div
-            class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary-400 transition-colors"
-            @dragover.prevent
-            @drop.prevent="handleDrop"
-            @click="$refs.fileInput?.click()"
-          >
-            <input
-              ref="fileInput"
-              type="file"
-              accept=".json,.yaml,.yml"
-              class="hidden"
-              @change="handleFileSelect"
-            />
-            <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+  <Teleport to="body">
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click.self="emit('close')">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden">
+        <!-- Header -->
+        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+          <h3 class="text-lg font-semibold text-gray-900">从 OpenAPI 导入工具</h3>
+          <button @click="emit('close')" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
-            <p class="text-sm text-gray-600 mb-1">点击上传或拖拽文件到此处</p>
-            <p class="text-xs text-gray-400">支持 .json, .yaml, .yml 格式的 OpenAPI 文件</p>
-          </div>
-
-          <div v-if="error" class="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
-            <p class="text-sm text-red-600">{{ error }}</p>
-          </div>
+          </button>
         </div>
 
-        <!-- Step 2: Preview -->
-        <div v-if="step === 2">
-          <div class="mb-4">
-            <h4 class="text-sm font-medium text-gray-900 mb-2">解析结果</h4>
-            <p class="text-xs text-gray-500">从 OpenAPI 文件中提取了 {{ endpoints.length }} 个端点，将生成 {{ endpoints.length }} 个 MCP 工具</p>
+        <!-- Content -->
+        <div class="px-6 py-4 overflow-y-auto max-h-[60vh]">
+          <!-- Step 1: File Upload -->
+          <div v-if="step === 1">
+            <div
+              class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary-400 transition-colors"
+              @dragover.prevent
+              @drop.prevent="handleDrop"
+              @click="$refs.fileInput?.click()"
+            >
+              <input
+                ref="fileInput"
+                type="file"
+                accept=".json,.yaml,.yml"
+                class="hidden"
+                @change="handleFileSelect"
+              />
+              <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <p class="text-sm text-gray-600 mb-1">点击上传或拖拽文件到此处</p>
+              <p class="text-xs text-gray-400">支持 .json, .yaml, .yml 格式的 OpenAPI 文件</p>
+            </div>
+
+            <div v-if="error" class="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+              <p class="text-sm text-red-600">{{ error }}</p>
+            </div>
           </div>
 
-          <div class="border border-gray-200 rounded-lg overflow-hidden">
-            <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
-              <span class="text-sm font-medium text-gray-700">生成的工具列表</span>
+          <!-- Step 2: Preview -->
+          <div v-if="step === 2">
+            <div class="mb-4">
+              <h4 class="text-sm font-medium text-gray-900 mb-2">解析结果</h4>
+              <p class="text-xs text-gray-500">从 OpenAPI 文件中提取了 {{ endpoints.length }} 个端点，将生成 {{ endpoints.length }} 个 MCP 工具</p>
             </div>
-            <div class="max-h-60 overflow-y-auto">
-              <div v-for="(endpoint, index) in endpoints" :key="index" class="px-4 py-3 border-b border-gray-100 last:border-b-0">
-                <div class="flex items-center space-x-2">
-                  <span :class="getMethodBadgeClass(endpoint.method)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium">
-                    {{ endpoint.method }}
-                  </span>
-                  <span class="text-sm font-mono text-gray-700">{{ endpoint.path }}</span>
+
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+              <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                <span class="text-sm font-medium text-gray-700">生成的工具列表</span>
+              </div>
+              <div class="max-h-60 overflow-y-auto">
+                <div v-for="(endpoint, index) in endpoints" :key="index" class="px-4 py-3 border-b border-gray-100 last:border-b-0">
+                  <div class="flex items-center space-x-2">
+                    <span :class="getMethodBadgeClass(endpoint.method)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium">
+                      {{ endpoint.method }}
+                    </span>
+                    <span class="text-sm font-mono text-gray-700">{{ endpoint.path }}</span>
+                  </div>
+                  <p v-if="endpoint.summary" class="text-xs text-gray-500 mt-1 ml-1">{{ endpoint.summary }}</p>
+                  <p class="text-xs text-gray-400 mt-1">工具: {{ generateToolName(endpoint) }}</p>
                 </div>
-                <p v-if="endpoint.summary" class="text-xs text-gray-500 mt-1 ml-1">{{ endpoint.summary }}</p>
-                <p class="text-xs text-gray-400 mt-1">工具: {{ generateToolName(endpoint) }}</p>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Footer -->
-      <div class="px-6 py-4 border-t border-gray-200 flex justify-between">
-        <button
-          v-if="step === 2"
-          @click="step = 1"
-          class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-        >
-          上一步
-        </button>
-        <div v-else></div>
-
-        <div class="flex space-x-3">
-          <button @click="$emit('close')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md">
-            取消
-          </button>
+        <!-- Footer -->
+        <div class="px-6 py-4 border-t border-gray-200 flex justify-between">
           <button
             v-if="step === 2"
-            @click="confirmImport"
-            class="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-md"
+            @click="step = 1"
+            class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
           >
-            确认导入
+            上一步
           </button>
+          <div v-else></div>
+
+          <div class="flex space-x-3">
+            <button @click="emit('close')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md">
+              取消
+            </button>
+            <button
+              v-if="step === 2"
+              @click="confirmImport"
+              class="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-md"
+            >
+              确认导入
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useMCPManagementStore } from '@/stores/mcpManagement'
 
-defineEmits<{
+const emit = defineEmits<{
   close: []
 }>()
 
@@ -223,18 +225,9 @@ const generateToolName = (endpoint: { method: string; path: string }) => {
 }
 
 const confirmImport = () => {
-  // Create gateway from OpenAPI
-  const gateway = store.createGateway({
-    name: `OpenAPI Gateway ${new Date().toLocaleTimeString()}`,
-    description: `从 OpenAPI 导入的 ${endpoints.value.length} 个工具`,
-    baseUrl: '',
-    mcpToolIds: [],
-    status: 'running',
-  })
-
-  // Create tools for each endpoint
+  // Create tools for each endpoint (without creating a gateway)
   for (const endpoint of endpoints.value) {
-    const tool = store.createMCPTool({
+    store.createMCPTool({
       name: generateToolName(endpoint),
       description: endpoint.summary || `${endpoint.method} ${endpoint.path}`,
       type: 'custom',
@@ -246,14 +239,6 @@ const confirmImport = () => {
         authType: 'none',
       },
     })
-
-    // Associate tool with gateway
-    if (tool) {
-      store.updateGateway(gateway.id, {
-        mcpToolIds: [...gateway.mcpToolIds, tool.id],
-      })
-      gateway.mcpToolIds.push(tool.id)
-    }
   }
 
   // Reset and close
@@ -262,8 +247,7 @@ const confirmImport = () => {
   error.value = ''
 
   setTimeout(() => {
-    // @ts-ignore
-    $emit('close')
+    emit('close')
   }, 100)
 }
 </script>

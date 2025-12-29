@@ -3,6 +3,7 @@ export type MCPToolType = 'builtin' | 'custom' | 'npx' | 'uvx'
 export type MCPToolStatus = 'active' | 'inactive' | 'error'
 export type GatewayStatus = 'running' | 'stopped' | 'error'
 export type AuthType = 'none' | 'apikey' | 'bearer'
+export type LoadBalancerStrategy = 'round-robin' | 'random' | 'least-used'
 
 export interface MCPToolConfig {
   // Custom tool config
@@ -38,6 +39,32 @@ export interface MCPGateway {
   status: GatewayStatus
   createdAt: Date
   updatedAt: Date
+  loadBalancerGroups?: LoadBalancerGroup[]
+}
+
+export interface HealthCheckConfig {
+  enabled: boolean
+  interval: number // seconds
+  timeout: number // seconds
+}
+
+export interface LoadBalancerGroup {
+  id: string
+  name: string
+  strategy: LoadBalancerStrategy
+  toolIds: string[]
+  healthCheck?: HealthCheckConfig
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface LoadBalancerGroupFormData {
+  name: string
+  strategy: LoadBalancerStrategy
+  toolIds: string[]
+  healthCheckEnabled: boolean
+  healthCheckInterval: number
+  healthCheckTimeout: number
 }
 
 // Form interfaces
@@ -61,6 +88,7 @@ export interface GatewayFormData {
   description: string
   baseUrl: string
   mcpToolIds: string[]
+  loadBalancerGroups: LoadBalancerGroup[]
 }
 
 // Builtin tools definition

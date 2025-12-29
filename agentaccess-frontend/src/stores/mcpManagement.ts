@@ -6,6 +6,9 @@ import type {
   MCPToolConfig,
   MCPToolType,
   BuiltinToolDefinition,
+  LoadBalancerGroup,
+  LoadBalancerGroupFormData,
+  HealthCheckConfig,
 } from '@/components/mcp-management/types'
 
 // Builtin tools catalog (available for import)
@@ -218,6 +221,45 @@ export const useMCPManagementStore = defineStore('mcpManagement', () => {
     return mcpTools.value.filter((t) => gateway.mcpToolIds.includes(t.id))
   }
 
+  // Load Balancer Group actions
+  const createLoadBalancerGroup = (group: Omit<LoadBalancerGroup, 'id' | 'createdAt' | 'updatedAt'>) => {
+    const newGroup: LoadBalancerGroup = {
+      ...group,
+      id: `lb-group-${Date.now()}`,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
+    return newGroup
+  }
+
+  const updateLoadBalancerGroup = (group: LoadBalancerGroup, updates: Partial<LoadBalancerGroup>) => {
+    return {
+      ...group,
+      ...updates,
+      updatedAt: new Date(),
+    }
+  }
+
+  const deleteLoadBalancerGroup = () => {
+    // Load balancer groups are managed within the gateway context
+    // This is a placeholder for potential future standalone management
+  }
+
+  const addToolToGroup = (group: LoadBalancerGroup, toolId: string) => {
+    if (!group.toolIds.includes(toolId)) {
+      group.toolIds.push(toolId)
+    }
+    return updateLoadBalancerGroup(group, {})
+  }
+
+  const removeToolFromGroup = (group: LoadBalancerGroup, toolId: string) => {
+    const index = group.toolIds.indexOf(toolId)
+    if (index !== -1) {
+      group.toolIds.splice(index, 1)
+    }
+    return updateLoadBalancerGroup(group, {})
+  }
+
   return {
     // State
     mcpTools,
@@ -244,5 +286,12 @@ export const useMCPManagementStore = defineStore('mcpManagement', () => {
     deleteGateway,
     getGateway,
     getGatewayTools,
+
+    // Load Balancer Group actions
+    createLoadBalancerGroup,
+    updateLoadBalancerGroup,
+    deleteLoadBalancerGroup,
+    addToolToGroup,
+    removeToolFromGroup,
   }
 })

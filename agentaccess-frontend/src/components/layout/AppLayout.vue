@@ -290,6 +290,7 @@ const startNewConversation = () => {
   // Clear current conversation ID to ensure a new conversation is created
   // when the user sends their first message
   chatStore.currentConversationId = null
+  activeView.value = 'home'
   showContentArea.value = true
   showChatInterface.value = false
 }

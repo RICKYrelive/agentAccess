@@ -871,13 +871,35 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  const sendMessage = async (userMessage: string) => {
+  const sendMessage = async (userMessage: string, config?: {
+    knowledgeBase?: string
+    mcpTools?: string[]
+    systemTools?: string[]
+    memory?: string
+  }) => {
     // Check if this is a demo conversation with special handling
     console.log('🔍 Checking demo conversation:', {
       id: currentConversation.value?.id,
       _isDemo: currentConversation.value?._isDemo,
       _demoType: currentConversation.value?._demoType,
     })
+
+    // Apply configuration to conversation settings
+    if (config && currentConversation.value) {
+      console.log('📋 Applying configuration to conversation:', config)
+      if (config.knowledgeBase) {
+        currentConversation.value.settings.knowledgeBaseIds = [config.knowledgeBase]
+      }
+      if (config.mcpTools && config.mcpTools.length > 0) {
+        currentConversation.value.settings.mcpServiceIds = config.mcpTools
+      }
+      if (config.systemTools && config.systemTools.length > 0) {
+        currentConversation.value.settings.systemToolIds = config.systemTools
+      }
+      if (config.memory) {
+        currentConversation.value.settings.memoryType = config.memory
+      }
+    }
 
     if (currentConversation.value?._isDemo && currentConversation.value?._demoType === 'translation') {
       console.log('✅ Demo translation detected, calling handleDemoTranslationResponse')

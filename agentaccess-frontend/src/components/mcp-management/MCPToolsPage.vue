@@ -9,7 +9,7 @@
     <!-- Creation Section -->
     <div class="px-8 py-6 border-b border-gray-200">
       <h3 class="text-lg font-medium text-gray-900 mb-4">创建 MCP 工具</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Builtin Import -->
         <button
           @click="showBuiltinDialog = true"
@@ -41,6 +41,17 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
           </svg>
           <span class="text-sm font-medium text-gray-700">导入镜像</span>
+        </button>
+
+        <!-- OpenAPI Import -->
+        <button
+          @click="showOpenAPIDialog = true"
+          class="p-4 border-2 border-dashed border-green-300 rounded-lg hover:bg-green-50 hover:border-green-400 transition-colors"
+        >
+          <svg class="w-8 h-8 mx-auto mb-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          <span class="text-sm font-medium text-gray-700">导入 OpenAPI</span>
         </button>
       </div>
     </div>
@@ -138,6 +149,12 @@
       :tool="editingTool"
       @close="closeImageDialog"
     />
+
+    <!-- OpenAPI Import Dialog -->
+    <OpenAPIImportDialog
+      v-if="showOpenAPIDialog"
+      @close="showOpenAPIDialog = false"
+    />
   </div>
 </template>
 
@@ -148,12 +165,14 @@ import type { MCPTool, MCPToolType } from '../mcp-management/types'
 import BuiltinToolImportDialog from './BuiltinToolImportDialog.vue'
 import CustomToolConfigDialog from './CustomToolConfigDialog.vue'
 import ImageDeploymentDialog from './ImageDeploymentDialog.vue'
+import OpenAPIImportDialog from './OpenAPIImportDialog.vue'
 
 const store = useMCPManagementStore()
 
 const showBuiltinDialog = ref(false)
 const showCustomDialog = ref(false)
 const showImageDialog = ref(false)
+const showOpenAPIDialog = ref(false)
 const editingTool = ref<MCPTool | null>(null)
 
 const getTypeName = (type: MCPToolType) => {

@@ -264,7 +264,7 @@
           >
             <div class="send-button-bg"></div>
             <div class="send-button-content">
-              <svg class="send-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="send-icon" :class="{ 'arrow-bouncing': hasInput }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -344,6 +344,9 @@ const completedReasoning = computed(() => chatStore.completedReasoning)
 const showFullReasoning = computed(() => chatStore.showFullReasoning)
 
 const messageInput = ref('')
+
+// 是否有输入内容且是新会话，用于触发箭头跳动
+const hasInput = computed(() => messageInput.value.trim().length > 0 && currentMessages.value.length === 0)
 
 // Block expansion state: Map<messageIndex-blockIndex, boolean>
 const expandedBlocks = ref<Record<string, boolean>>({})
@@ -474,7 +477,37 @@ const formatStreamingMessage = (message: string) => {
   transition: all 0.3s ease;
 }
 
-.futuristic-send-button:not(:disabled):hover .send-icon {
+/* 箭头跳动动画 - 模拟真实弹性跳动 */
+.send-icon.arrow-bouncing {
+  animation: arrowBounce 0.6s ease-in-out infinite !important;
+  transition: none !important;
+}
+
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  15% {
+    transform: translateY(-8px) translateX(3px);
+  }
+  30% {
+    transform: translateY(0) translateX(0);
+  }
+  45% {
+    transform: translateY(-4px) translateX(1px);
+  }
+  60% {
+    transform: translateY(0) translateX(0);
+  }
+  75% {
+    transform: translateY(-2px) translateX(0.5px);
+  }
+  90% {
+    transform: translateY(0) translateX(0);
+  }
+}
+
+.futuristic-send-button:not(:disabled):hover .send-icon:not(.arrow-bouncing) {
   transform: translateX(2px);
 }
 

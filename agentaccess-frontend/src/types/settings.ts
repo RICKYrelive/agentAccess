@@ -80,6 +80,7 @@ export interface ChatMessage {
     latency?: number
     agentUsed?: string
     toolsUsed?: string[]
+    reasoning?: boolean
   }
 }
 
@@ -93,6 +94,8 @@ export interface ChatConversation {
     knowledgeBaseIds?: string[]
     mcpServiceIds?: string[]
     pluginIds?: string[]
+    systemToolIds?: string[]
+    memoryType?: string
     // Legacy fields for backward compatibility
     knowledgeBaseId?: string
     mcpServices?: string[]

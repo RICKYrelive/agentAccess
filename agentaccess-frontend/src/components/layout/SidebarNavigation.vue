@@ -331,7 +331,7 @@
             @click="handleSystemToolsClick"
             :class="[
               'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center justify-between transition-all duration-200',
-              activeView === 'system-tools'
+              activeView === 'sandboxed-environments' || activeView === 'builtin-tools'
                 ? 'bg-primary/5 text-primary font-semibold'
                 : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
             ]"
@@ -371,42 +371,38 @@
 
           <!-- System Tools Sub-items -->
           <div v-if="isSystemToolsOpen" class="mt-1 ml-8 space-y-1">
-            <!-- Sandbox Tools -->
-            <div class="px-3 py-2">
-              <div class="text-xs text-slate-500 mb-1">沙箱环境</div>
-              <div class="space-y-1">
-                <div
-                  v-for="tool in sandboxTools"
-                  :key="tool.id"
-                  class="px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded cursor-pointer flex items-center space-x-2"
-                  :title="tool.description"
-                >
-                  <svg class="w-4 h-4 flex-shrink-0" :class="tool.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="tool.iconPath" />
-                  </svg>
-                  <span class="truncate">{{ tool.name }}</span>
-                  <span class="text-xs text-green-500">{{ tool.status }}</span>
-                </div>
-              </div>
-            </div>
+            <!-- Sandboxed Environments -->
+            <button
+              @click="switchToView('sandboxed-environments')"
+              :class="[
+                'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center space-x-3 transition-all duration-200',
+                activeView === 'sandboxed-environments'
+                  ? 'bg-primary/5 text-primary font-semibold'
+                  : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
+              ]"
+            >
+              <svg class="w-4 h-4 text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+              <span>沙箱环境</span>
+            </button>
 
-            <!-- Built-in System Tools -->
-            <div class="px-3 py-2">
-              <div class="text-xs text-slate-500 mb-1">内置工具</div>
-              <div class="space-y-1">
-                <div
-                  v-for="tool in builtinSystemTools"
-                  :key="tool.id"
-                  class="px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded cursor-pointer flex items-center space-x-2"
-                  :title="tool.description"
-                >
-                  <svg class="w-4 h-4 flex-shrink-0" :class="tool.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="tool.iconPath" />
-                  </svg>
-                  <span class="truncate">{{ tool.name }}</span>
-                </div>
-              </div>
-            </div>
+            <!-- Built-in Tools -->
+            <button
+              @click="switchToView('builtin-tools')"
+              :class="[
+                'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center space-x-3 transition-all duration-200',
+                activeView === 'builtin-tools'
+                  ? 'bg-primary/5 text-primary font-semibold'
+                  : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
+              ]"
+            >
+              <svg class="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>内置工具</span>
+            </button>
           </div>
         </div>
 
@@ -677,7 +673,8 @@ interface Props {
     | 'team-detail'
     | 'mcp-tools'
     | 'mcp-gateway'
-    | 'system-tools'
+    | 'sandboxed-environments'
+    | 'builtin-tools'
     | 'memory'
     | 'knowledge-base'
     | 'knowledge-base-detail'
@@ -694,7 +691,8 @@ interface Emits {
       | 'team-agents'
       | 'mcp-tools'
       | 'mcp-gateway'
-      | 'system-tools'
+      | 'sandboxed-environments'
+      | 'builtin-tools'
       | 'memory'
       | 'knowledge-base',
   ): void
@@ -740,58 +738,6 @@ const isTeamAgentsOpen = ref(false)
 const isMyAgentsOpen = ref(false)
 const showUserMenu = ref(false)
 
-// System Tools data
-const sandboxTools = ref([
-  {
-    id: 'sandbox-code',
-    name: '代码执行',
-    status: '运行中',
-    description: 'Python/JavaScript 代码沙箱执行环境',
-    iconColor: 'text-green-500',
-    iconPath: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
-  },
-  {
-    id: 'sandbox-browser',
-    name: '浏览器',
-    status: '运行中',
-    description: '无头浏览器自动化工具',
-    iconColor: 'text-blue-500',
-    iconPath: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9',
-  },
-  {
-    id: 'sandbox-terminal',
-    name: '终端',
-    status: '运行中',
-    description: 'Shell 命令执行环境',
-    iconColor: 'text-slate-600',
-    iconPath: 'M8 9l3 3-3 3m0 0l3-3-3-3m3 3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z',
-  },
-])
-
-const builtinSystemTools = ref([
-  {
-    id: 'sys-time',
-    name: '时间工具',
-    description: '获取当前时间和时区信息',
-    iconColor: 'text-amber-500',
-    iconPath: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
-  },
-  {
-    id: 'sys-search',
-    name: '联网搜索',
-    description: '网络搜索和信息检索',
-    iconColor: 'text-blue-500',
-    iconPath: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
-  },
-  {
-    id: 'sys-ocr',
-    name: 'OCR 识别',
-    description: '图片文字识别',
-    iconColor: 'text-purple-500',
-    iconPath: 'M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z',
-  },
-])
-
 // Memory data
 const memoryTypes = ref([
   {
@@ -833,7 +779,8 @@ const switchToView = (
     | 'team-agents'
     | 'mcp-tools'
     | 'mcp-gateway'
-    | 'system-tools'
+    | 'sandboxed-environments'
+    | 'builtin-tools'
     | 'memory'
     | 'knowledge-base',
 ) => {
@@ -873,7 +820,14 @@ const handleMCPManagementClick = () => {
 }
 
 const handleSystemToolsClick = () => {
-  switchToView('system-tools')
+  // Toggle System Tools submenu or navigate to default page
+  if (props.activeView === 'sandboxed-environments' || props.activeView === 'builtin-tools') {
+    // Already on System Tools page, just toggle submenu
+    isSystemToolsOpen.value = !isSystemToolsOpen.value
+  } else {
+    // Navigate to Sandboxed Environments as default
+    switchToView('sandboxed-environments')
+  }
 }
 
 const handleMemoryClick = () => {
@@ -978,7 +932,7 @@ watch(
       isMCPManagementOpen.value = false
     }
 
-    if (newView === 'system-tools') {
+    if (newView === 'sandboxed-environments' || newView === 'builtin-tools') {
       isSystemToolsOpen.value = true
     } else {
       isSystemToolsOpen.value = false

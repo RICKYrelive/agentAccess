@@ -170,6 +170,112 @@
         </div>
       </div>
 
+      <!-- System Tools Section -->
+      <div class="bg-white rounded-lg p-6 shadow-sm">
+        <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center">
+          <svg
+            class="w-5 h-5 mr-2 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+          系统工具
+          <span class="text-sm font-normal text-slate-500 ml-2">({{ enabledSystemTools.length }}/{{ systemTools.length }})</span>
+        </h3>
+
+        <div v-if="systemTools.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+          <div
+            v-for="tool in systemTools"
+            :key="tool.id"
+            class="p-3 border border-slate-200 rounded-lg hover:shadow-md cursor-pointer transition-all hover:border-blue-300"
+            :class="{ 'opacity-50': !tool.isEnabled }"
+            @click="toggleSystemTool(tool)"
+          >
+            <div class="flex flex-col items-center text-center">
+              <div class="text-2xl mb-2">{{ tool.icon }}</div>
+              <p class="text-sm font-medium text-slate-900 truncate w-full">{{ tool.name }}</p>
+              <div class="flex items-center mt-1">
+                <div class="w-1.5 h-1.5 rounded-full mr-1" :class="tool.isEnabled ? 'bg-green-500' : 'bg-slate-300'"></div>
+                <p class="text-xs text-slate-500">{{ tool.isEnabled ? '已启用' : '已禁用' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-else class="text-center py-8 text-slate-500">
+          <p>暂无已导入的系统工具</p>
+        </div>
+      </div>
+
+      <!-- Sandboxes Section -->
+      <div class="bg-white rounded-lg p-6 shadow-sm">
+        <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center">
+          <svg
+            class="w-5 h-5 mr-2 text-purple-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+            />
+          </svg>
+          沙箱环境
+          <span class="text-sm font-normal text-slate-500 ml-2">({{ runningSandboxCount }}/{{ sandboxes.length }} 运行中)</span>
+        </h3>
+
+        <div v-if="sandboxes.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div
+            v-for="sandbox in sandboxes"
+            :key="sandbox.id"
+            class="p-4 border border-slate-200 rounded-lg hover:shadow-md cursor-pointer transition-all"
+            :class="`border-l-4 ${getSandboxBorderClass(sandbox.status)}`"
+          >
+            <div class="flex items-start justify-between">
+              <div class="flex items-center space-x-3">
+                <div class="text-2xl">{{ sandbox.icon }}</div>
+                <div>
+                  <p class="font-medium text-slate-900">{{ sandbox.name }}</p>
+                  <p class="text-xs text-slate-500">{{ getSandboxCategoryName(sandbox.category) }}</p>
+                </div>
+              </div>
+              <span class="text-xs px-2 py-0.5 rounded-full" :class="getSandboxStatusClass(sandbox.status)">
+                {{ getSandboxStatusName(sandbox.status) }}
+              </span>
+            </div>
+            <p class="text-sm text-slate-600 mt-2 line-clamp-2">{{ sandbox.description }}</p>
+            <div class="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
+              <span class="text-xs text-slate-500">{{ sandbox.instances.length }} 个实例</span>
+              <div class="flex items-center space-x-2">
+                <span v-if="sandbox.instances.length > 0" class="text-xs text-slate-500">
+                  CPU: {{ Math.round(sandbox.instances.reduce((sum, i) => sum + i.resources.cpuPercent, 0) / (sandbox.instances.length || 1)) }}%
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-else class="text-center py-8 text-slate-500">
+          <p>暂无已导入的沙箱环境</p>
+        </div>
+      </div>
+
       <!-- Team Agents Section -->
       <div class="bg-white rounded-lg p-6 shadow-sm">
         <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center">
@@ -234,6 +340,7 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useChatStore } from '@/stores/chat'
 import { useAgentsStore } from '@/stores/agents'
+import { useSystemToolsStore } from '@/stores/systemTools'
 
 interface Emits {
   (e: 'continue-conversation'): void
@@ -247,8 +354,20 @@ const emit = defineEmits<Emits>()
 
 const chatStore = useChatStore()
 const agentsStore = useAgentsStore()
+const systemToolsStore = useSystemToolsStore()
+
 const { currentConversation, conversations } = storeToRefs(chatStore)
 const { myAgents, teamAgents } = storeToRefs(agentsStore)
+const { builtinTools, sandboxTypes } = storeToRefs(systemToolsStore)
+const { toggleBuiltInTool } = systemToolsStore
+
+// System tools and sandboxes
+const systemTools = computed(() => builtinTools.value)
+const enabledSystemTools = computed(() => builtinTools.value.filter(t => t.isEnabled))
+const sandboxes = computed(() => sandboxTypes.value)
+const runningSandboxCount = computed(() =>
+  sandboxTypes.value.filter(s => s.status === 'running').length
+)
 
 // Current date
 const currentDate = computed(() => {
@@ -416,5 +535,63 @@ const openRecentConversation = (conversation: any) => {
 
 const startChatWithAgent = (agent: any) => {
   emit('start-chat-with-agent', agent)
+}
+
+// Toggle system tool enabled state
+const toggleSystemTool = (tool: any) => {
+  toggleBuiltInTool(tool.id)
+}
+
+// Sandbox helper functions
+const getSandboxBorderClass = (status: string) => {
+  switch (status) {
+    case 'running':
+      return 'border-green-500'
+    case 'stopped':
+      return 'border-slate-400'
+    case 'error':
+      return 'border-red-500'
+    default:
+      return 'border-slate-400'
+  }
+}
+
+const getSandboxStatusClass = (status: string) => {
+  switch (status) {
+    case 'running':
+      return 'bg-green-100 text-green-700'
+    case 'stopped':
+      return 'bg-slate-100 text-slate-700'
+    case 'error':
+      return 'bg-red-100 text-red-700'
+    default:
+      return 'bg-slate-100 text-slate-700'
+  }
+}
+
+const getSandboxStatusName = (status: string) => {
+  switch (status) {
+    case 'running':
+      return '运行中'
+    case 'stopped':
+      return '已停止'
+    case 'error':
+      return '错误'
+    default:
+      return status
+  }
+}
+
+const getSandboxCategoryName = (category: string) => {
+  switch (category) {
+    case 'code-interpreter':
+      return '代码解释器'
+    case 'browser-use':
+      return 'Browser Use'
+    case 'terminal':
+      return '终端'
+    default:
+      return category
+  }
 }
 </script>

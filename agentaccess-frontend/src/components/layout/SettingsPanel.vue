@@ -1,11 +1,11 @@
 <template>
   <div class="h-full bg-white flex flex-col">
     <!-- Header -->
-    <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-gray-900">MCP服务设置</h3>
+    <div class="p-4 border-b border-slate-200 flex items-center justify-between">
+      <h3 class="text-lg font-semibold text-slate-900">MCP服务设置</h3>
       <button
         @click="$emit('close')"
-        class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md"
+        class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -30,19 +30,19 @@
 
       <!-- MCP Services -->
       <div v-for="category in mcpCategories" :key="category.id" class="space-y-3">
-        <h4 class="text-sm font-medium text-gray-900">{{ category.name }}</h4>
+        <h4 class="text-sm font-medium text-slate-900">{{ category.name }}</h4>
 
         <div class="space-y-2">
           <div
             v-for="service in category.services"
             :key="service.id"
-            class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+            class="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
           >
             <div class="flex-1">
-              <label class="text-sm font-medium text-gray-700">
+              <label class="text-sm font-medium text-slate-700">
                 {{ service.name }}
               </label>
-              <p class="text-xs text-gray-500 mt-1">{{ service.description }}</p>
+              <p class="text-xs text-slate-500 mt-1">{{ service.description }}</p>
             </div>
 
             <!-- Toggle Switch -->
@@ -50,7 +50,7 @@
               @click="toggleService(service)"
               :class="[
                 'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
-                service.isEnabled ? 'bg-primary-600' : 'bg-gray-200',
+                service.isEnabled ? 'bg-primary-600' : 'bg-slate-200',
               ]"
             >
               <span
@@ -66,7 +66,7 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="p-4 border-t border-gray-200">
+    <div class="p-4 border-t border-slate-200">
       <div class="space-y-3">
         <div class="flex space-x-3">
           <button @click="saveSettings" class="btn-primary flex-1">保存设置</button>

@@ -4,11 +4,11 @@
     <div>
       <button
         @click="toggleSection('sandbox')"
-        class="w-full flex items-center justify-between p-2 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+        class="w-full flex items-center justify-between p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
       >
-        <span class="text-sm font-medium text-gray-700">沙箱环境</span>
+        <span class="text-sm font-medium text-slate-700">沙箱环境</span>
         <svg
-          :class="['w-4 h-4 transition-transform text-gray-400', expandedSections.has('sandbox') ? 'rotate-90' : '']"
+          :class="['w-4 h-4 transition-transform text-slate-400', expandedSections.has('sandbox') ? 'rotate-90' : '']"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -21,7 +21,7 @@
         <div
           v-for="tool in sandboxTools"
           :key="tool.id"
-          class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
+          class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"
         >
           <div class="flex items-center space-x-3 flex-1">
             <div :class="['w-8 h-8 rounded-lg flex items-center justify-center', tool.iconBg]">
@@ -30,15 +30,15 @@
               </svg>
             </div>
             <div>
-              <div class="text-sm font-medium text-gray-900">{{ tool.name }}</div>
-              <div class="text-xs text-gray-500">{{ tool.description }}</div>
+              <div class="text-sm font-medium text-slate-900">{{ tool.name }}</div>
+              <div class="text-xs text-slate-500">{{ tool.description }}</div>
             </div>
           </div>
           <button
             @click="toggleTool(tool.id)"
             :class="[
               'relative inline-flex items-center h-6 w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-full',
-              isToolSelected(tool.id) ? 'bg-primary-600' : 'bg-gray-300',
+              isToolSelected(tool.id) ? 'bg-primary-600' : 'bg-slate-300',
             ]"
           >
             <span
@@ -56,11 +56,11 @@
     <div>
       <button
         @click="toggleSection('builtin')"
-        class="w-full flex items-center justify-between p-2 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+        class="w-full flex items-center justify-between p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
       >
-        <span class="text-sm font-medium text-gray-700">内置工具</span>
+        <span class="text-sm font-medium text-slate-700">内置工具</span>
         <svg
-          :class="['w-4 h-4 transition-transform text-gray-400', expandedSections.has('builtin') ? 'rotate-90' : '']"
+          :class="['w-4 h-4 transition-transform text-slate-400', expandedSections.has('builtin') ? 'rotate-90' : '']"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -73,7 +73,7 @@
         <div
           v-for="tool in builtinTools"
           :key="tool.id"
-          class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
+          class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"
         >
           <div class="flex items-center space-x-3 flex-1">
             <div :class="['w-8 h-8 rounded-lg flex items-center justify-center', tool.iconBg]">
@@ -82,15 +82,15 @@
               </svg>
             </div>
             <div>
-              <div class="text-sm font-medium text-gray-900">{{ tool.name }}</div>
-              <div class="text-xs text-gray-500">{{ tool.description }}</div>
+              <div class="text-sm font-medium text-slate-900">{{ tool.name }}</div>
+              <div class="text-xs text-slate-500">{{ tool.description }}</div>
             </div>
           </div>
           <button
             @click="toggleTool(tool.id)"
             :class="[
               'relative inline-flex items-center h-6 w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-full',
-              isToolSelected(tool.id) ? 'bg-primary-600' : 'bg-gray-300',
+              isToolSelected(tool.id) ? 'bg-primary-600' : 'bg-slate-300',
             ]"
           >
             <span
@@ -156,7 +156,7 @@ const sandboxTools: SystemTool[] = [
     name: '终端',
     description: '执行命令行操作',
     icon: 'M4 17l6-6-6 6M4 7h16',
-    iconBg: 'bg-gray-700',
+    iconBg: 'bg-slate-700',
     iconColor: 'text-white',
   },
 ]

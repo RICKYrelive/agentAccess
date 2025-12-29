@@ -1,9 +1,9 @@
 <template>
-  <div class="border border-gray-200 rounded-lg overflow-hidden">
+  <div class="border border-slate-200 rounded-lg overflow-hidden">
     <!-- Accordion header -->
     <div
       @click="toggleExpanded"
-      class="w-full px-4 py-3 bg-gray-50 hover:bg-gray-100 flex items-center justify-between transition-colors cursor-pointer"
+      class="w-full px-4 py-3 bg-slate-50 hover:bg-slate-100 flex items-center justify-between transition-colors cursor-pointer"
       role="button"
       :aria-expanded="isExpanded"
       tabindex="0"
@@ -12,7 +12,7 @@
     >
       <div class="flex items-center space-x-2">
         <svg
-          class="w-5 h-5 text-gray-400 transform transition-transform"
+          class="w-5 h-5 text-slate-400 transform transition-transform"
           :class="{ 'rotate-90': isExpanded }"
           fill="none"
           stroke="currentColor"
@@ -20,12 +20,12 @@
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>
-        <span class="font-medium text-gray-900">{{ group.name }}</span>
-        <span class="text-sm text-gray-500">({{ agents.length }})</span>
+        <span class="font-medium text-slate-900">{{ group.name }}</span>
+        <span class="text-sm text-slate-500">({{ agents.length }})</span>
       </div>
       <button
         @click.stop="$emit('delete-group', group.id)"
-        class="text-gray-400 hover:text-red-600 transition-colors"
+        class="text-slate-400 hover:text-red-600 transition-colors"
         title="删除共享组"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,7 +42,7 @@
     <!-- Accordion content -->
     <div
       v-show="isExpanded"
-      class="p-4 bg-white border-t border-gray-200"
+      class="p-4 bg-white border-t border-slate-200"
       @dragover.prevent="handleDragOver"
       @dragleave="handleDragLeave"
       @drop="handleDrop"
@@ -51,7 +51,7 @@
       <!-- Empty state -->
       <div
         v-if="agents.length === 0"
-        class="text-center py-8 text-gray-400 text-sm border-2 border-dashed border-gray-200 rounded-lg"
+        class="text-center py-8 text-slate-400 text-sm border-2 border-dashed border-slate-200 rounded-lg"
       >
         拖拽私有Agent到此处来分享
       </div>
@@ -61,7 +61,7 @@
         <div
           v-for="agent in agents"
           :key="agent.id"
-          class="bg-gray-50 border border-gray-200 rounded-lg p-4 relative group hover:shadow-md transition-shadow"
+          class="bg-slate-50 border border-slate-200 rounded-lg p-4 relative group hover:shadow-md transition-shadow"
         >
           <div class="flex items-start justify-between mb-3">
             <div class="flex items-center space-x-2 flex-1 min-w-0">
@@ -78,11 +78,11 @@
                   d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
                 />
               </svg>
-              <h3 class="font-semibold text-gray-900 truncate">{{ agent.name }}</h3>
+              <h3 class="font-semibold text-slate-900 truncate">{{ agent.name }}</h3>
             </div>
             <button
               @click="$emit('remove-agent', agent.id, group.id)"
-              class="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-red-600 p-1"
+              class="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-600 p-1"
               title="从共享组移除"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,7 +116,7 @@
           <!-- View all shared groups badge -->
           <div
             v-if="agent.sharedGroups && agent.sharedGroups.length > 1"
-            class="text-xs text-gray-500 flex items-center space-x-1"
+            class="text-xs text-slate-500 flex items-center space-x-1"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path

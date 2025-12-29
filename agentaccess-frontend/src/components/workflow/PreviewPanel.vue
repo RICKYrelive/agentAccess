@@ -1,9 +1,9 @@
 <template>
   <div class="h-full bg-white flex flex-col">
     <!-- Header -->
-    <div class="p-4 border-b border-gray-200">
+    <div class="p-4 border-b border-slate-200">
       <div class="flex items-center justify-between">
-        <h3 class="text-lg font-semibold text-gray-900">预览测试</h3>
+        <h3 class="text-lg font-semibold text-slate-900">预览测试</h3>
         <div class="flex items-center space-x-2">
           <span
             v-if="isRunning"
@@ -26,7 +26,7 @@
             </svg>
             运行中
           </span>
-          <button @click="clearHistory" class="text-sm text-gray-500 hover:text-gray-700">
+          <button @click="clearHistory" class="text-sm text-slate-500 hover:text-slate-700">
             清空历史
           </button>
         </div>
@@ -34,8 +34,8 @@
     </div>
 
     <!-- Test Input -->
-    <div class="p-4 border-b border-gray-200">
-      <label class="block text-sm font-medium text-gray-700 mb-2"> 测试问题 </label>
+    <div class="p-4 border-b border-slate-200">
+      <label class="block text-sm font-medium text-slate-700 mb-2"> 测试问题 </label>
       <!-- Execution Mode Indicator -->
       <div
         v-if="useFastGPTExecution"
@@ -51,7 +51,7 @@
         </svg>
         <span>使用 FastGPT 引擎执行</span>
       </div>
-      <div v-else class="mb-2 flex items-center space-x-2 text-xs text-gray-500">
+      <div v-else class="mb-2 flex items-center space-x-2 text-xs text-slate-500">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
@@ -84,19 +84,19 @@
         <div
           v-for="test in testResults"
           :key="test.id"
-          class="border border-gray-200 rounded-lg overflow-hidden"
+          class="border border-slate-200 rounded-lg overflow-hidden"
         >
           <!-- Test Header -->
-          <div class="bg-gray-50 px-4 py-3 flex items-center justify-between">
+          <div class="bg-slate-50 px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3">
               <div :class="['w-2 h-2 rounded-full', getTestStatusColor(test.status)]" />
-              <span class="text-sm font-medium text-gray-900">
+              <span class="text-sm font-medium text-slate-900">
                 测试 #{{ testResults.indexOf(test) + 1 }}
               </span>
-              <span class="text-xs text-gray-500">
+              <span class="text-xs text-slate-500">
                 {{ formatTime(test.runAt || test.createdAt) }}
               </span>
-              <span v-if="test.executionTime" class="text-xs text-gray-500">
+              <span v-if="test.executionTime" class="text-xs text-slate-500">
                 {{ test.executionTime }}ms
               </span>
             </div>
@@ -108,7 +108,7 @@
               >
                 重新生成
               </button>
-              <button @click="addToTestSet(test)" class="text-sm text-gray-600 hover:text-gray-700">
+              <button @click="addToTestSet(test)" class="text-sm text-slate-600 hover:text-slate-700">
                 添加到测试集
               </button>
             </div>
@@ -118,15 +118,15 @@
           <div class="p-4 space-y-4">
             <!-- Input -->
             <div>
-              <label class="block text-xs font-medium text-gray-700 mb-1"> 输入问题 </label>
-              <div class="p-3 bg-gray-50 rounded-md">
-                <p class="text-sm text-gray-900">{{ test.input }}</p>
+              <label class="block text-xs font-medium text-slate-700 mb-1"> 输入问题 </label>
+              <div class="p-3 bg-slate-50 rounded-md">
+                <p class="text-sm text-slate-900">{{ test.input }}</p>
               </div>
             </div>
 
             <!-- Expected Output (if available) -->
             <div v-if="test.expectedOutput">
-              <label class="block text-xs font-medium text-gray-700 mb-1"> 期望输出 </label>
+              <label class="block text-xs font-medium text-slate-700 mb-1"> 期望输出 </label>
               <div class="p-3 bg-blue-50 rounded-md">
                 <p class="text-sm text-blue-900">{{ test.expectedOutput }}</p>
               </div>
@@ -150,13 +150,13 @@
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   />
                 </svg>
-                <span class="text-sm text-gray-600">正在运行工作流...</span>
+                <span class="text-sm text-slate-600">正在运行工作流...</span>
               </div>
             </div>
 
             <!-- Actual Output -->
             <div v-else-if="test.actualOutput">
-              <label class="block text-xs font-medium text-gray-700 mb-1"> 输出结果 </label>
+              <label class="block text-xs font-medium text-slate-700 mb-1"> 输出结果 </label>
               <div
                 :class="['p-3 rounded-md', test.status === 'failed' ? 'bg-red-50' : 'bg-green-50']"
               >
@@ -173,7 +173,7 @@
 
             <!-- Referenced Materials -->
             <div v-if="test.referencedMaterials && test.referencedMaterials.length > 0">
-              <label class="block text-xs font-medium text-gray-700 mb-2"> 引用资料 </label>
+              <label class="block text-xs font-medium text-slate-700 mb-2"> 引用资料 </label>
               <div class="space-y-2">
                 <div
                   v-for="material in test.referencedMaterials"
@@ -216,7 +216,7 @@
         <!-- Empty State -->
         <div v-if="testResults.length === 0" class="text-center py-12">
           <svg
-            class="mx-auto h-12 w-12 text-gray-400"
+            class="mx-auto h-12 w-12 text-slate-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -228,8 +228,8 @@
               d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
             />
           </svg>
-          <p class="mt-2 text-sm text-gray-500">还没有测试记录</p>
-          <p class="text-xs text-gray-400 mt-1">输入测试问题并点击运行测试开始</p>
+          <p class="mt-2 text-sm text-slate-500">还没有测试记录</p>
+          <p class="text-xs text-slate-400 mt-1">输入测试问题并点击运行测试开始</p>
         </div>
       </div>
     </div>
@@ -258,7 +258,7 @@ const getTestStatusColor = (status: WorkflowTest['status']) => {
     case 'pending':
       return 'bg-yellow-500'
     default:
-      return 'bg-gray-500'
+      return 'bg-slate-500'
   }
 }
 

@@ -1,11 +1,11 @@
 <template>
   <div class="bg-white h-full flex flex-col">
     <!-- Header -->
-    <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-gray-900">节点配置</h3>
+    <div class="p-4 border-b border-slate-200 flex items-center justify-between">
+      <h3 class="text-lg font-semibold text-slate-900">节点配置</h3>
       <button
         @click="$emit('close')"
-        class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md"
+        class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md"
       >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -19,7 +19,7 @@
     </div>
 
     <!-- Node Info -->
-    <div v-if="node" class="p-3 border-b border-gray-200 bg-gray-50">
+    <div v-if="node" class="p-3 border-b border-slate-200 bg-slate-50">
       <div class="flex items-center space-x-2">
         <div
           :class="[
@@ -43,8 +43,8 @@
           </svg>
         </div>
         <div class="min-w-0">
-          <p class="text-base font-semibold text-gray-900">{{ getNodeStyle().name }}</p>
-          <p class="text-xs text-gray-500 truncate">{{ getNodeStyle().description }}</p>
+          <p class="text-base font-semibold text-slate-900">{{ getNodeStyle().name }}</p>
+          <p class="text-xs text-slate-500 truncate">{{ getNodeStyle().description }}</p>
         </div>
       </div>
     </div>
@@ -53,7 +53,7 @@
     <div class="flex-1 overflow-y-auto px-4 py-3 space-y-5">
       <div v-if="!node" class="text-center py-8">
         <svg
-          class="mx-auto h-12 w-12 text-gray-400"
+          class="mx-auto h-12 w-12 text-slate-400"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -65,14 +65,14 @@
             d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
           />
         </svg>
-        <p class="mt-2 text-sm text-gray-500">请选择一个节点进行配置</p>
+        <p class="mt-2 text-sm text-slate-500">请选择一个节点进行配置</p>
       </div>
 
       <div v-else>
         <!-- Basic Configuration -->
         <div class="space-y-3">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5"> 节点名称 </label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5"> 节点名称 </label>
             <input
               v-model="localConfig.name"
               type="text"
@@ -83,7 +83,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5"> 描述 </label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5"> 描述 </label>
             <textarea
               v-model="localConfig.description"
               rows="3"
@@ -95,10 +95,10 @@
         </div>
 
         <!-- Input Node Configuration -->
-        <div v-if="node.type === 'input'" class="space-y-3 pt-4 border-t border-gray-200">
-          <h4 class="text-sm font-semibold text-gray-900">输入配置</h4>
+        <div v-if="node.type === 'input'" class="space-y-3 pt-4 border-t border-slate-200">
+          <h4 class="text-sm font-semibold text-slate-900">输入配置</h4>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">输入类型</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">输入类型</label>
             <select
               v-model="localConfig.inputType"
               class="input-field"
@@ -110,7 +110,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">占位提示</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">占位提示</label>
             <input
               v-model="localConfig.placeholder"
               type="text"
@@ -124,18 +124,18 @@
               v-model="localConfig.required"
               type="checkbox"
               id="required"
-              class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-slate-300 rounded"
               @change="updateConfiguration"
             />
-            <label for="required" class="ml-2 text-sm text-gray-700">必填项</label>
+            <label for="required" class="ml-2 text-sm text-slate-700">必填项</label>
           </div>
         </div>
 
         <!-- Web Search Node Configuration -->
-        <div v-if="node.type === 'web-search'" class="space-y-3 pt-4 border-t border-gray-200">
-          <h4 class="text-sm font-semibold text-gray-900">搜索配置</h4>
+        <div v-if="node.type === 'web-search'" class="space-y-3 pt-4 border-t border-slate-200">
+          <h4 class="text-sm font-semibold text-slate-900">搜索配置</h4>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">搜索引擎</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">搜索引擎</label>
             <select
               v-model="localConfig.searchEngine"
               class="input-field"
@@ -148,7 +148,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
               最大结果数: {{ localConfig.maxResults }}
             </label>
             <input
@@ -161,7 +161,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
               超时时间: {{ localConfig.timeout }}ms
             </label>
             <input
@@ -179,11 +179,11 @@
         <!-- Question Rewrite Node Configuration -->
         <div
           v-if="node.type === 'question-rewrite'"
-          class="space-y-3 pt-4 border-t border-gray-200"
+          class="space-y-3 pt-4 border-t border-slate-200"
         >
-          <h4 class="text-sm font-semibold text-gray-900">重写配置</h4>
+          <h4 class="text-sm font-semibold text-slate-900">重写配置</h4>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">模型</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">模型</label>
             <select v-model="localConfig.model" class="input-field" @change="updateConfiguration">
               <option value="Qwen2.5-7B">Qwen2.5-7B</option>
               <option value="GPT-3.5">GPT-3.5</option>
@@ -192,7 +192,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
               最大Token数: {{ localConfig.maxTokens }}
             </label>
             <input
@@ -206,7 +206,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
               温度: {{ localConfig.temperature }}
             </label>
             <input
@@ -220,7 +220,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">系统提示词</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">系统提示词</label>
             <textarea
               v-model="localConfig.systemPrompt"
               rows="3"
@@ -234,11 +234,11 @@
         <!-- Knowledge Retrieval Node Configuration -->
         <div
           v-if="node.type === 'knowledge-retrieval'"
-          class="space-y-3 pt-4 border-t border-gray-200"
+          class="space-y-3 pt-4 border-t border-slate-200"
         >
-          <h4 class="text-sm font-semibold text-gray-900">知识库配置</h4>
+          <h4 class="text-sm font-semibold text-slate-900">知识库配置</h4>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">检索模式</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">检索模式</label>
             <select
               v-model="localConfig.retrievalMode"
               class="input-field"
@@ -250,7 +250,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
               检索权重: {{ localConfig.retrievalWeight }}
             </label>
             <input
@@ -264,7 +264,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
               召回数量: {{ localConfig.recallCount }}
             </label>
             <input
@@ -277,7 +277,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
               召回阈值: {{ localConfig.recallThreshold }}
             </label>
             <input
@@ -293,10 +293,10 @@
         </div>
 
         <!-- LLM Call Node Configuration -->
-        <div v-if="node.type === 'llm-call'" class="space-y-3 pt-4 border-t border-gray-200">
-          <h4 class="text-sm font-semibold text-gray-900">LLM配置</h4>
+        <div v-if="node.type === 'llm-call'" class="space-y-3 pt-4 border-t border-slate-200">
+          <h4 class="text-sm font-semibold text-slate-900">LLM配置</h4>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">模型</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">模型</label>
             <select v-model="localConfig.model" class="input-field" @change="updateConfiguration">
               <option value="Qwen2.5-7B">Qwen2.5-7B</option>
               <option value="GPT-3.5">GPT-3.5</option>
@@ -305,7 +305,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
               最大Token数: {{ localConfig.maxTokens }}
             </label>
             <input
@@ -319,7 +319,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
               温度: {{ localConfig.temperature }}
             </label>
             <input
@@ -333,7 +333,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">系统提示词</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">系统提示词</label>
             <textarea
               v-model="localConfig.systemPrompt"
               rows="4"
@@ -347,18 +347,18 @@
               v-model="localConfig.streamOutput"
               type="checkbox"
               id="stream"
-              class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-slate-300 rounded"
               @change="updateConfiguration"
             />
-            <label for="stream" class="ml-2 text-sm text-gray-700">流式输出</label>
+            <label for="stream" class="ml-2 text-sm text-slate-700">流式输出</label>
           </div>
         </div>
 
         <!-- Data Processing Node Configuration -->
-        <div v-if="node.type === 'data-processing'" class="space-y-3 pt-4 border-t border-gray-200">
-          <h4 class="text-sm font-semibold text-gray-900">数据处理配置</h4>
+        <div v-if="node.type === 'data-processing'" class="space-y-3 pt-4 border-t border-slate-200">
+          <h4 class="text-sm font-semibold text-slate-900">数据处理配置</h4>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">操作类型</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">操作类型</label>
             <select
               v-model="localConfig.operation"
               class="input-field"
@@ -372,7 +372,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">处理规则</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">处理规则</label>
             <textarea
               v-model="localConfig.rules"
               rows="4"
@@ -384,10 +384,10 @@
         </div>
 
         <!-- Condition Node Configuration -->
-        <div v-if="node.type === 'condition'" class="space-y-3 pt-4 border-t border-gray-200">
-          <h4 class="text-sm font-semibold text-gray-900">条件配置</h4>
+        <div v-if="node.type === 'condition'" class="space-y-3 pt-4 border-t border-slate-200">
+          <h4 class="text-sm font-semibold text-slate-900">条件配置</h4>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">条件类型</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">条件类型</label>
             <select
               v-model="localConfig.conditionType"
               class="input-field"
@@ -402,7 +402,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">比较值</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">比较值</label>
             <input
               v-model="localConfig.compareValue"
               type="text"
@@ -412,7 +412,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">为真时连接</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">为真时连接</label>
             <input
               v-model="localConfig.trueBranch"
               type="text"
@@ -422,7 +422,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">为假时连接</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">为假时连接</label>
             <input
               v-model="localConfig.falseBranch"
               type="text"
@@ -434,10 +434,10 @@
         </div>
 
         <!-- Code Execution Node Configuration -->
-        <div v-if="node.type === 'code-execution'" class="space-y-3 pt-4 border-t border-gray-200">
-          <h4 class="text-sm font-semibold text-gray-900">代码执行配置</h4>
+        <div v-if="node.type === 'code-execution'" class="space-y-3 pt-4 border-t border-slate-200">
+          <h4 class="text-sm font-semibold text-slate-900">代码执行配置</h4>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">编程语言</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">编程语言</label>
             <select
               v-model="localConfig.language"
               class="input-field"
@@ -451,7 +451,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">代码</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">代码</label>
             <textarea
               v-model="localConfig.code"
               rows="10"
@@ -461,7 +461,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
               超时时间: {{ localConfig.timeout }}ms
             </label>
             <input
@@ -477,10 +477,10 @@
         </div>
 
         <!-- Output Node Configuration -->
-        <div v-if="node.type === 'output'" class="space-y-3 pt-4 border-t border-gray-200">
-          <h4 class="text-sm font-semibold text-gray-900">输出配置</h4>
+        <div v-if="node.type === 'output'" class="space-y-3 pt-4 border-t border-slate-200">
+          <h4 class="text-sm font-semibold text-slate-900">输出配置</h4>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">输出类型</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">输出类型</label>
             <select
               v-model="localConfig.outputType"
               class="input-field"
@@ -493,7 +493,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">格式</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">格式</label>
             <select v-model="localConfig.format" class="input-field" @change="updateConfiguration">
               <option value="plain">纯文本</option>
               <option value="markdown">Markdown</option>
@@ -506,11 +506,11 @@
         <!-- Annotated Data Retrieval Configuration -->
         <div
           v-if="node.type === 'annotated-data-retrieval'"
-          class="space-y-3 pt-4 border-t border-gray-200"
+          class="space-y-3 pt-4 border-t border-slate-200"
         >
-          <h4 class="text-sm font-semibold text-gray-900">标注数据检索配置</h4>
+          <h4 class="text-sm font-semibold text-slate-900">标注数据检索配置</h4>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">检索策略</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">检索策略</label>
             <select
               v-model="localConfig.retrievalStrategy"
               class="input-field"
@@ -522,7 +522,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
               最大结果数: {{ localConfig.maxResults }}
             </label>
             <input
@@ -535,7 +535,7 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
               相似度阈值: {{ localConfig.threshold }}
             </label>
             <input
@@ -553,7 +553,7 @@
         <!-- Start/End nodes have no specific configuration -->
         <div v-if="node.type === 'start' || node.type === 'end'" class="text-center py-8">
           <svg
-            class="mx-auto h-12 w-12 text-gray-400"
+            class="mx-auto h-12 w-12 text-slate-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -565,7 +565,7 @@
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <p class="mt-2 text-sm text-gray-500">
+          <p class="mt-2 text-sm text-slate-500">
             {{ node.type === 'start' ? '开始节点' : '结束节点' }}无需配置
           </p>
         </div>
@@ -575,7 +575,7 @@
     <!-- Actions -->
     <div
       v-if="node && node.type !== 'start' && node.type !== 'end'"
-      class="px-4 py-3 border-t border-gray-200"
+      class="px-4 py-3 border-t border-slate-200"
     >
       <div class="flex space-x-3">
         <button @click="resetConfiguration" class="btn-secondary flex-1">重置配置</button>
@@ -624,8 +624,8 @@ const getNodeStyle = () => {
       name: '未知节点',
       description: '未知节点类型',
       icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
-      bgColor: 'bg-gray-100',
-      textColor: 'text-gray-600',
+      bgColor: 'bg-slate-100',
+      textColor: 'text-slate-600',
     }
   }
 
@@ -723,16 +723,16 @@ const getNodeStyle = () => {
         name: '结束',
         description: '工作流终点',
         icon: 'M6 18L18 6M6 6l12 12',
-        bgColor: 'bg-gray-100',
-        textColor: 'text-gray-600',
+        bgColor: 'bg-slate-100',
+        textColor: 'text-slate-600',
       }
     default:
       return {
         name: '未知节点',
         description: '未知节点类型',
         icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
-        bgColor: 'bg-gray-100',
-        textColor: 'text-gray-600',
+        bgColor: 'bg-slate-100',
+        textColor: 'text-slate-600',
       }
   }
 }

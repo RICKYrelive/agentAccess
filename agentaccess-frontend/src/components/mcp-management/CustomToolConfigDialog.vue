@@ -2,9 +2,9 @@
   <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click.self="$emit('close')">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
       <!-- Header -->
-      <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-        <h3 class="text-lg font-semibold text-gray-900">{{ tool ? '编辑' : '配置' }}自定义工具</h3>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+      <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+        <h3 class="text-lg font-semibold text-slate-900">{{ tool ? '编辑' : '配置' }}自定义工具</h3>
+        <button @click="$emit('close')" class="text-slate-400 hover:text-slate-600">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -15,42 +15,42 @@
       <div class="px-6 py-4">
         <form @submit.prevent="handleSubmit" class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">工具名称 *</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">工具名称 *</label>
             <input
               v-model="formData.name"
               type="text"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               placeholder="例如：GitHub MCP"
             />
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">描述</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">描述</label>
             <textarea
               v-model="formData.description"
               rows="2"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               placeholder="工具的简短描述"
             />
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">MCP 服务器 URL *</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">MCP 服务器 URL *</label>
             <input
               v-model="formData.url"
               type="url"
               required
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               placeholder="https://api.example.com/mcp"
             />
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">认证方式</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">认证方式</label>
             <select
               v-model="formData.authType"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
               <option value="none">无认证</option>
               <option value="apikey">API Key</option>
@@ -59,21 +59,21 @@
           </div>
 
           <div v-if="formData.authType === 'apikey'">
-            <label class="block text-sm font-medium text-gray-700 mb-1">API Key</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">API Key</label>
             <input
               v-model="formData.apiKey"
               type="password"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               placeholder="输入 API Key"
             />
           </div>
 
           <div v-if="formData.authType === 'bearer'">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Bearer Token</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Bearer Token</label>
             <input
               v-model="formData.bearerToken"
               type="password"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               placeholder="输入 Bearer Token"
             />
           </div>
@@ -94,8 +94,8 @@
       </div>
 
       <!-- Footer -->
-      <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
-        <button @click="$emit('close')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md">
+      <div class="px-6 py-4 border-t border-slate-200 flex justify-end space-x-3">
+        <button @click="$emit('close')" class="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-md">
           取消
         </button>
         <button @click="handleSubmit" class="px-4 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-md">

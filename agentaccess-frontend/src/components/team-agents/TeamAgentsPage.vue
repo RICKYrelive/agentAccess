@@ -2,7 +2,7 @@
   <div class="h-full bg-white overflow-y-auto p-6">
     <!-- Header -->
     <div class="mb-6 flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-gray-900">团队Agent</h1>
+      <h1 class="text-2xl font-bold text-slate-900">团队Agent</h1>
       <button
         @click="showCreateTeamDialog = true"
         class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md flex items-center space-x-2 transition-colors"
@@ -21,15 +21,15 @@
 
     <!-- My Teams Section -->
     <div class="mb-8">
-      <h2 class="text-lg font-semibold text-gray-900 mb-4">我的团队 ({{ myTeams.length }})</h2>
+      <h2 class="text-lg font-semibold text-slate-900 mb-4">我的团队 ({{ myTeams.length }})</h2>
 
       <!-- Empty state -->
       <div
         v-if="myTeams.length === 0"
-        class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+        class="text-center py-12 bg-slate-50 rounded-lg border-2 border-dashed border-slate-200"
       >
         <svg
-          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          class="w-16 h-16 mx-auto text-slate-300 mb-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -41,7 +41,7 @@
             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
           />
         </svg>
-        <p class="text-gray-500 mb-2">你还没有加入任何团队</p>
+        <p class="text-slate-500 mb-2">你还没有加入任何团队</p>
         <button
           @click="showCreateTeamDialog = true"
           class="text-primary-600 hover:text-primary-700 font-medium"
@@ -67,7 +67,7 @@
 
     <!-- Available Teams Section -->
     <div v-if="otherTeams.length > 0">
-      <h2 class="text-lg font-semibold text-gray-900 mb-4">
+      <h2 class="text-lg font-semibold text-slate-900 mb-4">
         可加入的团队 ({{ otherTeams.length }})
       </h2>
 
@@ -93,23 +93,23 @@
       @click.self="showCreateTeamDialog = false"
     >
       <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">创建团队</h3>
+        <h3 class="text-lg font-semibold text-slate-900 mb-4">创建团队</h3>
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">团队名称</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">团队名称</label>
             <input
               v-model="newTeamName"
               type="text"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               placeholder="例如：销售部"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">描述（可选）</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">描述（可选）</label>
             <textarea
               v-model="newTeamDescription"
               rows="3"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               placeholder="描述这个团队的用途"
             />
           </div>
@@ -117,7 +117,7 @@
         <div class="flex justify-end space-x-3 mt-6">
           <button
             @click="showCreateTeamDialog = false"
-            class="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+            class="px-4 py-2 text-slate-700 hover:bg-slate-100 rounded-md"
           >
             取消
           </button>
@@ -142,7 +142,7 @@
     <!-- Toast notification -->
     <div
       v-if="toast.show"
-      class="fixed top-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in"
+      class="fixed top-4 right-4 bg-slate-800 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in"
     >
       {{ toast.message }}
     </div>

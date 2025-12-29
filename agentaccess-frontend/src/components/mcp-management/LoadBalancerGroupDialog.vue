@@ -3,9 +3,9 @@
     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click.self="emit('close')">
       <div class="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden">
         <!-- Header -->
-        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-          <h3 class="text-lg font-semibold text-gray-900">{{ group ? '编辑' : '创建' }}负载均衡组</h3>
-          <button @click="emit('close')" class="text-gray-400 hover:text-gray-600">
+        <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+          <h3 class="text-lg font-semibold text-slate-900">{{ group ? '编辑' : '创建' }}负载均衡组</h3>
+          <button @click="emit('close')" class="text-slate-400 hover:text-slate-600">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -17,37 +17,37 @@
           <form @submit.prevent="handleSubmit" class="space-y-4">
             <!-- Group Name -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">组名称 *</label>
+              <label class="block text-sm font-medium text-slate-700 mb-1">组名称 *</label>
               <input
                 v-model="formData.name"
                 type="text"
                 required
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="例如：翻译服务组"
               />
             </div>
 
             <!-- Strategy -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">负载均衡策略</label>
+              <label class="block text-sm font-medium text-slate-700 mb-1">负载均衡策略</label>
               <select
                 v-model="formData.strategy"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               >
                 <option value="round-robin">轮询 (Round Robin)</option>
                 <option value="random">随机 (Random)</option>
                 <option value="least-used">最少调用 (Least Used)</option>
               </select>
-              <p class="text-xs text-gray-500 mt-1">
+              <p class="text-xs text-slate-500 mt-1">
                 {{ getStrategyDescription(formData.strategy) }}
               </p>
             </div>
 
             <!-- Tool Selection -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">选择工具</label>
-              <div class="border border-gray-300 rounded-md p-3 max-h-40 overflow-y-auto">
-                <div v-if="availableTools.length === 0" class="text-sm text-gray-500 text-center py-2">
+              <label class="block text-sm font-medium text-slate-700 mb-1">选择工具</label>
+              <div class="border border-slate-300 rounded-md p-3 max-h-40 overflow-y-auto">
+                <div v-if="availableTools.length === 0" class="text-sm text-slate-500 text-center py-2">
                   暂无可用工具
                 </div>
                 <label v-for="tool in availableTools" :key="tool.id" class="flex items-center space-x-2 py-1">
@@ -55,24 +55,24 @@
                     v-model="formData.toolIds"
                     type="checkbox"
                     :value="tool.id"
-                    class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                    class="rounded border-slate-300 text-primary-600 focus:ring-primary-500"
                   />
-                  <span class="text-sm text-gray-700">{{ tool.name }}</span>
-                  <span class="text-xs text-gray-400">({{ tool.type }})</span>
+                  <span class="text-sm text-slate-700">{{ tool.name }}</span>
+                  <span class="text-xs text-slate-400">({{ tool.type }})</span>
                 </label>
               </div>
             </div>
 
             <!-- Health Check -->
-            <div class="border-t border-gray-200 pt-4">
+            <div class="border-t border-slate-200 pt-4">
               <div class="flex items-center justify-between mb-3">
-                <label class="text-sm font-medium text-gray-700">健康检查</label>
+                <label class="text-sm font-medium text-slate-700">健康检查</label>
                 <button
                   type="button"
                   @click="formData.healthCheckEnabled = !formData.healthCheckEnabled"
                   :class="[
                     'relative inline-flex h-6 w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500',
-                    formData.healthCheckEnabled ? 'bg-primary-600' : 'bg-gray-200',
+                    formData.healthCheckEnabled ? 'bg-primary-600' : 'bg-slate-200',
                   ]"
                 >
                   <span
@@ -86,21 +86,21 @@
 
               <div v-if="formData.healthCheckEnabled" class="space-y-3">
                 <div>
-                  <label class="block text-xs font-medium text-gray-600 mb-1">检查间隔（秒）</label>
+                  <label class="block text-xs font-medium text-slate-600 mb-1">检查间隔（秒）</label>
                   <input
                     v-model.number="formData.healthCheckInterval"
                     type="number"
                     min="5"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                 </div>
                 <div>
-                  <label class="block text-xs font-medium text-gray-600 mb-1">超时时间（秒）</label>
+                  <label class="block text-xs font-medium text-slate-600 mb-1">超时时间（秒）</label>
                   <input
                     v-model.number="formData.healthCheckTimeout"
                     type="number"
                     min="1"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    class="w-full px-3 py-2 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -109,8 +109,8 @@
         </div>
 
         <!-- Footer -->
-        <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
-          <button @click="emit('close')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md">
+        <div class="px-6 py-4 border-t border-slate-200 flex justify-end space-x-3">
+          <button @click="emit('close')" class="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-md">
             取消
           </button>
           <button

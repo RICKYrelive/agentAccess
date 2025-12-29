@@ -5,9 +5,9 @@
   >
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4" @click.stop>
       <!-- Header -->
-      <div class="flex items-center justify-between p-6 border-b border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-900">编辑知识库</h2>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+      <div class="flex items-center justify-between p-6 border-b border-slate-200">
+        <h2 class="text-xl font-semibold text-slate-900">编辑知识库</h2>
+        <button @click="$emit('close')" class="text-slate-400 hover:text-slate-600">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -23,7 +23,7 @@
       <form @submit.prevent="handleSubmit" class="p-6 space-y-4">
         <!-- Name -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             知识库名称 <span class="text-red-500">*</span>
           </label>
           <input
@@ -31,25 +31,25 @@
             type="text"
             required
             maxlength="100"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             placeholder="请输入知识库名称"
           />
         </div>
 
         <!-- Description -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"> 描述 </label>
+          <label class="block text-sm font-medium text-slate-700 mb-1"> 描述 </label>
           <textarea
             v-model="form.description"
             rows="3"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
             placeholder="请输入知识库描述（可选）"
           />
         </div>
 
         <!-- Type Info (Read-only) -->
-        <div class="bg-gray-50 rounded-lg p-3">
-          <div class="text-sm text-gray-600">
+        <div class="bg-slate-50 rounded-lg p-3">
+          <div class="text-sm text-slate-600">
             <div class="flex items-center space-x-2 mb-1">
               <span class="font-medium">类型:</span>
               <span class="px-2 py-0.5 text-xs font-medium rounded-full" :class="typeBadgeClass">
@@ -72,14 +72,14 @@
           <button
             type="button"
             @click="$emit('close')"
-            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            class="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
           >
             取消
           </button>
           <button
             type="submit"
             :disabled="!isFormValid"
-            class="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            class="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
           >
             保存
           </button>
@@ -139,7 +139,7 @@ const typeBadgeClass = computed(() => {
     spreadsheet: 'bg-blue-100 text-blue-700',
     database: 'bg-purple-100 text-purple-700',
   }
-  return classMap[props.knowledgeBase.type] || 'bg-gray-100 text-gray-700'
+  return classMap[props.knowledgeBase.type] || 'bg-slate-100 text-slate-700'
 })
 
 const isFormValid = computed(() => {

@@ -2,7 +2,7 @@
   <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2">
     <!-- Memory Type Selection -->
     <div>
-      <h4 class="text-sm font-medium text-gray-900 mb-3">选择记忆体类型</h4>
+      <h4 class="text-sm font-medium text-slate-900 mb-3">选择记忆体类型</h4>
       <div class="space-y-3">
         <label
           v-for="option in memoryOptions"
@@ -11,7 +11,7 @@
             'flex items-center justify-between p-3 bg-white rounded-lg border cursor-pointer transition-colors',
             localSelectedMemory === option.id
               ? 'border-primary-500 bg-primary-50'
-              : 'border-gray-200 hover:bg-gray-50',
+              : 'border-slate-200 hover:bg-slate-50',
           ]"
           @click="updateSelectedMemory(option.id)"
         >
@@ -29,16 +29,16 @@
                   :value="option.id"
                   :checked="localSelectedMemory === option.id"
                   @change="updateSelectedMemory(option.id)"
-                  class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-gray-300"
+                  class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-slate-300"
                 />
-                <label :for="'memory-' + option.id" class="text-sm font-medium text-gray-900 cursor-pointer">
+                <label :for="'memory-' + option.id" class="text-sm font-medium text-slate-900 cursor-pointer">
                   {{ option.name }}
                 </label>
               </div>
-              <div class="text-xs text-gray-500 ml-6">{{ option.description }}</div>
+              <div class="text-xs text-slate-500 ml-6">{{ option.description }}</div>
             </div>
           </div>
-          <div class="text-xs font-medium" :class="localSelectedMemory === option.id ? 'text-primary-600' : 'text-gray-500'">
+          <div class="text-xs font-medium" :class="localSelectedMemory === option.id ? 'text-primary-600' : 'text-slate-500'">
             {{ option.size }}
           </div>
         </label>
@@ -46,19 +46,19 @@
     </div>
 
     <!-- Memory Stats -->
-    <div v-if="localSelectedMemory" class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+    <div v-if="localSelectedMemory" class="bg-slate-50 rounded-lg p-3 border border-slate-200">
       <div class="grid grid-cols-3 gap-4 text-center">
         <div>
-          <div class="text-xs text-gray-500 mb-1">已用条数</div>
-          <div class="text-sm font-semibold text-gray-900">128 / 1000</div>
+          <div class="text-xs text-slate-500 mb-1">已用条数</div>
+          <div class="text-sm font-semibold text-slate-900">128 / 1000</div>
         </div>
         <div>
-          <div class="text-xs text-gray-500 mb-1">存储大小</div>
-          <div class="text-sm font-semibold text-gray-900">2.3 MB</div>
+          <div class="text-xs text-slate-500 mb-1">存储大小</div>
+          <div class="text-sm font-semibold text-slate-900">2.3 MB</div>
         </div>
         <div>
-          <div class="text-xs text-gray-500 mb-1">向量数量</div>
-          <div class="text-sm font-semibold text-gray-900">156</div>
+          <div class="text-xs text-slate-500 mb-1">向量数量</div>
+          <div class="text-sm font-semibold text-slate-900">156</div>
         </div>
       </div>
     </div>

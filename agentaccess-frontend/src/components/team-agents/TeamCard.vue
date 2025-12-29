@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+    class="bg-white border border-slate-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
     @click="handleCardClick"
   >
     <!-- Header with team name and badge -->
@@ -20,8 +20,8 @@
           />
         </svg>
         <div class="flex-1 min-w-0">
-          <h3 class="font-semibold text-gray-900 truncate">{{ team.name }}</h3>
-          <p v-if="team.description" class="text-sm text-gray-500 truncate">
+          <h3 class="font-semibold text-slate-900 truncate">{{ team.name }}</h3>
+          <p v-if="team.description" class="text-sm text-slate-500 truncate">
             {{ team.description }}
           </p>
         </div>
@@ -35,7 +35,7 @@
     </div>
 
     <!-- Team info -->
-    <div class="flex items-center space-x-4 text-sm text-gray-500 mb-3">
+    <div class="flex items-center space-x-4 text-sm text-slate-500 mb-3">
       <div class="flex items-center space-x-1">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -71,14 +71,14 @@
       </span>
       <span
         v-if="agents.length > 3"
-        class="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full"
+        class="px-2 py-1 bg-slate-100 text-slate-600 text-xs font-medium rounded-full"
       >
         +{{ agents.length - 3 }}
       </span>
     </div>
 
     <!-- Action buttons -->
-    <div class="flex items-center space-x-2 pt-3 border-t border-gray-100" @click.stop>
+    <div class="flex items-center space-x-2 pt-3 border-t border-slate-100" @click.stop>
       <!-- Member of team -->
       <template v-if="!showJoinButton">
         <button
@@ -102,7 +102,7 @@
         <button
           v-if="hasPendingRequest"
           @click="$emit('cancel-request', team.id)"
-          class="w-full px-3 py-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md transition-colors"
+          class="w-full px-3 py-2 text-sm bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-md transition-colors"
         >
           已申请 (点击取消)
         </button>

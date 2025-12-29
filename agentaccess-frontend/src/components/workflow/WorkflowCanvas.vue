@@ -1,13 +1,13 @@
 <template>
-  <div class="h-full flex flex-col bg-gray-50">
+  <div class="h-full flex flex-col bg-slate-50">
     <!-- Toolbar -->
-    <div class="bg-white border-b border-gray-200 px-4 py-3">
+    <div class="bg-white border-b border-slate-200 px-4 py-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-4">
           <!-- Agent Name Editor -->
           <div class="flex items-center space-x-2">
             <svg
-              class="w-5 h-5 text-gray-600"
+              class="w-5 h-5 text-slate-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -20,12 +20,12 @@
               />
             </svg>
             <div v-if="!isEditingName" class="flex items-center space-x-2">
-              <h3 class="text-lg font-medium text-gray-900">
+              <h3 class="text-lg font-medium text-slate-900">
                 {{ currentWorkflow?.name || '新Agent' }}
               </h3>
               <button
                 @click="startEditingName"
-                class="text-gray-400 hover:text-gray-600"
+                class="text-slate-400 hover:text-slate-600"
                 title="重命名"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,11 +45,11 @@
               @blur="saveName"
               @keyup.enter="saveName"
               @keyup.esc="cancelEditName"
-              class="text-lg font-medium text-gray-900 border border-primary-500 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              class="text-lg font-medium text-slate-900 border border-primary-500 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-500"
               style="width: 200px"
             />
           </div>
-          <div class="flex items-center space-x-2 text-sm text-gray-500">
+          <div class="flex items-center space-x-2 text-sm text-slate-500">
             <span>节点: {{ currentNodes.length }}</span>
             <span>•</span>
             <span>连接: {{ currentConnections.length }}</span>
@@ -130,15 +130,15 @@
     <!-- Canvas Area -->
     <div class="flex-1 flex">
       <!-- Node Palette -->
-      <div class="w-64 bg-white border-r border-gray-200 p-4">
-        <h4 class="text-sm font-medium text-gray-900 mb-4">节点类型</h4>
+      <div class="w-64 bg-white border-r border-slate-200 p-4">
+        <h4 class="text-sm font-medium text-slate-900 mb-4">节点类型</h4>
         <div class="space-y-2">
           <div
             v-for="nodeType in nodeTypes"
             :key="nodeType.type"
             draggable="true"
             @dragstart="onDragStart($event, nodeType.type)"
-            class="p-3 bg-gray-50 border border-gray-200 rounded-lg cursor-move hover:bg-gray-100 transition-colors"
+            class="p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-move hover:bg-slate-100 transition-colors"
           >
             <div class="flex items-center space-x-3">
               <div
@@ -163,8 +163,8 @@
                 </svg>
               </div>
               <div class="min-w-0">
-                <p class="text-sm font-medium text-gray-900">{{ nodeType.name }}</p>
-                <p class="text-xs text-gray-500">{{ nodeType.description }}</p>
+                <p class="text-sm font-medium text-slate-900">{{ nodeType.name }}</p>
+                <p class="text-xs text-slate-500">{{ nodeType.description }}</p>
               </div>
             </div>
           </div>
@@ -197,7 +197,7 @@
         >
           <div
             v-if="currentNodes.length === 0"
-            class="absolute inset-0 flex items-center justify-center text-gray-400 pointer-events-none"
+            class="absolute inset-0 flex items-center justify-center text-slate-400 pointer-events-none"
           >
             <div class="text-center">
               <svg class="mx-auto h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">

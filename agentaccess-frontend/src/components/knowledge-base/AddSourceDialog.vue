@@ -9,10 +9,10 @@
     >
       <!-- Header -->
       <div
-        class="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white"
+        class="flex items-center justify-between p-6 border-b border-slate-200 sticky top-0 bg-white"
       >
-        <h2 class="text-xl font-semibold text-gray-900">添加数据源</h2>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+        <h2 class="text-xl font-semibold text-slate-900">添加数据源</h2>
+        <button @click="$emit('close')" class="text-slate-400 hover:text-slate-600">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -29,13 +29,13 @@
         <!-- Text/Spreadsheet - File Upload -->
         <div v-if="knowledgeBase.type === 'text' || knowledgeBase.type === 'spreadsheet'">
           <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1"> 上传文件 </label>
+            <label class="block text-sm font-medium text-slate-700 mb-1"> 上传文件 </label>
             <div
-              class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-blue-400 transition-colors"
+              class="flex justify-center px-6 pt-5 pb-6 border-2 border-slate-300 border-dashed rounded-lg hover:border-blue-400 transition-colors"
             >
               <div class="space-y-1 text-center">
                 <svg
-                  class="mx-auto h-12 w-12 text-gray-400"
+                  class="mx-auto h-12 w-12 text-slate-400"
                   stroke="currentColor"
                   fill="none"
                   viewBox="0 0 48 48"
@@ -47,7 +47,7 @@
                     stroke-linejoin="round"
                   />
                 </svg>
-                <div class="flex text-sm text-gray-600">
+                <div class="flex text-sm text-slate-600">
                   <label
                     for="file-upload"
                     class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none"
@@ -65,7 +65,7 @@
                   </label>
                   <p class="pl-1">或拖拽文件到此处</p>
                 </div>
-                <p class="text-xs text-gray-500">{{ acceptDescription }}</p>
+                <p class="text-xs text-slate-500">{{ acceptDescription }}</p>
               </div>
             </div>
             <p v-if="errors.file" class="mt-1 text-sm text-red-600">{{ errors.file }}</p>
@@ -75,11 +75,11 @@
               <div
                 v-for="(file, index) in newFiles"
                 :key="index"
-                class="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg"
+                class="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-lg"
               >
                 <div class="flex-1 min-w-0">
-                  <p class="text-sm font-medium text-gray-900 truncate">{{ file.name }}</p>
-                  <p class="text-xs text-gray-500">{{ formatSize(file.size) }}</p>
+                  <p class="text-sm font-medium text-slate-900 truncate">{{ file.name }}</p>
+                  <p class="text-xs text-slate-500">{{ formatSize(file.size) }}</p>
                 </div>
                 <button
                   type="button"
@@ -140,7 +140,7 @@
                 type="button"
                 @click="testConnection"
                 :disabled="isTesting"
-                class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
+                class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
               >
                 <svg v-if="isTesting" class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
                   <circle
@@ -170,18 +170,18 @@
 
             <!-- Table Selection -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"> 选择表 </label>
-              <div v-if="!hasTestedConnection" class="text-sm text-gray-500 py-2">
+              <label class="block text-sm font-medium text-slate-700 mb-1"> 选择表 </label>
+              <div v-if="!hasTestedConnection" class="text-sm text-slate-500 py-2">
                 点击"刷新可用表"获取可用表列表
               </div>
               <div v-else class="space-y-2">
                 <div
-                  class="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2 space-y-1"
+                  class="max-h-48 overflow-y-auto border border-slate-300 rounded-lg p-2 space-y-1"
                 >
                   <label
                     v-for="table in availableTables.filter((t) => !existingTables.includes(t))"
                     :key="table"
-                    class="flex items-center space-x-2 px-2 py-1 hover:bg-gray-50 rounded cursor-pointer"
+                    class="flex items-center space-x-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer"
                   >
                     <input
                       type="checkbox"
@@ -192,17 +192,17 @@
                       "
                       class="h-4 w-4 text-purple-600 focus:ring-purple-500 rounded"
                     />
-                    <span class="text-sm text-gray-700">{{ table }}</span>
+                    <span class="text-sm text-slate-700">{{ table }}</span>
                   </label>
                   <p
                     v-if="availableTables.filter((t) => !existingTables.includes(t)).length === 0"
-                    class="text-sm text-gray-500 py-2 text-center"
+                    class="text-sm text-slate-500 py-2 text-center"
                   >
                     所有表已添加
                   </p>
                 </div>
                 <div class="flex items-center justify-between">
-                  <p class="text-xs text-gray-500">已选择: {{ selectedTables.length }} 个新表</p>
+                  <p class="text-xs text-slate-500">已选择: {{ selectedTables.length }} 个新表</p>
                   <button
                     v-if="selectedTables.length > 0"
                     type="button"
@@ -222,7 +222,7 @@
           <button
             type="button"
             @click="$emit('close')"
-            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            class="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
           >
             取消
           </button>
@@ -230,7 +230,7 @@
             type="button"
             @click="handleAdd"
             :disabled="!canAdd"
-            class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
           >
             添加
           </button>

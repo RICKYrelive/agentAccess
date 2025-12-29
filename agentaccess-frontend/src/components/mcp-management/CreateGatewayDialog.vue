@@ -3,9 +3,9 @@
     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click.self="emit('close')">
       <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
         <!-- Header -->
-        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-          <h3 class="text-lg font-semibold text-gray-900">{{ gateway ? '编辑' : '创建' }} MCP 网关</h3>
-          <button @click="emit('close')" class="text-gray-400 hover:text-gray-600">
+        <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+          <h3 class="text-lg font-semibold text-slate-900">{{ gateway ? '编辑' : '创建' }} MCP 网关</h3>
+          <button @click="emit('close')" class="text-slate-400 hover:text-slate-600">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -18,46 +18,46 @@
             <!-- Basic Info -->
             <div class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">网关名称 *</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">网关名称 *</label>
                 <input
                   v-model="formData.name"
                   type="text"
                   required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="例如：API 网关"
                 />
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">描述</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">描述</label>
                 <textarea
                   v-model="formData.description"
                   rows="2"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="网关的简短描述"
                 />
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Base URL *</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Base URL *</label>
                 <input
                   v-model="formData.baseUrl"
                   type="url"
                   required
-                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  class="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="https://api.example.com"
                 />
               </div>
             </div>
 
             <!-- Tool Selection Section -->
-            <div class="border-t border-gray-200 pt-4">
-              <h4 class="text-base font-medium text-gray-900 mb-4">关联 MCP 工具</h4>
+            <div class="border-t border-slate-200 pt-4">
+              <h4 class="text-base font-medium text-slate-900 mb-4">关联 MCP 工具</h4>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Left Pane: Available Tools -->
-                <div class="border border-gray-200 rounded-lg p-4">
-                  <h5 class="text-sm font-medium text-gray-700 mb-3">可用工具</h5>
+                <div class="border border-slate-200 rounded-lg p-4">
+                  <h5 class="text-sm font-medium text-slate-700 mb-3">可用工具</h5>
                   <ToolSearchFilter
                     :search-query="searchQuery"
                     :filter-type="filterType"
@@ -78,7 +78,7 @@
                 </div>
 
                 <!-- Right Pane: Selected Tools -->
-                <div class="border border-gray-200 rounded-lg p-4">
+                <div class="border border-slate-200 rounded-lg p-4">
                   <SelectedToolsPane
                     :selected-tool-ids="formData.mcpToolIds"
                     :load-balancer-groups="formData.loadBalancerGroups"
@@ -95,8 +95,8 @@
         </div>
 
         <!-- Footer -->
-        <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
-          <button @click="emit('close')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md">
+        <div class="px-6 py-4 border-t border-slate-200 flex justify-end space-x-3">
+          <button @click="emit('close')" class="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-md">
             取消
           </button>
           <button

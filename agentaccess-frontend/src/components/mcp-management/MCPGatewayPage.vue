@@ -1,11 +1,11 @@
 <template>
-  <div class="h-full flex flex-col bg-white overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+  <div class="h-full flex flex-col bg-white overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
     <!-- Page Header -->
-    <div class="px-8 py-6 border-b border-gray-200">
+    <div class="px-8 py-6 border-b border-slate-200">
       <div class="flex items-center justify-between">
         <div>
-          <h2 class="text-2xl font-semibold text-gray-900">MCP 网关管理</h2>
-          <p class="text-gray-500 mt-1">管理 MCP 网关</p>
+          <h2 class="text-2xl font-semibold text-slate-900">MCP 网关管理</h2>
+          <p class="text-slate-500 mt-1">管理 MCP 网关</p>
         </div>
         <div class="flex space-x-3">
           <button
@@ -24,28 +24,28 @@
     <!-- Gateways Table -->
     <div class="px-8 py-6 flex-1">
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-slate-50">
             <tr>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                 网关名称
               </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                 描述
               </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                 关联工具
               </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
                 状态
               </th>
-              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
                 操作
               </th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="gateway in store.mcpGateways" :key="gateway.id" class="hover:bg-gray-50">
+          <tbody class="bg-white divide-y divide-slate-200">
+            <tr v-for="gateway in store.mcpGateways" :key="gateway.id" class="hover:bg-slate-50">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
                   <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
@@ -53,19 +53,19 @@
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                     </svg>
                   </div>
-                  <div class="text-sm font-medium text-gray-900">{{ gateway.name }}</div>
+                  <div class="text-sm font-medium text-slate-900">{{ gateway.name }}</div>
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm text-gray-500">{{ gateway.description }}</div>
+                <div class="text-sm text-slate-500">{{ gateway.description }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span class="text-sm text-gray-900">{{ gateway.mcpToolIds.length }} 个工具</span>
+                <span class="text-sm text-slate-900">{{ gateway.mcpToolIds.length }} 个工具</span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span :class="getStatusBadgeClass(gateway.status)" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
                   <span v-if="gateway.status === 'running'" class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5"></span>
-                  <span v-if="gateway.status === 'stopped'" class="w-1.5 h-1.5 bg-gray-500 rounded-full mr-1.5"></span>
+                  <span v-if="gateway.status === 'stopped'" class="w-1.5 h-1.5 bg-slate-500 rounded-full mr-1.5"></span>
                   <span v-if="gateway.status === 'error'" class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1.5"></span>
                   {{ getStatusName(gateway.status) }}
                 </span>
@@ -80,8 +80,8 @@
               </td>
             </tr>
             <tr v-if="store.mcpGateways.length === 0">
-              <td colspan="5" class="px-6 py-12 text-center text-sm text-gray-500">
-                <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <td colspan="5" class="px-6 py-12 text-center text-sm text-slate-500">
+                <svg class="w-12 h-12 mx-auto mb-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                 </svg>
                 <p>还没有创建任何 MCP 网关</p>
@@ -125,10 +125,10 @@ const getStatusName = (status: string) => {
 const getStatusBadgeClass = (status: string) => {
   const classes = {
     running: 'bg-green-100 text-green-800',
-    stopped: 'bg-gray-100 text-gray-800',
+    stopped: 'bg-slate-100 text-slate-800',
     error: 'bg-red-100 text-red-800',
   }
-  return classes[status] || 'bg-gray-100 text-gray-800'
+  return classes[status] || 'bg-slate-100 text-slate-800'
 }
 
 const editGateway = (gateway: MCPGateway) => {

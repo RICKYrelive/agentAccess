@@ -1,14 +1,14 @@
 <template>
-  <div class="h-full flex flex-col bg-gray-50">
+  <div class="h-full flex flex-col bg-slate-50">
     <!-- Header -->
-    <div class="bg-white border-b border-gray-200 px-6 py-4">
+    <div class="bg-white border-b border-slate-200 px-6 py-4">
       <div class="flex items-center space-x-4">
         <button
           @click="$emit('back')"
-          class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          class="p-2 hover:bg-slate-100 rounded-lg transition-colors"
           title="返回"
         >
-          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -18,11 +18,11 @@
           </svg>
         </button>
         <div class="flex-1">
-          <h1 class="text-xl font-semibold text-gray-900">知识库详情</h1>
+          <h1 class="text-xl font-semibold text-slate-900">知识库详情</h1>
         </div>
         <button
           @click="showEditDialog = true"
-          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
         >
           编辑信息
         </button>
@@ -39,17 +39,17 @@
     <div class="flex-1 overflow-y-auto p-6">
       <div v-if="knowledgeBase" class="max-w-4xl mx-auto">
         <!-- Basic Info Card -->
-        <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+        <div class="bg-white rounded-lg border border-slate-200 p-6 mb-6">
           <div class="flex items-start justify-between mb-4">
             <div>
               <div class="flex items-center space-x-3 mb-2">
-                <h2 class="text-2xl font-semibold text-gray-900">{{ knowledgeBase.name }}</h2>
+                <h2 class="text-2xl font-semibold text-slate-900">{{ knowledgeBase.name }}</h2>
                 <span :class="['px-2.5 py-0.5 text-sm font-medium rounded-full', typeBadgeClass]">
                   {{ typeLabel }}
                 </span>
                 <span
                   v-if="!knowledgeBase.config.settings.isEnabled"
-                  class="px-2.5 py-0.5 text-sm font-medium rounded-full bg-gray-100 text-gray-600"
+                  class="px-2.5 py-0.5 text-sm font-medium rounded-full bg-slate-100 text-slate-600"
                 >
                   已禁用
                 </span>
@@ -60,13 +60,13 @@
                   公开
                 </span>
               </div>
-              <p v-if="knowledgeBase.description" class="text-gray-600">
+              <p v-if="knowledgeBase.description" class="text-slate-600">
                 {{ knowledgeBase.description }}
               </p>
-              <p v-else class="text-gray-400 italic">暂无描述</p>
+              <p v-else class="text-slate-400 italic">暂无描述</p>
             </div>
           </div>
-          <div class="flex items-center space-x-6 text-sm text-gray-500">
+          <div class="flex items-center space-x-6 text-sm text-slate-500">
             <div class="flex items-center space-x-1">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -96,7 +96,7 @@
             class="flex items-center space-x-2 mt-3"
           >
             <svg
-              class="w-4 h-4 text-gray-400"
+              class="w-4 h-4 text-slate-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -112,7 +112,7 @@
               <span
                 v-for="(tag, index) in knowledgeBase.config.settings.tags"
                 :key="index"
-                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700"
+                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700"
               >
                 {{ tag }}
               </span>
@@ -121,9 +121,9 @@
         </div>
 
         <!-- Tabs -->
-        <div class="bg-white rounded-lg border border-gray-200">
+        <div class="bg-white rounded-lg border border-slate-200">
           <!-- Tab Headers -->
-          <div class="border-b border-gray-200">
+          <div class="border-b border-slate-200">
             <nav class="flex -mb-px">
               <button
                 @click="activeTab = 'sources'"
@@ -131,7 +131,7 @@
                   'px-6 py-3 text-sm font-medium border-b-2 transition-colors',
                   activeTab === 'sources'
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                    : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300',
                 ]"
               >
                 数据源
@@ -142,7 +142,7 @@
                   'px-6 py-3 text-sm font-medium border-b-2 transition-colors',
                   activeTab === 'settings'
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                    : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300',
                 ]"
               >
                 配置
@@ -155,7 +155,7 @@
             <!-- Data Sources Tab -->
             <div v-if="activeTab === 'sources'">
               <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold text-gray-900">数据源</h3>
+                <h3 class="text-lg font-semibold text-slate-900">数据源</h3>
                 <button
                   @click="showAddSourceDialog = true"
                   class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-1"
@@ -176,18 +176,18 @@
               <div
                 v-if="knowledgeBase.sourceInfo.files && knowledgeBase.sourceInfo.files.length > 0"
               >
-                <p class="text-sm text-gray-500 mb-3">
+                <p class="text-sm text-slate-500 mb-3">
                   共 {{ knowledgeBase.sourceInfo.files.length }} 个文件
                 </p>
                 <div class="space-y-2">
                   <div
                     v-for="file in knowledgeBase.sourceInfo.files"
                     :key="file.id"
-                    class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    class="flex items-center justify-between p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors"
                   >
                     <div class="flex items-center space-x-3 flex-1 min-w-0">
                       <svg
-                        class="w-5 h-5 text-gray-400 flex-shrink-0"
+                        class="w-5 h-5 text-slate-400 flex-shrink-0"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -200,10 +200,10 @@
                         />
                       </svg>
                       <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-900 truncate">
+                        <p class="text-sm font-medium text-slate-900 truncate">
                           {{ file.fileName }}
                         </p>
-                        <p class="text-xs text-gray-500">
+                        <p class="text-xs text-slate-500">
                           {{ formatSize(file.fileSize) }} · 添加于 {{ formatDate(file.addedAt) }}
                         </p>
                       </div>
@@ -269,7 +269,7 @@
 
                   <!-- Tables List -->
                   <div>
-                    <p class="text-sm text-gray-500 mb-3">
+                    <p class="text-sm text-slate-500 mb-3">
                       共 {{ knowledgeBase.sourceInfo.tables.length }} 个表
                     </p>
                     <div class="flex flex-wrap gap-2">
@@ -318,9 +318,9 @@
               </div>
 
               <!-- Empty State -->
-              <div v-else class="text-center py-8 text-gray-500">
+              <div v-else class="text-center py-8 text-slate-500">
                 <svg
-                  class="mx-auto h-12 w-12 text-gray-400 mb-3"
+                  class="mx-auto h-12 w-12 text-slate-400 mb-3"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -352,7 +352,7 @@
 
       <!-- Loading State -->
       <div v-else class="flex items-center justify-center h-full">
-        <div class="text-gray-500">加载中...</div>
+        <div class="text-slate-500">加载中...</div>
       </div>
     </div>
 
@@ -378,14 +378,14 @@
       class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
     >
       <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-2">确认删除</h3>
-        <p class="text-gray-600 mb-6">
+        <h3 class="text-lg font-semibold text-slate-900 mb-2">确认删除</h3>
+        <p class="text-slate-600 mb-6">
           确定要删除知识库"{{ knowledgeBase?.name }}"吗？此操作不可恢复。
         </p>
         <div class="flex space-x-3">
           <button
             @click="showDeleteConfirm = false"
-            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            class="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
           >
             取消
           </button>
@@ -405,12 +405,12 @@
       class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
     >
       <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-2">确认删除文件</h3>
-        <p class="text-gray-600 mb-6">确定要删除文件"{{ fileToRemove?.fileName }}"吗？</p>
+        <h3 class="text-lg font-semibold text-slate-900 mb-2">确认删除文件</h3>
+        <p class="text-slate-600 mb-6">确定要删除文件"{{ fileToRemove?.fileName }}"吗？</p>
         <div class="flex space-x-3">
           <button
             @click="showRemoveFileConfirm = false"
-            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            class="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
           >
             取消
           </button>
@@ -430,12 +430,12 @@
       class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
     >
       <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-2">确认删除表</h3>
-        <p class="text-gray-600 mb-6">确定要删除表"{{ tableToRemove }}"吗？</p>
+        <h3 class="text-lg font-semibold text-slate-900 mb-2">确认删除表</h3>
+        <p class="text-slate-600 mb-6">确定要删除表"{{ tableToRemove }}"吗？</p>
         <div class="flex space-x-3">
           <button
             @click="showRemoveTableConfirm = false"
-            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            class="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
           >
             取消
           </button>
@@ -500,7 +500,7 @@ const typeBadgeClass = computed(() => {
     spreadsheet: 'bg-blue-100 text-blue-700',
     database: 'bg-purple-100 text-purple-700',
   }
-  return classMap[knowledgeBase.value.type] || 'bg-gray-100 text-gray-700'
+  return classMap[knowledgeBase.value.type] || 'bg-slate-100 text-slate-700'
 })
 
 const formatDate = (date: Date) => {

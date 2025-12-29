@@ -1,10 +1,10 @@
 <template>
-  <div class="h-full flex flex-col bg-gray-50">
+  <div class="h-full flex flex-col bg-slate-50">
     <!-- Header -->
-    <div class="bg-white border-b border-gray-200 px-6 py-4 flex-shrink-0">
+    <div class="bg-white border-b border-slate-200 px-6 py-4 flex-shrink-0">
       <div class="flex items-center justify-between">
-        <h2 class="text-2xl font-semibold text-gray-900">主页</h2>
-        <div class="text-sm text-gray-500">
+        <h2 class="text-2xl font-semibold text-slate-900">主页</h2>
+        <div class="text-sm text-slate-500">
           {{ currentDate }}
         </div>
       </div>
@@ -12,11 +12,11 @@
 
     <!-- Main Content -->
     <div
-      class="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400"
+      class="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100 hover:scrollbar-thumb-slate-400"
     >
       <!-- Current Conversation Status -->
       <div class="bg-white roun/ded-lg p-6 shadow-sm">
-        <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+        <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center">
           <svg
             class="w-5 h-5 mr-2 text-primary-600"
             fill="none"
@@ -36,8 +36,8 @@
         <div v-if="currentConversation" class="space-y-3">
           <div class="flex items-center justify-between">
             <div>
-              <p class="font-medium text-gray-900">{{ currentConversation.title }}</p>
-              <p class="text-sm text-gray-500">{{ currentConversation.messages.length }} 条消息</p>
+              <p class="font-medium text-slate-900">{{ currentConversation.title }}</p>
+              <p class="text-sm text-slate-500">{{ currentConversation.messages.length }} 条消息</p>
             </div>
             <div class="flex space-x-2">
               <button @click="continueConversation" class="btn-primary px-4 py-2 text-sm">
@@ -48,12 +48,12 @@
               </button>
             </div>
           </div>
-          <div class="text-sm text-gray-600">
+          <div class="text-sm text-slate-600">
             最后更新: {{ formatTime(currentConversation.updatedAt) }}
           </div>
         </div>
 
-        <div v-else class="text-center py-8 text-gray-500">
+        <div v-else class="text-center py-8 text-slate-500">
           <svg class="mx-auto h-12 w-12 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -68,7 +68,7 @@
 
       <!-- Recent Conversations -->
       <div class="bg-white rounded-lg p-6 shadow-sm">
-        <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+        <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center">
           <svg
             class="w-5 h-5 mr-2 text-primary-600"
             fill="none"
@@ -89,17 +89,17 @@
           <div
             v-for="conv in recentConversations"
             :key="conv.id"
-            class="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+            class="flex items-center justify-between p-3 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer"
             @click="openRecentConversation(conv)"
           >
             <div>
-              <p class="font-medium text-gray-900">{{ conv.title }}</p>
-              <p class="text-sm text-gray-500">
+              <p class="font-medium text-slate-900">{{ conv.title }}</p>
+              <p class="text-sm text-slate-500">
                 {{ conv.messages.length }} 条消息 · {{ formatTime(conv.updatedAt) }}
               </p>
             </div>
             <svg
-              class="w-5 h-5 text-gray-400"
+              class="w-5 h-5 text-slate-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -114,14 +114,14 @@
           </div>
         </div>
 
-        <div v-else class="text-center py-8 text-gray-500">
+        <div v-else class="text-center py-8 text-slate-500">
           <p>暂无 Access 会话历史</p>
         </div>
       </div>
 
       <!-- My Agents Section -->
       <div class="bg-white rounded-lg p-6 shadow-sm">
-        <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+        <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center">
           <svg
             class="w-5 h-5 mr-2 text-primary-600"
             fill="none"
@@ -142,7 +142,7 @@
           <div
             v-for="agent in myAgents"
             :key="agent.id"
-            class="p-4 border border-gray-200 rounded-lg hover:shadow-md cursor-pointer transition-shadow"
+            class="p-4 border border-slate-200 rounded-lg hover:shadow-md cursor-pointer transition-shadow"
             @click="startChatWithAgent(agent)"
           >
             <div class="flex items-center space-x-3">
@@ -162,8 +162,8 @@
                 </svg>
               </div>
               <div>
-                <p class="font-medium text-gray-900">{{ agent.name }}</p>
-                <p class="text-sm text-gray-500">个人助手</p>
+                <p class="font-medium text-slate-900">{{ agent.name }}</p>
+                <p class="text-sm text-slate-500">个人助手</p>
               </div>
             </div>
           </div>
@@ -172,7 +172,7 @@
 
       <!-- Team Agents Section -->
       <div class="bg-white rounded-lg p-6 shadow-sm">
-        <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+        <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center">
           <svg
             class="w-5 h-5 mr-2 text-primary-600"
             fill="none"
@@ -193,7 +193,7 @@
           <div
             v-for="agent in teamAgents"
             :key="agent.id"
-            class="p-4 border border-gray-200 rounded-lg hover:shadow-md cursor-pointer transition-shadow"
+            class="p-4 border border-slate-200 rounded-lg hover:shadow-md cursor-pointer transition-shadow"
             :class="`border-l-4 ${getAgentBorderClass(agent.category)}`"
             @click="startChatWithAgent(agent)"
           >
@@ -217,11 +217,11 @@
                 </svg>
               </div>
               <div>
-                <p class="font-medium text-gray-900">{{ agent.name }}</p>
-                <p class="text-sm text-gray-500">{{ getAgentCategoryName(agent.category) }}</p>
+                <p class="font-medium text-slate-900">{{ agent.name }}</p>
+                <p class="text-sm text-slate-500">{{ getAgentCategoryName(agent.category) }}</p>
               </div>
             </div>
-            <p class="text-sm text-gray-600 mt-2">{{ agent.description }}</p>
+            <p class="text-sm text-slate-600 mt-2">{{ agent.description }}</p>
           </div>
         </div>
       </div>
@@ -352,7 +352,7 @@ const getAgentBorderClass = (category: string) => {
     case 'finance':
       return 'border-orange-500'
     default:
-      return 'border-gray-500'
+      return 'border-slate-500'
   }
 }
 
@@ -365,7 +365,7 @@ const getAgentBgClass = (category: string) => {
     case 'finance':
       return 'bg-orange-100'
     default:
-      return 'bg-gray-100'
+      return 'bg-slate-100'
   }
 }
 
@@ -378,7 +378,7 @@ const getAgentIconClass = (category: string) => {
     case 'finance':
       return 'text-orange-600'
     default:
-      return 'text-gray-600'
+      return 'text-slate-600'
   }
 }
 

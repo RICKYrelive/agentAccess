@@ -9,10 +9,10 @@
     >
       <!-- Header -->
       <div
-        class="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white"
+        class="flex items-center justify-between p-6 border-b border-slate-200 sticky top-0 bg-white"
       >
-        <h2 class="text-xl font-semibold text-gray-900">导入数据库知识库</h2>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+        <h2 class="text-xl font-semibold text-slate-900">导入数据库知识库</h2>
+        <button @click="$emit('close')" class="text-slate-400 hover:text-slate-600">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -28,7 +28,7 @@
       <form @submit.prevent="handleSubmit" class="p-6 space-y-4">
         <!-- Name -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             知识库名称 <span class="text-red-500">*</span>
           </label>
           <input
@@ -36,32 +36,32 @@
             type="text"
             required
             maxlength="100"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             placeholder="请输入知识库名称"
           />
         </div>
 
         <!-- Description -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"> 描述 </label>
+          <label class="block text-sm font-medium text-slate-700 mb-1"> 描述 </label>
           <textarea
             v-model="form.description"
             rows="2"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
             placeholder="请输入知识库描述（可选）"
           />
         </div>
 
         <!-- Database Type -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             数据库类型 <span class="text-red-500">*</span>
           </label>
           <select
             v-model="form.dbType"
             @change="updateDefaultPort"
             required
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
             <option value="mysql">MySQL</option>
             <option value="postgresql">PostgreSQL</option>
@@ -70,21 +70,21 @@
 
         <!-- Host -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             主机地址 <span class="text-red-500">*</span>
           </label>
           <input
             v-model="form.host"
             type="text"
             required
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             placeholder="localhost 或 IP 地址"
           />
         </div>
 
         <!-- Port -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             端口 <span class="text-red-500">*</span>
           </label>
           <input
@@ -93,49 +93,49 @@
             required
             min="1"
             max="65535"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             placeholder="端口号"
           />
         </div>
 
         <!-- Username -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             用户名 <span class="text-red-500">*</span>
           </label>
           <input
             v-model="form.username"
             type="text"
             required
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             placeholder="数据库用户名"
           />
         </div>
 
         <!-- Password -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             密码 <span class="text-red-500">*</span>
           </label>
           <input
             v-model="form.password"
             type="password"
             required
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             placeholder="数据库密码"
           />
         </div>
 
         <!-- Database Name -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             数据库名 <span class="text-red-500">*</span>
           </label>
           <input
             v-model="form.database"
             type="text"
             required
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             placeholder="数据库名称"
           />
         </div>
@@ -146,7 +146,7 @@
             type="button"
             @click="testConnection"
             :disabled="isTesting || !canTestConnection"
-            class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
+            class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
           >
             <svg v-if="isTesting" class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
               <circle
@@ -176,19 +176,19 @@
 
         <!-- Table Selection -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             选择表 <span class="text-red-500">*</span>
           </label>
-          <div v-if="!hasTestedConnection" class="text-sm text-gray-500 py-2">
+          <div v-if="!hasTestedConnection" class="text-sm text-slate-500 py-2">
             请先测试连接以获取可用表
           </div>
           <div v-else class="space-y-2">
             <!-- Multi-select checkboxes -->
-            <div class="max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2 space-y-1">
+            <div class="max-h-48 overflow-y-auto border border-slate-300 rounded-lg p-2 space-y-1">
               <label
                 v-for="table in availableTables"
                 :key="table"
-                class="flex items-center space-x-2 px-2 py-1 hover:bg-gray-50 rounded cursor-pointer"
+                class="flex items-center space-x-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer"
               >
                 <input
                   type="checkbox"
@@ -197,11 +197,11 @@
                   :disabled="form.tables.length >= 20 && !form.tables.includes(table)"
                   class="h-4 w-4 text-purple-600 focus:ring-purple-500 rounded"
                 />
-                <span class="text-sm text-gray-700">{{ table }}</span>
+                <span class="text-sm text-slate-700">{{ table }}</span>
               </label>
             </div>
             <div class="flex items-center justify-between">
-              <p class="text-xs text-gray-500">已选择: {{ form.tables.length }} / 20 个表</p>
+              <p class="text-xs text-slate-500">已选择: {{ form.tables.length }} / 20 个表</p>
               <button
                 v-if="form.tables.length > 0"
                 type="button"
@@ -222,14 +222,14 @@
           <button
             type="button"
             @click="$emit('close')"
-            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            class="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
           >
             取消
           </button>
           <button
             type="submit"
             :disabled="!isFormValid"
-            class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
           >
             导入
           </button>

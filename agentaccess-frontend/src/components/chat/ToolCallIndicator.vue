@@ -103,7 +103,7 @@
           {{ formatDuration(getDuration()) }}
         </span>
         <svg
-          class="w-3.5 h-3.5 text-gray-400 expand-icon"
+          class="w-3.5 h-3.5 text-slate-400 expand-icon"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -205,7 +205,7 @@
 
         <!-- Collapse Icon -->
         <svg
-          class="w-3.5 h-3.5 text-gray-400 transform rotate-180 flex-shrink-0"
+          class="w-3.5 h-3.5 text-slate-400 transform rotate-180 flex-shrink-0"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -225,7 +225,7 @@
         <div v-if="toolCall.input" class="detail-section">
           <div class="detail-header">
             <svg
-              class="w-4 h-4 text-gray-500"
+              class="w-4 h-4 text-slate-500"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -246,7 +246,7 @@
         <div v-if="toolCall.result" class="detail-section">
           <div class="detail-header">
             <svg
-              class="w-4 h-4 text-gray-500"
+              class="w-4 h-4 text-slate-500"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -576,14 +576,14 @@ const formatTime = (date: Date) => {
 }
 
 .tool-name {
-  @apply text-sm font-medium text-gray-800;
+  @apply text-sm font-medium text-slate-800;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .tool-action-desc {
-  @apply text-xs text-gray-500;
+  @apply text-xs text-slate-500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -609,7 +609,7 @@ const formatTime = (date: Date) => {
 }
 
 .duration-text {
-  @apply flex items-center space-x-1 text-xs text-gray-500;
+  @apply flex items-center space-x-1 text-xs text-slate-500;
 }
 
 .duration-text svg {
@@ -650,11 +650,11 @@ const formatTime = (date: Date) => {
 }
 
 .detail-label {
-  @apply text-xs font-semibold text-gray-700;
+  @apply text-xs font-semibold text-slate-700;
 }
 
 .detail-content {
-  @apply text-xs text-gray-600 whitespace-pre-wrap break-words font-mono rounded p-2;
+  @apply text-xs text-slate-600 whitespace-pre-wrap break-words font-mono rounded p-2;
   background: rgba(249, 250, 251, 0.6);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -687,7 +687,7 @@ const formatTime = (date: Date) => {
 }
 
 .time-info {
-  @apply flex items-center space-x-4 text-xs text-gray-500;
+  @apply flex items-center space-x-4 text-xs text-slate-500;
 }
 
 /* Animations */

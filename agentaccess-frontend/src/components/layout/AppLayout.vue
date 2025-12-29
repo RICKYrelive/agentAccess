@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex bg-gray-50">
+  <div class="h-screen flex bg-slate-50">
     <!-- Left Sidebar - Fixed Position -->
     <SidebarNavigation
       class="w-64 flex-shrink-0 h-screen sticky top-0"
@@ -86,10 +86,10 @@
       <!-- System Tools Page View -->
       <div
         v-else-if="activeView === 'system-tools'"
-        class="flex-1 h-full overflow-hidden flex items-center justify-center bg-gray-50"
+        class="flex-1 h-full overflow-hidden flex items-center justify-center bg-slate-50"
       >
         <div class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 text-gray-400">
+          <div class="w-16 h-16 mx-auto mb-4 text-slate-400">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -105,18 +105,18 @@
               />
             </svg>
           </div>
-          <h2 class="text-xl font-semibold text-gray-700 mb-2">系统工具</h2>
-          <p class="text-gray-500">沙箱环境和系统内置工具</p>
+          <h2 class="text-xl font-semibold text-slate-700 mb-2">系统工具</h2>
+          <p class="text-slate-500">沙箱环境和系统内置工具</p>
         </div>
       </div>
 
       <!-- Memory Page View -->
       <div
         v-else-if="activeView === 'memory'"
-        class="flex-1 h-full overflow-hidden flex items-center justify-center bg-gray-50"
+        class="flex-1 h-full overflow-hidden flex items-center justify-center bg-slate-50"
       >
         <div class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 text-gray-400">
+          <div class="w-16 h-16 mx-auto mb-4 text-slate-400">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -126,8 +126,8 @@
               />
             </svg>
           </div>
-          <h2 class="text-xl font-semibold text-gray-700 mb-2">记忆体</h2>
-          <p class="text-gray-500">管理短期、长期和向量记忆</p>
+          <h2 class="text-xl font-semibold text-slate-700 mb-2">记忆体</h2>
+          <p class="text-slate-500">管理短期、长期和向量记忆</p>
         </div>
       </div>
 
@@ -157,13 +157,13 @@
       <PreviewPanel
         v-if="!hasSelectedWorkflowNode && isPreviewPanelVisible"
         key="preview"
-        class="h-full border-l border-gray-200"
+        class="h-full border-l border-slate-200"
       />
       <NodeConfigPanel
         v-if="hasSelectedWorkflowNode"
         key="node-config"
         :node="selectedWorkflowNode"
-        class="h-full border-l border-gray-200"
+        class="h-full border-l border-slate-200"
         @close="clearWorkflowNodeSelection"
         @update="updateWorkflowNode"
       />
@@ -173,7 +173,7 @@
     <SettingsPanel
       v-if="showSettingsPanel"
       key="settings"
-      class="w-80 flex-shrink-0 border-l border-gray-200"
+      class="w-80 flex-shrink-0 border-l border-slate-200"
       @close="closeSettingsPanel"
     />
 

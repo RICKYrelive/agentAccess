@@ -1,12 +1,12 @@
 <template>
   <div class="h-full flex flex-col bg-white">
     <!-- Chat Header -->
-    <div class="px-6 py-4 border-b border-gray-200">
+    <div class="px-6 py-4 border-b border-slate-200">
       <div class="flex items-center justify-between mb-2">
-        <h3 class="text-lg font-semibold text-gray-900">Access 会话</h3>
+        <h3 class="text-lg font-semibold text-slate-900">Access 会话</h3>
         <button
           @click="clearConversation"
-          class="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md"
+          class="p-1 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md"
           title="清空 Access 会话"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -20,12 +20,12 @@
         </button>
       </div>
       <div class="flex items-center space-x-2">
-        <div class="text-sm text-gray-500">
+        <div class="text-sm text-slate-500">
           {{ currentConversation?.title || '发起 Access' }}
         </div>
 
         <!-- Debug Info -->
-        <div class="text-xs bg-gray-100 px-2 py-1 rounded">
+        <div class="text-xs bg-slate-100 px-2 py-1 rounded">
           Loading: {{ isLoading ? '是' : '否' }}
         </div>
       </div>
@@ -40,7 +40,7 @@
 
     <!-- Chat Messages -->
     <div
-      class="flex-1 overflow-y-auto px-6 py-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400"
+      class="flex-1 overflow-y-auto px-6 py-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100 hover:scrollbar-thumb-slate-400"
     >
       <!-- Render messages -->
       <template v-for="(message, index) in currentMessages" :key="message.id">
@@ -133,9 +133,9 @@
 
               <!-- Text Block -->
               <div v-else-if="block.type === 'text'" class="w-full">
-                <div class="bg-gray-100 text-gray-900 px-4 py-3 rounded-lg">
+                <div class="bg-slate-100 text-slate-900 px-4 py-3 rounded-lg">
                   <div class="whitespace-pre-wrap break-words">{{ block.content }}</div>
-                  <div class="text-xs text-gray-500 mt-2">
+                  <div class="text-xs text-slate-500 mt-2">
                     {{ formatTime(block.timestamp) }}
                   </div>
                 </div>
@@ -155,9 +155,9 @@
 
           <!-- Legacy rendering for messages without blocks -->
           <template v-else>
-            <div class="bg-gray-100 text-gray-900 px-4 py-3 rounded-lg">
+            <div class="bg-slate-100 text-slate-900 px-4 py-3 rounded-lg">
               <div class="whitespace-pre-wrap break-words">{{ message.content }}</div>
-              <div v-if="message.timestamp" class="text-xs mt-2 text-gray-500">
+              <div v-if="message.timestamp" class="text-xs mt-2 text-slate-500">
                 {{ formatTime(message.timestamp) }}
                 <span v-if="message.model" class="ml-2">{{ message.model }}</span>
               </div>
@@ -173,7 +173,7 @@
           </template>
 
           <!-- Message metadata at the end -->
-          <div class="text-xs text-gray-400">
+          <div class="text-xs text-slate-400">
             {{ formatTime(message.timestamp) }}
             <span v-if="message.model" class="ml-2">{{ message.model }}</span>
           </div>
@@ -182,18 +182,18 @@
 
       <!-- Loading Indicator -->
       <div v-if="isLoading" class="flex justify-start">
-        <div class="bg-gray-100 text-gray-900 px-4 py-3 rounded-lg">
+        <div class="bg-slate-100 text-slate-900 px-4 py-3 rounded-lg">
           <div class="flex items-center space-x-2">
-            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+            <div class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
             <div
-              class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+              class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
               style="animation-delay: 0.1s"
             ></div>
             <div
-              class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+              class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
               style="animation-delay: 0.2s"
             ></div>
-            <span class="text-sm text-gray-600">正在思考...</span>
+            <span class="text-sm text-slate-600">正在思考...</span>
           </div>
         </div>
       </div>
@@ -211,9 +211,9 @@
 
       <!-- Streaming Message -->
       <div v-if="streamingMessage" class="flex justify-start">
-        <div class="bg-gray-100 text-gray-900 px-4 py-3 rounded-lg max-w-3xl">
+        <div class="bg-slate-100 text-slate-900 px-4 py-3 rounded-lg max-w-3xl">
           <div class="whitespace-pre-wrap break-words">{{ streamingMessage }}</div>
-          <div class="w-2 h-4 bg-gray-400 animate-pulse inline-block ml-1"></div>
+          <div class="w-2 h-4 bg-slate-400 animate-pulse inline-block ml-1"></div>
         </div>
       </div>
     </div>
@@ -221,7 +221,7 @@
     <!-- Empty State -->
     <div
       v-if="currentMessages.length === 0 && !isLoading"
-      class="flex-1 flex items-center justify-center text-gray-400"
+      class="flex-1 flex items-center justify-center text-slate-400"
     >
       <div class="text-center">
         <svg class="mx-auto h-12 w-12 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -237,7 +237,7 @@
     </div>
 
     <!-- Message Input -->
-    <div class="border-t border-gray-200 px-6 py-4">
+    <div class="border-t border-slate-200 px-6 py-4">
       <div class="flex space-x-4">
         <div class="flex-1 relative modern-input-wrapper">
           <textarea
@@ -667,39 +667,39 @@ const formatStreamingMessage = (message: string) => {
 
 .modern-textarea {
   @apply w-full px-4 py-3 rounded-lg resize-none;
-  background: #f9fafb;
-  border: 2px solid #e5e7eb;
-  color: #1f2937;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  color: #0f172a;
   font-size: 0.875rem;
   line-height: 1.5;
   transition: all 0.25s ease;
 }
 
 .modern-textarea:hover {
-  border-color: #d1d5db;
+  border-color: #cbd5e1;
   background: #ffffff;
 }
 
 .modern-textarea:focus {
   outline: none;
-  border-color: #a855f7;
+  border-color: #3b82f6;
   background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .modern-textarea::placeholder {
-  color: rgba(107, 114, 128, 0.7);
+  color: rgba(100, 116, 139, 0.7);
   transition: color 0.25s ease;
 }
 
 .modern-textarea:focus::placeholder {
-  color: rgba(168, 85, 247, 0.5);
+  color: rgba(59, 130, 246, 0.5);
 }
 
 .modern-textarea:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background: #f3f4f6;
+  background: #f1f5f9;
 }
 
 .modern-input-hint {
@@ -707,7 +707,7 @@ const formatStreamingMessage = (message: string) => {
   bottom: 10px;
   right: 12px;
   font-size: 11px;
-  color: #9ca3af;
+  color: #94a3b8;
   pointer-events: none;
   transition: all 0.25s ease;
   background: rgba(255, 255, 255, 0.9);
@@ -716,6 +716,6 @@ const formatStreamingMessage = (message: string) => {
 }
 
 .modern-textarea:focus ~ .modern-input-hint {
-  color: #a855f7;
+  color: #3b82f6;
 }
 </style>

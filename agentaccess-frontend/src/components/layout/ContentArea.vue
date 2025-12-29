@@ -1,20 +1,20 @@
 <template>
   <div class="h-full flex flex-col bg-white">
     <!-- Welcome Header -->
-    <div class="px-8 py-6 border-b border-gray-200">
-      <h2 class="text-2xl font-semibold text-gray-900">
+    <div class="px-8 py-6 border-b border-slate-200">
+      <h2 class="text-2xl font-semibold text-slate-900">
         你好，我是Agent Access! 有哪些工作要处理？
       </h2>
     </div>
 
     <!-- Main Content Area -->
     <div
-      class="flex-1 overflow-y-auto px-8 py-8 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400"
+      class="flex-1 overflow-y-auto px-8 py-8 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100 hover:scrollbar-thumb-slate-400"
     >
       <div class="max-w-6xl mx-auto space-y-8">
         <!-- Message Input Section - Full Width -->
-        <div class="bg-gray-50 rounded-lg p-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+        <div class="bg-slate-50 rounded-lg p-6">
+          <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center">
             <svg
               class="w-5 h-5 mr-2 text-primary-600"
               fill="none"
@@ -42,7 +42,7 @@
                 rows="5"
                 @keyup.enter.ctrl="sendMessage"
               ></textarea>
-              <div class="absolute bottom-3 right-3 text-xs text-gray-400">Ctrl + Enter 发送</div>
+              <div class="absolute bottom-3 right-3 text-xs text-slate-400">Ctrl + Enter 发送</div>
             </div>
 
             <div class="flex justify-end">
@@ -54,7 +54,7 @@
                   'flex items-center justify-center space-x-2 px-8 py-2 transition-all duration-200',
                   messageInput.trim()
                     ? 'btn-primary opacity-100 cursor-pointer'
-                    : 'bg-gray-300 text-gray-500 opacity-50 cursor-not-allowed'
+                    : 'bg-slate-300 text-slate-500 opacity-50 cursor-not-allowed'
                 ]"
               >
                 <span class="send-button-content" :class="{ 'content-floating': hasInput }">
@@ -74,8 +74,8 @@
         </div>
 
         <!-- Configuration Panel -->
-        <div class="bg-gray-50 rounded-lg p-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+        <div class="bg-slate-50 rounded-lg p-6">
+          <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center">
             <svg
               class="w-5 h-5 mr-2 text-primary-600"
               fill="none"
@@ -99,14 +99,14 @@
           </h3>
 
           <!-- Tab Navigation -->
-          <div class="flex space-x-4 mb-4 border-b border-gray-200 overflow-x-auto">
+          <div class="flex space-x-4 mb-4 border-b border-slate-200 overflow-x-auto">
             <button
               @click="activeTab = 'knowledge'"
               :class="[
                 'pb-2 px-3 text-sm font-medium transition-colors whitespace-nowrap',
                 activeTab === 'knowledge'
                   ? 'border-b-2 border-primary-500 text-primary-600'
-                  : 'text-gray-500 hover:text-gray-700',
+                  : 'text-slate-500 hover:text-slate-700',
               ]"
             >
               知识库
@@ -117,7 +117,7 @@
                 'pb-2 px-3 text-sm font-medium transition-colors whitespace-nowrap',
                 activeTab === 'mcp'
                   ? 'border-b-2 border-primary-500 text-primary-600'
-                  : 'text-gray-500 hover:text-gray-700',
+                  : 'text-slate-500 hover:text-slate-700',
               ]"
             >
               MCP服务
@@ -128,7 +128,7 @@
                 'pb-2 px-3 text-sm font-medium transition-colors whitespace-nowrap',
                 activeTab === 'system-tools'
                   ? 'border-b-2 border-primary-500 text-primary-600'
-                  : 'text-gray-500 hover:text-gray-700',
+                  : 'text-slate-500 hover:text-slate-700',
               ]"
             >
               系统工具
@@ -139,7 +139,7 @@
                 'pb-2 px-3 text-sm font-medium transition-colors whitespace-nowrap',
                 activeTab === 'memory'
                   ? 'border-b-2 border-primary-500 text-primary-600'
-                  : 'text-gray-500 hover:text-gray-700',
+                  : 'text-slate-500 hover:text-slate-700',
               ]"
             >
               记忆体
@@ -150,12 +150,12 @@
           <div>
             <!-- Knowledge Base Settings -->
             <div v-if="activeTab === 'knowledge'">
-              <h4 class="text-sm font-medium text-gray-900 mb-3">选择知识库</h4>
+              <h4 class="text-sm font-medium text-slate-900 mb-3">选择知识库</h4>
               <div class="space-y-2">
                 <div
                   v-for="kb in knowledgeBases"
                   :key="kb.id"
-                  class="flex items-center space-x-3 p-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 cursor-pointer"
+                  class="flex items-center space-x-3 p-3 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer"
                 >
                   <input
                     type="radio"
@@ -163,11 +163,11 @@
                     name="knowledge-base"
                     :value="kb.id"
                     v-model="selectedKnowledgeBase"
-                    class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-gray-300"
+                    class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-slate-300"
                   />
                   <label :for="'kb-' + kb.id" class="flex-1 cursor-pointer">
-                    <div class="text-sm font-medium text-gray-900">{{ kb.name }}</div>
-                    <div class="text-xs text-gray-500">{{ kb.documentCount }} 个文档</div>
+                    <div class="text-sm font-medium text-slate-900">{{ kb.name }}</div>
+                    <div class="text-xs text-slate-500">{{ kb.documentCount }} 个文档</div>
                   </label>
                 </div>
               </div>
@@ -196,7 +196,7 @@
 
         <!-- My Agent Section -->
         <div>
-          <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center justify-between">
+          <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center justify-between">
             <div class="flex items-center">
               <svg
                 class="w-5 h-5 mr-2 text-purple-600"
@@ -213,7 +213,7 @@
               </svg>
               我的 Agent
             </div>
-            <span class="text-sm text-gray-500">已选 {{ selectedMyAgents.length }}</span>
+            <span class="text-sm text-slate-500">已选 {{ selectedMyAgents.length }}</span>
           </h3>
 
           <!-- Search Input -->
@@ -222,35 +222,35 @@
               v-model="myAgentSearchQuery"
               type="text"
               placeholder="搜索我的 Agent..."
-              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+              class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
             />
-            <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
 
           <!-- Agent List -->
-          <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
-            <div v-if="filteredMyAgents.length > 0" class="divide-y divide-gray-200">
+          <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
+            <div v-if="filteredMyAgents.length > 0" class="divide-y divide-slate-200">
               <label
                 v-for="agent in filteredMyAgents"
                 :key="agent.id"
-                class="flex items-center p-4 hover:bg-gray-50 cursor-pointer transition-colors"
+                class="flex items-center p-4 hover:bg-slate-50 cursor-pointer transition-colors"
                 :class="{ 'bg-purple-50': selectedMyAgents.includes(agent.id) }"
               >
                 <input
                   type="checkbox"
                   :value="agent.id"
                   v-model="selectedMyAgents"
-                  class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-slate-300 rounded"
                 />
                 <div class="ml-4 flex-1">
-                  <div class="text-sm font-medium text-gray-900">{{ agent.name }}</div>
-                  <div class="text-xs text-gray-500 mt-0.5">{{ agent.description }}</div>
+                  <div class="text-sm font-medium text-slate-900">{{ agent.name }}</div>
+                  <div class="text-xs text-slate-500 mt-0.5">{{ agent.description }}</div>
                 </div>
               </label>
             </div>
-            <div v-else class="text-center py-8 text-gray-500 text-sm">
+            <div v-else class="text-center py-8 text-slate-500 text-sm">
               {{ myAgentSearchQuery ? '没有找到匹配的 Agent' : '暂无 Agent，请先创建' }}
             </div>
           </div>
@@ -270,7 +270,7 @@
 
         <!-- Team Agent Section -->
         <div>
-          <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center justify-between">
+          <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center justify-between">
             <div class="flex items-center">
               <svg
                 class="w-5 h-5 mr-2 text-primary-600"
@@ -287,7 +287,7 @@
               </svg>
               团队 Agent
             </div>
-            <span class="text-sm text-gray-500">已选 {{ selectedTeamAgents.length }}</span>
+            <span class="text-sm text-slate-500">已选 {{ selectedTeamAgents.length }}</span>
           </h3>
 
           <!-- Search Input -->
@@ -296,31 +296,31 @@
               v-model="teamAgentSearchQuery"
               type="text"
               placeholder="搜索团队 Agent..."
-              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+              class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
             />
-            <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
 
           <!-- Team Agent List -->
-          <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
-            <div v-if="filteredTeamAgents.length > 0" class="divide-y divide-gray-200">
+          <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
+            <div v-if="filteredTeamAgents.length > 0" class="divide-y divide-slate-200">
               <label
                 v-for="agent in filteredTeamAgents"
                 :key="agent.id"
-                class="flex items-center p-4 hover:bg-gray-50 cursor-pointer transition-colors"
+                class="flex items-center p-4 hover:bg-slate-50 cursor-pointer transition-colors"
                 :class="{ 'bg-primary-50': selectedTeamAgents.includes(agent.id) }"
               >
                 <input
                   type="checkbox"
                   :value="agent.id"
                   v-model="selectedTeamAgents"
-                  class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-slate-300 rounded"
                 />
                 <div class="ml-4 flex-1">
                   <div class="flex items-center">
-                    <div class="text-sm font-medium text-gray-900">{{ agent.name }}</div>
+                    <div class="text-sm font-medium text-slate-900">{{ agent.name }}</div>
                     <span
                       class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
                       :class="getAgentBadgeClass(agent.category)"
@@ -328,11 +328,11 @@
                       {{ getAgentCategoryName(agent.category) }}
                     </span>
                   </div>
-                  <div class="text-xs text-gray-500 mt-0.5">{{ agent.description }}</div>
+                  <div class="text-xs text-slate-500 mt-0.5">{{ agent.description }}</div>
                 </div>
               </label>
             </div>
-            <div v-else class="text-center py-8 text-gray-500 text-sm">
+            <div v-else class="text-center py-8 text-slate-500 text-sm">
               {{ teamAgentSearchQuery ? '没有找到匹配的 Agent' : '暂无团队 Agent' }}
             </div>
           </div>
@@ -528,7 +528,7 @@ const getAgentCardClass = (category: string) => {
     case 'finance':
       return 'border-orange-500'
     default:
-      return 'border-gray-500'
+      return 'border-slate-500'
   }
 }
 
@@ -541,7 +541,7 @@ const getAgentIconClass = (category: string) => {
     case 'finance':
       return 'bg-orange-100'
     default:
-      return 'bg-gray-100'
+      return 'bg-slate-100'
   }
 }
 
@@ -554,7 +554,7 @@ const getAgentIconColorClass = (category: string) => {
     case 'finance':
       return 'text-orange-600'
     default:
-      return 'text-gray-600'
+      return 'text-slate-600'
   }
 }
 
@@ -567,7 +567,7 @@ const getAgentBadgeClass = (category: string) => {
     case 'finance':
       return 'bg-orange-100 text-orange-800'
     default:
-      return 'bg-gray-100 text-gray-800'
+      return 'bg-slate-100 text-slate-800'
   }
 }
 
@@ -640,7 +640,7 @@ const handleGoToMemory = () => {
 <style scoped>
 /* 消息输入框样式 */
 .message-textarea {
-  @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none;
+  @apply w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none;
   font-size: 1rem;
   line-height: 1.6;
 }

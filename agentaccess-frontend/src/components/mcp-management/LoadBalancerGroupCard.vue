@@ -5,7 +5,7 @@
         <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
         </svg>
-        <h4 class="text-sm font-semibold text-gray-900">{{ group.name }}</h4>
+        <h4 class="text-sm font-semibold text-slate-900">{{ group.name }}</h4>
         <span class="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
           {{ getStrategyName(group.strategy) }}
         </span>
@@ -13,7 +13,7 @@
       <div class="flex items-center space-x-1">
         <button
           @click="isExpanded = !isExpanded"
-          class="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded"
+          class="p-1 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded"
           title="展开/折叠"
         >
           <svg :class="['w-4 h-4 transition-transform', isExpanded ? 'rotate-90' : '']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -22,7 +22,7 @@
         </button>
         <button
           @click="$emit('edit', group.id)"
-          class="p-1 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded"
+          class="p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded"
           title="编辑"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,7 +31,7 @@
         </button>
         <button
           @click="$emit('delete', group.id)"
-          class="p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded"
+          class="p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded"
           title="删除"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <div class="flex items-center space-x-4 text-xs text-gray-600">
+    <div class="flex items-center space-x-4 text-xs text-slate-600">
       <span>{{ group.toolIds.length }} 个工具</span>
       <span v-if="group.healthCheck?.enabled" class="flex items-center text-green-600">
         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -56,12 +56,12 @@
         <div
           v-for="toolId in group.toolIds"
           :key="toolId"
-          class="flex items-center justify-between px-2 py-1.5 bg-white rounded border border-gray-200"
+          class="flex items-center justify-between px-2 py-1.5 bg-white rounded border border-slate-200"
         >
-          <span class="text-sm text-gray-700">{{ getToolName(toolId) }}</span>
+          <span class="text-sm text-slate-700">{{ getToolName(toolId) }}</span>
           <button
             @click="$emit('remove-tool', group.id, toolId)"
-            class="p-1 text-gray-400 hover:text-red-600 rounded"
+            class="p-1 text-slate-400 hover:text-red-600 rounded"
             title="移除工具"
           >
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

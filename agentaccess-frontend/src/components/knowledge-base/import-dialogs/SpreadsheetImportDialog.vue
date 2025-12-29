@@ -5,9 +5,9 @@
   >
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4" @click.stop>
       <!-- Header -->
-      <div class="flex items-center justify-between p-6 border-b border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-900">导入表格知识库</h2>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+      <div class="flex items-center justify-between p-6 border-b border-slate-200">
+        <h2 class="text-xl font-semibold text-slate-900">导入表格知识库</h2>
+        <button @click="$emit('close')" class="text-slate-400 hover:text-slate-600">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -23,7 +23,7 @@
       <form @submit.prevent="handleSubmit" class="p-6 space-y-4">
         <!-- Name -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             知识库名称 <span class="text-red-500">*</span>
           </label>
           <input
@@ -31,33 +31,33 @@
             type="text"
             required
             maxlength="100"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="请输入知识库名称"
           />
         </div>
 
         <!-- Description -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"> 描述 </label>
+          <label class="block text-sm font-medium text-slate-700 mb-1"> 描述 </label>
           <textarea
             v-model="form.description"
             rows="3"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
             placeholder="请输入知识库描述（可选）"
           />
         </div>
 
         <!-- File Upload -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             上传文件 <span class="text-red-500">*</span>
           </label>
           <div
-            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-blue-400 transition-colors"
+            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-slate-300 border-dashed rounded-lg hover:border-blue-400 transition-colors"
           >
             <div class="space-y-1 text-center">
               <svg
-                class="mx-auto h-12 w-12 text-gray-400"
+                class="mx-auto h-12 w-12 text-slate-400"
                 stroke="currentColor"
                 fill="none"
                 viewBox="0 0 48 48"
@@ -69,7 +69,7 @@
                   stroke-linejoin="round"
                 />
               </svg>
-              <div class="flex text-sm text-gray-600">
+              <div class="flex text-sm text-slate-600">
                 <label
                   for="file-upload"
                   class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none"
@@ -87,7 +87,7 @@
                 </label>
                 <p class="pl-1">或拖拽文件到此处</p>
               </div>
-              <p class="text-xs text-gray-500">
+              <p class="text-xs text-slate-500">
                 支持 Excel, CSV 格式，单个文件最大 50MB，最多 50 个文件
               </p>
               <p v-if="form.files.length > 0" class="text-sm text-blue-600 font-medium">
@@ -102,11 +102,11 @@
             <div
               v-for="(file, index) in form.files"
               :key="index"
-              class="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg"
+              class="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-lg"
             >
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-gray-900 truncate">{{ file.name }}</p>
-                <p class="text-xs text-gray-500">{{ formatSize(file.size) }}</p>
+                <p class="text-sm font-medium text-slate-900 truncate">{{ file.name }}</p>
+                <p class="text-xs text-slate-500">{{ formatSize(file.size) }}</p>
               </div>
               <button
                 type="button"
@@ -128,7 +128,7 @@
 
         <!-- Has Header Row -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"> 首行作为标题 </label>
+          <label class="block text-sm font-medium text-slate-700 mb-1"> 首行作为标题 </label>
           <div class="flex space-x-4">
             <label class="flex items-center">
               <input
@@ -137,7 +137,7 @@
                 type="radio"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500"
               />
-              <span class="ml-2 text-sm text-gray-700">是</span>
+              <span class="ml-2 text-sm text-slate-700">是</span>
             </label>
             <label class="flex items-center">
               <input
@@ -146,23 +146,23 @@
                 type="radio"
                 class="h-4 w-4 text-blue-600 focus:ring-blue-500"
               />
-              <span class="ml-2 text-sm text-gray-700">否</span>
+              <span class="ml-2 text-sm text-slate-700">否</span>
             </label>
           </div>
         </div>
 
         <!-- Encoding (for CSV) -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"> 文件编码 </label>
+          <label class="block text-sm font-medium text-slate-700 mb-1"> 文件编码 </label>
           <select
             v-model="form.encoding"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="UTF-8">UTF-8</option>
             <option value="GBK">GBK</option>
             <option value="GB2312">GB2312</option>
           </select>
-          <p class="mt-1 text-xs text-gray-500">仅对 CSV 文件有效</p>
+          <p class="mt-1 text-xs text-slate-500">仅对 CSV 文件有效</p>
         </div>
 
         <!-- Actions -->
@@ -170,14 +170,14 @@
           <button
             type="button"
             @click="$emit('close')"
-            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            class="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
           >
             取消
           </button>
           <button
             type="submit"
             :disabled="!isFormValid"
-            class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
           >
             导入
           </button>

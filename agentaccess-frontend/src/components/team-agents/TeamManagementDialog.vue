@@ -5,8 +5,8 @@
   >
     <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-semibold text-gray-900">管理团队 - {{ team?.name }}</h3>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-600">
+        <h3 class="text-lg font-semibold text-slate-900">管理团队 - {{ team?.name }}</h3>
+        <button @click="$emit('close')" class="text-slate-400 hover:text-slate-600">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -20,20 +20,20 @@
 
       <!-- Members List -->
       <div class="space-y-3">
-        <h4 class="text-sm font-medium text-gray-700">成员列表 ({{ team?.members.length }})</h4>
+        <h4 class="text-sm font-medium text-slate-700">成员列表 ({{ team?.members.length }})</h4>
 
         <div
           v-for="member in team?.members"
           :key="member.id"
-          class="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+          class="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
         >
           <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
               <span class="text-primary-700 font-medium">{{ member.name.charAt(0) }}</span>
             </div>
             <div>
-              <p class="font-medium text-gray-900">{{ member.name }}</p>
-              <div class="flex items-center space-x-2 text-sm text-gray-500">
+              <p class="font-medium text-slate-900">{{ member.name }}</p>
+              <div class="flex items-center space-x-2 text-sm text-slate-500">
                 <span>{{ member.role === 'admin' ? '管理员' : '成员' }}</span>
                 <span v-if="member.expiresAt" class="text-orange-600">
                   · 至 {{ formatDate(member.expiresAt) }}
@@ -46,7 +46,7 @@
             <button
               v-if="member.id !== '03928'"
               @click="setExpiration(member)"
-              class="px-2 py-1 text-sm text-gray-600 hover:bg-gray-200 rounded"
+              class="px-2 py-1 text-sm text-slate-600 hover:bg-slate-200 rounded"
               title="设置有效期"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,13 +78,13 @@
       </div>
 
       <!-- Add Member Section -->
-      <div class="mt-6 pt-6 border-t border-gray-200">
-        <h4 class="text-sm font-medium text-gray-700 mb-3">添加成员</h4>
+      <div class="mt-6 pt-6 border-t border-slate-200">
+        <h4 class="text-sm font-medium text-slate-700 mb-3">添加成员</h4>
         <div class="flex space-x-2">
           <input
             v-model="newMemberEmail"
             type="email"
-            class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            class="flex-1 px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
             placeholder="输入成员邮箱"
           />
           <button

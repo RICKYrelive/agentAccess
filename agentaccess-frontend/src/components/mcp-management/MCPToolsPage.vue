@@ -1,14 +1,14 @@
 <template>
-  <div class="h-full flex flex-col bg-white overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+  <div class="h-full flex flex-col bg-white overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
     <!-- Page Header -->
-    <div class="px-8 py-6 border-b border-gray-200">
-      <h2 class="text-2xl font-semibold text-gray-900">MCP 工具管理</h2>
-      <p class="text-gray-500 mt-1">管理内置和自定义 MCP 工具</p>
+    <div class="px-8 py-6 border-b border-slate-200">
+      <h2 class="text-2xl font-semibold text-slate-900">MCP 工具管理</h2>
+      <p class="text-slate-500 mt-1">管理内置和自定义 MCP 工具</p>
     </div>
 
     <!-- Creation Section -->
-    <div class="px-8 py-6 border-b border-gray-200">
-      <h3 class="text-lg font-medium text-gray-900 mb-4">创建 MCP 工具</h3>
+    <div class="px-8 py-6 border-b border-slate-200">
+      <h3 class="text-lg font-medium text-slate-900 mb-4">创建 MCP 工具</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Builtin Import -->
         <button
@@ -18,7 +18,7 @@
           <svg class="w-8 h-8 mx-auto mb-2 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
-          <span class="text-sm font-medium text-gray-700">从官方商店导入</span>
+          <span class="text-sm font-medium text-slate-700">从官方商店导入</span>
         </button>
 
         <!-- Custom Tool -->
@@ -29,7 +29,7 @@
           <svg class="w-8 h-8 mx-auto mb-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
           </svg>
-          <span class="text-sm font-medium text-gray-700">自定义第三方工具</span>
+          <span class="text-sm font-medium text-slate-700">自定义第三方工具</span>
         </button>
 
         <!-- Image Deployment -->
@@ -40,7 +40,7 @@
           <svg class="w-8 h-8 mx-auto mb-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
           </svg>
-          <span class="text-sm font-medium text-gray-700">导入镜像</span>
+          <span class="text-sm font-medium text-slate-700">导入镜像</span>
         </button>
 
         <!-- OpenAPI Import -->
@@ -51,19 +51,19 @@
           <svg class="w-8 h-8 mx-auto mb-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
           </svg>
-          <span class="text-sm font-medium text-gray-700">导入 OpenAPI</span>
+          <span class="text-sm font-medium text-slate-700">导入 OpenAPI</span>
         </button>
       </div>
     </div>
 
     <!-- Tools Display -->
     <div class="px-8 py-6 flex-1">
-      <h3 class="text-lg font-medium text-gray-900 mb-4">MCP 工具列表 ({{ store.mcpTools.length }})</h3>
+      <h3 class="text-lg font-medium text-slate-900 mb-4">MCP 工具列表 ({{ store.mcpTools.length }})</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div
           v-for="tool in store.mcpTools"
           :key="tool.id"
-          class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+          class="border border-slate-200 rounded-lg p-4 hover:shadow-md transition-shadow"
         >
           <div class="flex items-start justify-between">
             <div class="flex items-center space-x-3">
@@ -78,8 +78,8 @@
                 </svg>
               </div>
               <div class="flex-1 min-w-0">
-                <h4 class="text-base font-medium text-gray-900 truncate">{{ tool.name }}</h4>
-                <p class="text-sm text-gray-500 truncate">{{ tool.description }}</p>
+                <h4 class="text-base font-medium text-slate-900 truncate">{{ tool.name }}</h4>
+                <p class="text-sm text-slate-500 truncate">{{ tool.description }}</p>
               </div>
             </div>
           </div>
@@ -96,7 +96,7 @@
             <div class="flex items-center space-x-1">
               <button
                 @click="editTool(tool)"
-                class="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded"
+                class="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded"
                 title="编辑"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,7 +107,7 @@
                 @click="toggleTool(tool.id)"
                 :class="[
                   'p-1.5 rounded',
-                  tool.isEnabled ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100',
+                  tool.isEnabled ? 'text-green-600 hover:bg-green-50' : 'text-slate-400 hover:bg-slate-100',
                 ]"
                 :title="tool.isEnabled ? '禁用' : '启用'"
               >
@@ -117,7 +117,7 @@
               </button>
               <button
                 @click="deleteTool(tool.id)"
-                class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded"
+                class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded"
                 title="删除"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -201,16 +201,16 @@ const getTypeBadgeClass = (type: MCPToolType) => {
     npx: 'bg-green-100 text-green-800',
     uvx: 'bg-yellow-100 text-yellow-800',
   }
-  return classes[type] || 'bg-gray-100 text-gray-800'
+  return classes[type] || 'bg-slate-100 text-slate-800'
 }
 
 const getStatusBadgeClass = (status: string) => {
   const classes = {
     active: 'bg-green-100 text-green-800',
-    inactive: 'bg-gray-100 text-gray-800',
+    inactive: 'bg-slate-100 text-slate-800',
     error: 'bg-red-100 text-red-800',
   }
-  return classes[status] || 'bg-gray-100 text-gray-800'
+  return classes[status] || 'bg-slate-100 text-slate-800'
 }
 
 const getToolIconClass = (type: MCPToolType) => {
@@ -220,7 +220,7 @@ const getToolIconClass = (type: MCPToolType) => {
     npx: 'bg-green-100',
     uvx: 'bg-yellow-100',
   }
-  return classes[type] || 'bg-gray-100'
+  return classes[type] || 'bg-slate-100'
 }
 
 const getToolIconColorClass = (type: MCPToolType) => {
@@ -230,7 +230,7 @@ const getToolIconColorClass = (type: MCPToolType) => {
     npx: 'text-green-600',
     uvx: 'text-yellow-600',
   }
-  return classes[type] || 'text-gray-600'
+  return classes[type] || 'text-slate-600'
 }
 
 const getToolIconPath = (type: MCPToolType) => {

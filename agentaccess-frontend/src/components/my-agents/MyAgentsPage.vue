@@ -2,7 +2,7 @@
   <div class="h-full bg-white overflow-y-auto p-6">
     <!-- Header -->
     <div class="mb-6">
-      <h1 class="text-2xl font-bold text-gray-900">我的Agent</h1>
+      <h1 class="text-2xl font-bold text-slate-900">我的Agent</h1>
     </div>
 
     <!-- Agent Creation Bar -->
@@ -24,7 +24,7 @@
 
       <button
         @click="handleAutoCreateAgent"
-        class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-colors"
+        class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-colors"
       >
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -39,7 +39,7 @@
 
       <button
         @click="handleImportAgent"
-        class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-colors"
+        class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-colors"
       >
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -55,15 +55,15 @@
 
     <!-- Private Agents Section -->
     <div class="mb-8">
-      <h2 class="text-lg font-semibold text-gray-900 mb-4">私有Agent ({{ myAgents.length }})</h2>
+      <h2 class="text-lg font-semibold text-slate-900 mb-4">私有Agent ({{ myAgents.length }})</h2>
 
       <!-- Empty state -->
       <div
         v-if="myAgents.length === 0"
-        class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+        class="text-center py-12 bg-slate-50 rounded-lg border-2 border-dashed border-slate-200"
       >
         <svg
-          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          class="w-16 h-16 mx-auto text-slate-300 mb-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -75,7 +75,7 @@
             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
           />
         </svg>
-        <p class="text-gray-500 mb-2">还没有创建任何Agent</p>
+        <p class="text-slate-500 mb-2">还没有创建任何Agent</p>
         <button
           @click="handleCreateCustomAgent"
           class="text-primary-600 hover:text-primary-700 font-medium"
@@ -100,7 +100,7 @@
     <!-- Shared Agents Section -->
     <div class="mb-8">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-semibold text-gray-900">共享Agent</h2>
+        <h2 class="text-lg font-semibold text-slate-900">共享Agent</h2>
         <button
           @click="showAddGroupDialog = true"
           class="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center space-x-1"
@@ -120,10 +120,10 @@
       <!-- Empty state for shared agents -->
       <div
         v-if="sharingGroups.length === 0"
-        class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+        class="text-center py-12 bg-slate-50 rounded-lg border-2 border-dashed border-slate-200"
       >
         <svg
-          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          class="w-16 h-16 mx-auto text-slate-300 mb-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -135,8 +135,8 @@
             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
           />
         </svg>
-        <p class="text-gray-500 mb-2">暂无共享Agent</p>
-        <p class="text-sm text-gray-400">将私有Agent拖放到共享组来分享</p>
+        <p class="text-slate-500 mb-2">暂无共享Agent</p>
+        <p class="text-sm text-slate-400">将私有Agent拖放到共享组来分享</p>
       </div>
 
       <!-- Sharing groups accordions -->
@@ -161,23 +161,23 @@
       @click.self="showAddGroupDialog = false"
     >
       <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">创建共享组</h3>
+        <h3 class="text-lg font-semibold text-slate-900 mb-4">创建共享组</h3>
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">共享组名称</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">共享组名称</label>
             <input
               v-model="newGroupName"
               type="text"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               placeholder="例如：研发部"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">描述（可选）</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">描述（可选）</label>
             <textarea
               v-model="newGroupDescription"
               rows="3"
-              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               placeholder="描述这个共享组的用途"
             />
           </div>
@@ -185,7 +185,7 @@
         <div class="flex justify-end space-x-3 mt-6">
           <button
             @click="showAddGroupDialog = false"
-            class="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+            class="px-4 py-2 text-slate-700 hover:bg-slate-100 rounded-md"
           >
             取消
           </button>
@@ -203,7 +203,7 @@
     <!-- Toast notification -->
     <div
       v-if="toast.show"
-      class="fixed top-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in"
+      class="fixed top-4 right-4 bg-slate-800 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in"
     >
       {{ toast.message }}
     </div>

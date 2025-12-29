@@ -2,61 +2,138 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CSS Variables for transitions */
+:root {
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @layer base {
   html {
     font-family: Inter, system-ui, sans-serif;
   }
+
+  /* Material Symbols Outlined font class */
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+  }
+
+  /* Filled icon variant */
+  .material-symbols-outlined.fill {
+    font-variation-settings: 'FILL' 1;
+  }
 }
 
 @layer components {
+  /* Modern Button Styles */
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply bg-primary text-white font-semibold px-5 py-2.5 rounded-xl shadow-lg shadow-primary/25 hover:bg-primary-dark hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20;
   }
 
   .btn-secondary {
-    @apply bg-gray-200 hover:bg-gray-300 text-gray-900 font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
+    @apply bg-white border border-slate-200 text-slate-900 font-semibold px-5 py-2.5 rounded-xl shadow-sm hover:border-primary/50 hover:text-primary hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/10;
   }
 
+  /* Card Styles */
   .card {
-    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-4;
+    @apply bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:border-primary/30 hover:shadow-md transition-all duration-200;
   }
 
+  /* Input Field Styles */
   .input-field {
-    @apply w-full px-4 py-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
-    min-height: 48px;
+    @apply w-full px-4 py-2.5 text-base bg-white border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 placeholder:text-slate-400 transition-all duration-200;
+    min-height: 44px;
     line-height: 1.5;
   }
 
   select.input-field {
-    min-height: 48px;
+    min-height: 44px;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-    background-position: right 0.5rem center;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
     background-repeat: no-repeat;
-    background-size: 1.5em 1.5em;
-    padding-right: 2.5rem;
+    background-size: 1.25em 1.25em;
+    padding-right: 2.75rem;
+    @apply cursor-pointer;
   }
 
   textarea.input-field {
     min-height: 80px;
     resize: vertical;
   }
+
+  /* Utility Classes */
+  .transition-base {
+    transition: all var(--transition-base);
+  }
+
+  .hover-lift {
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+  }
+
+  .icon-scale {
+    transition: transform var(--transition-fast);
+  }
+
+  .icon-scale:hover {
+    transform: scale(1.1);
+  }
 }
 
-/* Custom scrollbar for better UX */
+/* Animations */
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-subtle-pulse {
+  animation: subtle-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Modern Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+  background: #cbd5e1;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  background: #94a3b8;
+}
+
+/* Material Symbols - Font variation settings */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.material-symbols-outlined.fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }

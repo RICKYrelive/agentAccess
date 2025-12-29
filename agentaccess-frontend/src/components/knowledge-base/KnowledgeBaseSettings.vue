@@ -1,20 +1,20 @@
 <template>
   <div class="space-y-6">
     <!-- General Settings -->
-    <section class="bg-white rounded-lg border border-gray-200 p-6">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">基本设置</h3>
+    <section class="bg-white rounded-lg border border-slate-200 p-6">
+      <h3 class="text-lg font-semibold text-slate-900 mb-4">基本设置</h3>
       <div class="space-y-4">
         <!-- Is Public -->
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-900">公开访问</p>
-            <p class="text-xs text-gray-500">允许其他用户访问此知识库</p>
+            <p class="text-sm font-medium text-slate-900">公开访问</p>
+            <p class="text-xs text-slate-500">允许其他用户访问此知识库</p>
           </div>
           <button
             @click="togglePublic"
             :class="[
               'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-              localConfig.settings.isPublic ? 'bg-blue-600' : 'bg-gray-200',
+              localConfig.settings.isPublic ? 'bg-blue-600' : 'bg-slate-200',
             ]"
           >
             <span
@@ -29,14 +29,14 @@
         <!-- Is Enabled -->
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-900">启用状态</p>
-            <p class="text-xs text-gray-500">禁用后将无法在对话中使用此知识库</p>
+            <p class="text-sm font-medium text-slate-900">启用状态</p>
+            <p class="text-xs text-slate-500">禁用后将无法在对话中使用此知识库</p>
           </div>
           <button
             @click="toggleEnabled"
             :class="[
               'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-              localConfig.settings.isEnabled ? 'bg-green-600' : 'bg-gray-200',
+              localConfig.settings.isEnabled ? 'bg-green-600' : 'bg-slate-200',
             ]"
           >
             <span
@@ -50,7 +50,7 @@
 
         <!-- Tags -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">标签</label>
+          <label class="block text-sm font-medium text-slate-700 mb-1">标签</label>
           <div class="flex flex-wrap gap-2 mb-2">
             <span
               v-for="(tag, index) in localConfig.settings.tags"
@@ -75,7 +75,7 @@
               v-model="newTag"
               type="text"
               @keyup.enter="addTag"
-              class="flex-1 px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="flex-1 px-3 py-1.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="输入标签名称"
             />
             <button
@@ -92,13 +92,13 @@
     <!-- Chunking Settings (for text/spreadsheet) -->
     <section
       v-if="knowledgeBase.type === 'text' || knowledgeBase.type === 'spreadsheet'"
-      class="bg-white rounded-lg border border-gray-200 p-6"
+      class="bg-white rounded-lg border border-slate-200 p-6"
     >
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">分块设置</h3>
+      <h3 class="text-lg font-semibold text-slate-900 mb-4">分块设置</h3>
       <div class="space-y-4">
         <!-- Chunk Size -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             分块大小 (tokens): {{ localConfig.chunking?.chunkSize }}
           </label>
           <input
@@ -107,9 +107,9 @@
             min="128"
             max="2048"
             step="64"
-            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
           />
-          <div class="flex justify-between text-xs text-gray-500 mt-1">
+          <div class="flex justify-between text-xs text-slate-500 mt-1">
             <span>128</span>
             <span>2048</span>
           </div>
@@ -117,7 +117,7 @@
 
         <!-- Chunk Overlap -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             分块重叠 (tokens): {{ localConfig.chunking?.chunkOverlap }}
           </label>
           <input
@@ -126,9 +126,9 @@
             min="0"
             max="512"
             step="10"
-            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
           />
-          <div class="flex justify-between text-xs text-gray-500 mt-1">
+          <div class="flex justify-between text-xs text-slate-500 mt-1">
             <span>0</span>
             <span>512</span>
           </div>
@@ -137,11 +137,11 @@
         <!-- Spreadsheet-specific options -->
         <div
           v-if="knowledgeBase.type === 'spreadsheet'"
-          class="space-y-4 pt-4 border-t border-gray-200"
+          class="space-y-4 pt-4 border-t border-slate-200"
         >
           <!-- Split By -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">分割方式</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">分割方式</label>
             <div class="flex space-x-4">
               <label class="flex items-center">
                 <input
@@ -150,7 +150,7 @@
                   value="row"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500"
                 />
-                <span class="ml-2 text-sm text-gray-700">按行分割</span>
+                <span class="ml-2 text-sm text-slate-700">按行分割</span>
               </label>
               <label class="flex items-center">
                 <input
@@ -159,7 +159,7 @@
                   value="column"
                   class="h-4 w-4 text-blue-600 focus:ring-blue-500"
                 />
-                <span class="ml-2 text-sm text-gray-700">按列分割</span>
+                <span class="ml-2 text-sm text-slate-700">按列分割</span>
               </label>
             </div>
           </div>
@@ -167,14 +167,14 @@
           <!-- Has Header -->
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm font-medium text-gray-900">包含表头</p>
-              <p class="text-xs text-gray-500">第一行作为列名</p>
+              <p class="text-sm font-medium text-slate-900">包含表头</p>
+              <p class="text-xs text-slate-500">第一行作为列名</p>
             </div>
             <button
               @click="localConfig.chunking!.hasHeader = !localConfig.chunking!.hasHeader"
               :class="[
                 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-                localConfig.chunking?.hasHeader ? 'bg-blue-600' : 'bg-gray-200',
+                localConfig.chunking?.hasHeader ? 'bg-blue-600' : 'bg-slate-200',
               ]"
             >
               <span
@@ -190,20 +190,20 @@
     </section>
 
     <!-- Embedding Settings -->
-    <section class="bg-white rounded-lg border border-gray-200 p-6">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">向量化设置</h3>
+    <section class="bg-white rounded-lg border border-slate-200 p-6">
+      <h3 class="text-lg font-semibold text-slate-900 mb-4">向量化设置</h3>
       <div class="space-y-4">
         <!-- Enable Embedding -->
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-900">启用向量化</p>
-            <p class="text-xs text-gray-500">将内容转换为向量以支持语义搜索</p>
+            <p class="text-sm font-medium text-slate-900">启用向量化</p>
+            <p class="text-xs text-slate-500">将内容转换为向量以支持语义搜索</p>
           </div>
           <button
             @click="localConfig.embedding.enabled = !localConfig.embedding.enabled"
             :class="[
               'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-              localConfig.embedding.enabled ? 'bg-green-600' : 'bg-gray-200',
+              localConfig.embedding.enabled ? 'bg-green-600' : 'bg-slate-200',
             ]"
           >
             <span
@@ -217,10 +217,10 @@
 
         <!-- Model Selection -->
         <div v-if="localConfig.embedding.enabled">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Embedding 模型</label>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Embedding 模型</label>
           <select
             v-model="localConfig.embedding.model"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="bge-large-zh">BGE Large ZH (中文)</option>
             <option value="bge-small-zh">BGE Small ZH (中文)</option>
@@ -230,26 +230,26 @@
             <option value="text-embedding-3-large">OpenAI text-embedding-3-large</option>
             <option value="text-embedding-ada-002">OpenAI text-embedding-ada-002</option>
           </select>
-          <p class="text-xs text-gray-500 mt-1">选择用于将文本转换为向量的模型</p>
+          <p class="text-xs text-slate-500 mt-1">选择用于将文本转换为向量的模型</p>
         </div>
       </div>
     </section>
 
     <!-- ReRank Settings -->
-    <section class="bg-white rounded-lg border border-gray-200 p-6">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">重排序设置 (ReRank)</h3>
+    <section class="bg-white rounded-lg border border-slate-200 p-6">
+      <h3 class="text-lg font-semibold text-slate-900 mb-4">重排序设置 (ReRank)</h3>
       <div class="space-y-4">
         <!-- Enable ReRank -->
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-900">启用 ReRank</p>
-            <p class="text-xs text-gray-500">对搜索结果进行二次排序以提高准确性</p>
+            <p class="text-sm font-medium text-slate-900">启用 ReRank</p>
+            <p class="text-xs text-slate-500">对搜索结果进行二次排序以提高准确性</p>
           </div>
           <button
             @click="localConfig.rerank.enabled = !localConfig.rerank.enabled"
             :class="[
               'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-              localConfig.rerank.enabled ? 'bg-green-600' : 'bg-gray-200',
+              localConfig.rerank.enabled ? 'bg-green-600' : 'bg-slate-200',
             ]"
           >
             <span
@@ -264,10 +264,10 @@
         <div v-if="localConfig.rerank.enabled" class="space-y-4">
           <!-- Model Selection -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">ReRank 模型</label>
+            <label class="block text-sm font-medium text-slate-700 mb-1">ReRank 模型</label>
             <select
               v-model="localConfig.rerank.model"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="bge-reranker-large">BGE Reranker Large</option>
               <option value="bge-reranker-base">BGE Reranker Base</option>
@@ -278,7 +278,7 @@
 
           <!-- Top K -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block text-sm font-medium text-slate-700 mb-1">
               返回结果数 (Top K): {{ localConfig.rerank.topK }}
             </label>
             <input
@@ -286,9 +286,9 @@
               type="range"
               min="1"
               max="20"
-              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
             />
-            <div class="flex justify-between text-xs text-gray-500 mt-1">
+            <div class="flex justify-between text-xs text-slate-500 mt-1">
               <span>1</span>
               <span>20</span>
             </div>
@@ -296,7 +296,7 @@
 
           <!-- Score Threshold -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block text-sm font-medium text-slate-700 mb-1">
               相似度阈值: {{ (localConfig.rerank.scoreThreshold * 100).toFixed(0) }}%
             </label>
             <input
@@ -305,13 +305,13 @@
               min="0"
               max="1"
               step="0.05"
-              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
             />
-            <div class="flex justify-between text-xs text-gray-500 mt-1">
+            <div class="flex justify-between text-xs text-slate-500 mt-1">
               <span>0%</span>
               <span>100%</span>
             </div>
-            <p class="text-xs text-gray-500 mt-1">低于此分数的结果将被过滤</p>
+            <p class="text-xs text-slate-500 mt-1">低于此分数的结果将被过滤</p>
           </div>
         </div>
       </div>
@@ -320,16 +320,16 @@
     <!-- Database Sync Settings (for database type) -->
     <section
       v-if="knowledgeBase.type === 'database'"
-      class="bg-white rounded-lg border border-gray-200 p-6"
+      class="bg-white rounded-lg border border-slate-200 p-6"
     >
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">数据同步设置</h3>
+      <h3 class="text-lg font-semibold text-slate-900 mb-4">数据同步设置</h3>
       <div class="space-y-4">
         <!-- Sync Frequency -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">同步频率</label>
+          <label class="block text-sm font-medium text-slate-700 mb-1">同步频率</label>
           <select
             v-model="localConfig.databaseSync!.frequency"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="realtime">实时同步</option>
             <option value="hourly">每小时同步</option>
@@ -340,7 +340,7 @@
 
         <!-- Max Rows Per Query -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label class="block text-sm font-medium text-slate-700 mb-1">
             单次查询最大行数: {{ localConfig.databaseSync!.maxRowsPerQuery }}
           </label>
           <input
@@ -349,9 +349,9 @@
             min="100"
             max="10000"
             step="100"
-            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
           />
-          <div class="flex justify-between text-xs text-gray-500 mt-1">
+          <div class="flex justify-between text-xs text-slate-500 mt-1">
             <span>100</span>
             <span>10000</span>
           </div>
@@ -360,14 +360,14 @@
         <!-- Enable Cache -->
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm font-medium text-gray-900">启用缓存</p>
-            <p class="text-xs text-gray-500">缓存查询结果以提高性能</p>
+            <p class="text-sm font-medium text-slate-900">启用缓存</p>
+            <p class="text-xs text-slate-500">缓存查询结果以提高性能</p>
           </div>
           <button
             @click="localConfig.databaseSync!.enableCache = !localConfig.databaseSync!.enableCache"
             :class="[
               'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-              localConfig.databaseSync?.enableCache ? 'bg-green-600' : 'bg-gray-200',
+              localConfig.databaseSync?.enableCache ? 'bg-green-600' : 'bg-slate-200',
             ]"
           >
             <span
@@ -380,8 +380,8 @@
         </div>
 
         <!-- Last Sync Info -->
-        <div v-if="localConfig.databaseSync?.lastSyncAt" class="p-3 bg-gray-50 rounded-lg">
-          <p class="text-xs text-gray-600">
+        <div v-if="localConfig.databaseSync?.lastSyncAt" class="p-3 bg-slate-50 rounded-lg">
+          <p class="text-xs text-slate-600">
             上次同步: {{ formatDate(localConfig.databaseSync.lastSyncAt) }}
           </p>
         </div>
@@ -398,7 +398,7 @@
       </button>
       <button
         @click="handleReset"
-        class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+        class="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
       >
         重置
       </button>

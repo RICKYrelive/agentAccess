@@ -2,11 +2,11 @@
   <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] flex flex-col">
       <!-- Header -->
-      <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-        <h3 class="text-lg font-semibold text-gray-900">用户设置</h3>
+      <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+        <h3 class="text-lg font-semibold text-slate-900">用户设置</h3>
         <button
           @click="$emit('close')"
-          class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md"
+          class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-md"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -20,7 +20,7 @@
       </div>
 
       <!-- Tab Navigation -->
-      <div class="border-b border-gray-200">
+      <div class="border-b border-slate-200">
         <nav class="flex space-x-8 px-6" aria-label="Tabs">
           <button
             @click="activeTab = 'providers'"
@@ -28,7 +28,7 @@
               'py-3 px-1 border-b-2 font-medium text-sm',
               activeTab === 'providers'
                 ? 'border-primary-500 text-primary-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300',
             ]"
           >
             模型提供商
@@ -39,7 +39,7 @@
               'py-3 px-1 border-b-2 font-medium text-sm',
               activeTab === 'mcp-global'
                 ? 'border-primary-500 text-primary-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300',
             ]"
           >
             MCP服务管理
@@ -50,7 +50,7 @@
               'py-3 px-1 border-b-2 font-medium text-sm',
               activeTab === 'general'
                 ? 'border-primary-500 text-primary-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300',
             ]"
           >
             通用设置
@@ -61,7 +61,7 @@
               'py-3 px-1 border-b-2 font-medium text-sm',
               activeTab === 'fastgpt'
                 ? 'border-primary-500 text-primary-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300',
             ]"
           >
             FastGPT
@@ -72,7 +72,7 @@
               'py-3 px-1 border-b-2 font-medium text-sm',
               activeTab === 'debug'
                 ? 'border-primary-500 text-primary-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300',
             ]"
           >
             调试
@@ -85,8 +85,8 @@
         <!-- Model Providers Tab -->
         <div v-if="activeTab === 'providers'" class="p-6 space-y-6">
           <!-- Current Provider Selection -->
-          <div class="bg-gray-50 p-4 rounded-lg">
-            <label class="block text-sm font-medium text-gray-700 mb-3">当前默认模型提供商</label>
+          <div class="bg-slate-50 p-4 rounded-lg">
+            <label class="block text-sm font-medium text-slate-700 mb-3">当前默认模型提供商</label>
             <select
               v-model="settingsStore.selectedProviderId"
               @change="onProviderChange"
@@ -100,12 +100,12 @@
 
           <!-- Provider List -->
           <div class="space-y-4">
-            <h4 class="text-sm font-medium text-gray-900">已配置的提供商</h4>
+            <h4 class="text-sm font-medium text-slate-900">已配置的提供商</h4>
             <div class="space-y-3">
               <div
                 v-for="provider in providers"
                 :key="provider.id"
-                class="border border-gray-200 rounded-lg p-4"
+                class="border border-slate-200 rounded-lg p-4"
                 :class="{
                   'ring-2 ring-primary-500': provider.id === settingsStore.selectedProviderId,
                 }"
@@ -113,13 +113,13 @@
                 <div class="flex items-start justify-between">
                   <div class="flex-1">
                     <div class="flex items-center space-x-2 mb-2">
-                      <h4 class="text-sm font-medium text-gray-900">{{ provider.name }}</h4>
+                      <h4 class="text-sm font-medium text-slate-900">{{ provider.name }}</h4>
                       <span
                         class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
                         :class="
                           provider.isActive
                             ? 'bg-green-100 text-green-800'
-                            : 'bg-gray-100 text-gray-800'
+                            : 'bg-slate-100 text-slate-800'
                         "
                       >
                         {{ provider.isActive ? '启用' : '禁用' }}
@@ -129,13 +129,13 @@
                         :class="
                           provider.id === settingsStore.selectedProviderId
                             ? 'bg-blue-100 text-blue-800'
-                            : 'bg-gray-100 text-gray-600'
+                            : 'bg-slate-100 text-slate-600'
                         "
                       >
                         {{ provider.id === settingsStore.selectedProviderId ? '默认' : '' }}
                       </span>
                     </div>
-                    <div class="text-xs text-gray-500 space-y-1">
+                    <div class="text-xs text-slate-500 space-y-1">
                       <div>类型: {{ provider.type }}</div>
                       <div>模型: {{ provider.model }}</div>
                       <div v-if="provider.baseUrl">地址: {{ provider.baseUrl }}</div>
@@ -146,7 +146,7 @@
                   <div class="flex space-x-2 ml-4">
                     <button
                       @click="editProvider(provider)"
-                      class="p-1 text-gray-400 hover:text-gray-600"
+                      class="p-1 text-slate-400 hover:text-slate-600"
                       title="编辑"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -161,7 +161,7 @@
                     <button
                       @click="testProvider(provider)"
                       :disabled="testingProvider === provider.id"
-                      class="p-1 text-gray-400 hover:text-gray-600"
+                      class="p-1 text-slate-400 hover:text-slate-600"
                       title="测试连接"
                     >
                       <svg
@@ -180,13 +180,13 @@
                       </svg>
                       <div
                         v-else
-                        class="w-4 h-4 animate-spin rounded-full border-2 border-gray-300 border-t-primary-600"
+                        class="w-4 h-4 animate-spin rounded-full border-2 border-slate-300 border-t-primary-600"
                       ></div>
                     </button>
                     <button
                       @click="setAsDefault(provider.id)"
                       v-if="provider.id !== settingsStore.selectedProviderId"
-                      class="p-1 text-gray-400 hover:text-gray-600"
+                      class="p-1 text-slate-400 hover:text-slate-600"
                       title="设为默认"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,7 +239,7 @@
         <div v-else-if="activeTab === 'mcp-global'" class="p-6">
           <div class="text-center py-12">
             <svg
-              class="mx-auto h-12 w-12 text-gray-400 mb-3"
+              class="mx-auto h-12 w-12 text-slate-400 mb-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -251,11 +251,11 @@
                 d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
               />
             </svg>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">MCP服务管理</h3>
-            <p class="text-sm text-gray-500 mb-6">在这里配置全局可用的MCP服务</p>
-            <div class="bg-gray-50 rounded-lg p-6 max-w-2xl mx-auto text-left">
-              <h4 class="font-medium text-gray-900 mb-3">功能说明</h4>
-              <ul class="text-sm text-gray-600 space-y-2">
+            <h3 class="text-lg font-medium text-slate-900 mb-2">MCP服务管理</h3>
+            <p class="text-sm text-slate-500 mb-6">在这里配置全局可用的MCP服务</p>
+            <div class="bg-slate-50 rounded-lg p-6 max-w-2xl mx-auto text-left">
+              <h4 class="font-medium text-slate-900 mb-3">功能说明</h4>
+              <ul class="text-sm text-slate-600 space-y-2">
                 <li class="flex items-start">
                   <svg
                     class="w-4 h-4 text-green-500 mt-0.5 mr-2 flex-shrink-0"
@@ -312,7 +312,7 @@
         <div v-else-if="activeTab === 'general'" class="p-6">
           <div class="text-center py-12">
             <svg
-              class="mx-auto h-12 w-12 text-gray-400 mb-3"
+              class="mx-auto h-12 w-12 text-slate-400 mb-3"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -330,8 +330,8 @@
                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">通用设置</h3>
-            <p class="text-sm text-gray-500">更多通用设置功能即将推出</p>
+            <h3 class="text-lg font-medium text-slate-900 mb-2">通用设置</h3>
+            <p class="text-sm text-slate-500">更多通用设置功能即将推出</p>
           </div>
         </div>
 
@@ -343,11 +343,11 @@
         <!-- Debug Tab -->
         <div v-else-if="activeTab === 'debug'" class="p-6">
           <div class="max-w-2xl mx-auto space-y-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">调试工具</h3>
+            <h3 class="text-lg font-medium text-slate-900 mb-4">调试工具</h3>
 
             <!-- Debug Information -->
-            <div class="bg-gray-50 p-4 rounded-lg">
-              <h4 class="font-medium text-gray-900 mb-2">当前状态</h4>
+            <div class="bg-slate-50 p-4 rounded-lg">
+              <h4 class="font-medium text-slate-900 mb-2">当前状态</h4>
               <div class="space-y-1 text-sm font-mono">
                 <p>提供商数量: {{ settingsStore.providers.length }}</p>
                 <p>已初始化: {{ settingsStore.isInitialized }}</p>
@@ -358,7 +358,7 @@
 
             <!-- Debug Actions -->
             <div class="space-y-3">
-              <h4 class="font-medium text-gray-900">调试操作</h4>
+              <h4 class="font-medium text-slate-900">调试操作</h4>
 
               <button
                 @click="handleResetAndCreateDefault"
@@ -377,7 +377,7 @@
 
               <button
                 @click="console.log('Debug - Providers:', settingsStore.providers)"
-                class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm"
+                class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm"
               >
                 打印提供商信息到控制台
               </button>
@@ -390,7 +390,7 @@
               </button>
             </div>
 
-            <div class="text-xs text-gray-500">
+            <div class="text-xs text-slate-500">
               <p>💡 提示: 打开浏览器开发者工具查看详细日志</p>
             </div>
           </div>
@@ -398,7 +398,7 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="p-6 border-t border-gray-200">
+      <div class="p-6 border-t border-slate-200">
         <div class="flex space-x-3">
           <button @click="saveSettings" class="btn-primary flex-1">保存设置</button>
           <button @click="$emit('close')" class="btn-secondary flex-1">取消</button>
@@ -411,12 +411,12 @@
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60"
       >
         <div class="bg-white rounded-lg p-6 w-full max-w-md">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">
+          <h3 class="text-lg font-medium text-slate-900 mb-4">
             {{ editingProvider ? '编辑模型提供商' : '添加模型提供商' }}
           </h3>
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">名称</label>
+              <label class="block text-sm font-medium text-slate-700 mb-1">名称</label>
               <input
                 v-model="providerForm.name"
                 type="text"
@@ -425,7 +425,7 @@
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">类型</label>
+              <label class="block text-sm font-medium text-slate-700 mb-1">类型</label>
               <select v-model="providerForm.type" class="input-field w-full">
                 <option value="openai">OpenAI</option>
                 <option value="anthropic">Anthropic</option>
@@ -434,7 +434,7 @@
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Base URL</label>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Base URL</label>
               <input
                 v-model="providerForm.baseUrl"
                 type="text"
@@ -443,7 +443,7 @@
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">API Key</label>
+              <label class="block text-sm font-medium text-slate-700 mb-1">API Key</label>
               <input
                 v-model="providerForm.apiKey"
                 type="password"
@@ -452,7 +452,7 @@
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">模型</label>
+              <label class="block text-sm font-medium text-slate-700 mb-1">模型</label>
               <input
                 v-model="providerForm.model"
                 type="text"
@@ -462,7 +462,7 @@
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">最大令牌</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">最大令牌</label>
                 <input
                   v-model.number="providerForm.maxTokens"
                   type="number"
@@ -471,7 +471,7 @@
                 />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">温度</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">温度</label>
                 <input
                   v-model.number="providerForm.temperature"
                   type="number"

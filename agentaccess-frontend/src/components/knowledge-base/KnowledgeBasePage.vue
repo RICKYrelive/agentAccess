@@ -2,7 +2,7 @@
   <div class="h-full bg-white overflow-y-auto p-6">
     <!-- Header -->
     <div class="mb-6">
-      <h1 class="text-2xl font-bold text-gray-900">知识库管理</h1>
+      <h1 class="text-2xl font-bold text-slate-900">知识库管理</h1>
     </div>
 
     <!-- Creation Section -->
@@ -61,7 +61,7 @@
 
     <!-- Text Knowledge Bases Section -->
     <section class="mb-8">
-      <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+      <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
         <svg
           class="w-5 h-5 mr-2 text-green-600"
           fill="none"
@@ -81,10 +81,10 @@
       <!-- Empty state -->
       <div
         v-if="textKnowledgeBases.length === 0"
-        class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+        class="text-center py-12 bg-slate-50 rounded-lg border-2 border-dashed border-slate-200"
       >
         <svg
-          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          class="w-16 h-16 mx-auto text-slate-300 mb-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -96,7 +96,7 @@
             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
           />
         </svg>
-        <p class="text-gray-500 mb-2">还没有文本知识库</p>
+        <p class="text-slate-500 mb-2">还没有文本知识库</p>
         <button
           @click="openImportDialog('text')"
           class="text-green-600 hover:text-green-700 font-medium"
@@ -120,7 +120,7 @@
 
     <!-- Spreadsheet Knowledge Bases Section -->
     <section class="mb-8">
-      <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+      <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
         <svg
           class="w-5 h-5 mr-2 text-blue-600"
           fill="none"
@@ -140,10 +140,10 @@
       <!-- Empty state -->
       <div
         v-if="spreadsheetKnowledgeBases.length === 0"
-        class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+        class="text-center py-12 bg-slate-50 rounded-lg border-2 border-dashed border-slate-200"
       >
         <svg
-          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          class="w-16 h-16 mx-auto text-slate-300 mb-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -155,7 +155,7 @@
             d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
           />
         </svg>
-        <p class="text-gray-500 mb-2">还没有表格知识库</p>
+        <p class="text-slate-500 mb-2">还没有表格知识库</p>
         <button
           @click="openImportDialog('spreadsheet')"
           class="text-blue-600 hover:text-blue-700 font-medium"
@@ -179,7 +179,7 @@
 
     <!-- Database Knowledge Bases Section -->
     <section class="mb-8">
-      <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+      <h2 class="text-lg font-semibold text-slate-900 mb-4 flex items-center">
         <svg
           class="w-5 h-5 mr-2 text-purple-600"
           fill="none"
@@ -199,10 +199,10 @@
       <!-- Empty state -->
       <div
         v-if="databaseKnowledgeBases.length === 0"
-        class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+        class="text-center py-12 bg-slate-50 rounded-lg border-2 border-dashed border-slate-200"
       >
         <svg
-          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          class="w-16 h-16 mx-auto text-slate-300 mb-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -214,7 +214,7 @@
             d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
           />
         </svg>
-        <p class="text-gray-500 mb-2">还没有数据库知识库</p>
+        <p class="text-slate-500 mb-2">还没有数据库知识库</p>
         <button
           @click="openImportDialog('database')"
           class="text-purple-600 hover:text-purple-700 font-medium"

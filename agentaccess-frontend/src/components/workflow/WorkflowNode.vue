@@ -1,10 +1,10 @@
 <template>
   <div
-    class="workflow-node bg-white border-2 rounded-lg shadow-sm cursor-move transition-all duration-200"
+    class="workflow-node bg-white border-2 rounded-xl shadow-sm cursor-move transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
     :class="[
       {
-        'border-primary-500 shadow-md': isSelected,
-        'border-gray-300': !isSelected,
+        'border-primary shadow-lg shadow-primary/10 ring-2 ring-primary/20': isSelected,
+        'border-slate-200': !isSelected,
       },
       getNodeClasses(),
     ]"
@@ -35,8 +35,8 @@
         </svg>
       </div>
       <div class="flex-1 min-w-0">
-        <p class="text-sm font-medium text-gray-900">{{ getNodeStyle().name }}</p>
-        <p class="text-xs text-gray-500">{{ getNodeStyle().description }}</p>
+        <p class="text-sm font-medium text-slate-900">{{ getNodeStyle().name }}</p>
+        <p class="text-xs text-slate-500">{{ getNodeStyle().description }}</p>
       </div>
       <!-- Status Indicator -->
       <div v-if="node.status !== 'idle'" class="w-2 h-2 rounded-full" :class="getStatusClasses()" />
@@ -87,7 +87,7 @@
       @click.stop="onOutputPoint"
     >
       <div
-        class="w-3 h-3 bg-primary-600 border-2 border-white rounded-full cursor-pointer hover:bg-primary-700 transition-colors"
+        class="w-3 h-3 bg-primary border-2 border-white rounded-full cursor-pointer hover:bg-primary-dark hover:scale-125 transition-all duration-150"
         title="输出连接点"
       />
     </div>
@@ -97,7 +97,7 @@
       @click.stop="onInputPoint"
     >
       <div
-        class="w-3 h-3 bg-gray-400 border-2 border-white rounded-full cursor-pointer hover:bg-gray-500 transition-colors"
+        class="w-3 h-3 bg-slate-400 border-2 border-white rounded-full cursor-pointer hover:bg-slate-500 hover:scale-125 transition-all duration-150"
         title="输入连接点"
       />
     </div>
@@ -224,16 +224,16 @@ const getNodeStyle = () => {
         name: '结束',
         description: '工作流终点',
         icon: 'M6 18L18 6M6 6l12 12',
-        bgColor: 'bg-gray-100',
-        textColor: 'text-gray-600',
+        bgColor: 'bg-slate-100',
+        textColor: 'text-slate-600',
       }
     default:
       return {
         name: '未知节点',
         description: '未知节点类型',
         icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
-        bgColor: 'bg-gray-100',
-        textColor: 'text-gray-600',
+        bgColor: 'bg-slate-100',
+        textColor: 'text-slate-600',
       }
   }
 }
@@ -262,9 +262,9 @@ const getNodeClasses = () => {
     case 'output':
       return 'ring-teal-500 ring-opacity-50'
     case 'end':
-      return 'ring-gray-500 ring-opacity-50'
+      return 'ring-slate-500 ring-opacity-50'
     default:
-      return 'ring-gray-500 ring-opacity-50'
+      return 'ring-slate-500 ring-opacity-50'
   }
 }
 
@@ -277,7 +277,7 @@ const getStatusClasses = () => {
     case 'error':
       return 'bg-red-500'
     default:
-      return 'bg-gray-300'
+      return 'bg-slate-300'
   }
 }
 

@@ -9,7 +9,7 @@ export const useAgentsStore = defineStore('agents', () => {
   const myAgents = ref<ExtendedAgent[]>([
     {
       id: 'my-1',
-      name: '个人助理小助手',
+      name: '个人助理',
       type: 'personal',
       category: 'personal',
       description: '个人日常助手',
@@ -33,7 +33,7 @@ export const useAgentsStore = defineStore('agents', () => {
     },
     {
       id: 'my-3',
-      name: '机电维修助手瑶哥',
+      name: '机电维修助手',
       type: 'specialized',
       category: 'specialized',
       description: '机电维修专家',

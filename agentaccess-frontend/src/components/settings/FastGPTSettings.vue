@@ -1,7 +1,7 @@
 <template>
   <div class="fastgpt-settings">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-lg font-medium text-gray-900">FastGPT Integration</h3>
+      <h3 class="text-lg font-medium text-slate-900">FastGPT Integration</h3>
       <div class="flex items-center space-x-2">
         <div
           class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-medium"
@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <p class="text-sm text-gray-600 mb-4">
+    <p class="text-sm text-slate-600 mb-4">
       Connect to FastGPT server to enable real AI workflow execution. Configure your FastGPT API
       endpoint and key below.
     </p>
@@ -37,7 +37,7 @@
 
     <form @submit.prevent="handleSave" class="space-y-4">
       <div>
-        <label for="fastgpt-api-url" class="block text-sm font-medium text-gray-700 mb-1">
+        <label for="fastgpt-api-url" class="block text-sm font-medium text-slate-700 mb-1">
           API Endpoint URL
         </label>
         <input
@@ -45,16 +45,16 @@
           v-model="localApiUrl"
           type="url"
           placeholder="http://localhost:3000"
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           :disabled="fastgptConnected"
         />
-        <p class="mt-1 text-xs text-gray-500">
+        <p class="mt-1 text-xs text-slate-500">
           Your FastGPT server API endpoint (e.g., http://localhost:3000)
         </p>
       </div>
 
       <div>
-        <label for="fastgpt-api-key" class="block text-sm font-medium text-gray-700 mb-1">
+        <label for="fastgpt-api-key" class="block text-sm font-medium text-slate-700 mb-1">
           API Key
         </label>
         <div class="relative">
@@ -63,13 +63,13 @@
             v-model="localApiKey"
             :type="showApiKey ? 'text' : 'password'"
             placeholder="Enter your FastGPT API key"
-            class="w-full px-3 py-2 pr-20 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            class="w-full px-3 py-2 pr-20 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             :disabled="fastgptConnected"
           />
           <button
             type="button"
             @click="showApiKey = !showApiKey"
-            class="absolute right-10 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            class="absolute right-10 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
             :disabled="fastgptConnected"
           >
             <svg
@@ -102,7 +102,7 @@
             </svg>
           </button>
         </div>
-        <p class="mt-1 text-xs text-gray-500">Get your API key from FastGPT server settings</p>
+        <p class="mt-1 text-xs text-slate-500">Get your API key from FastGPT server settings</p>
       </div>
 
       <div class="flex items-center justify-between pt-2">
@@ -110,11 +110,11 @@
           type="button"
           @click="handleTestConnection"
           :disabled="isTesting || !localApiUrl || !localApiKey"
-          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span v-if="isTesting" class="flex items-center">
             <svg
-              class="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-600"
+              class="animate-spin -ml-1 mr-2 h-4 w-4 text-slate-600"
               fill="none"
               viewBox="0 0 24 24"
             >
@@ -142,7 +142,7 @@
             v-if="fastgptConnected"
             type="button"
             @click="handleDisconnect"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-red-500"
+            class="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 focus:ring-2 focus:ring-red-500"
           >
             Disconnect
           </button>
@@ -158,9 +158,9 @@
       </div>
     </form>
 
-    <div v-if="fastgptConnected" class="mt-6 pt-6 border-t border-gray-200">
+    <div v-if="fastgptConnected" class="mt-6 pt-6 border-t border-slate-200">
       <div class="flex items-center justify-between mb-3">
-        <h4 class="text-sm font-medium text-gray-900">Execution Mode</h4>
+        <h4 class="text-sm font-medium text-slate-900">Execution Mode</h4>
         <label class="relative inline-flex items-center cursor-pointer">
           <input
             type="checkbox"
@@ -169,20 +169,20 @@
             class="sr-only peer"
           />
           <div
-            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+            class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
           ></div>
-          <span class="ml-2 text-sm text-gray-600">Use FastGPT for execution</span>
+          <span class="ml-2 text-sm text-slate-600">Use FastGPT for execution</span>
         </label>
       </div>
-      <p class="text-xs text-gray-500">
+      <p class="text-xs text-slate-500">
         When enabled, workflows will be executed on the FastGPT server instead of using mock
         execution.
       </p>
     </div>
 
-    <div class="mt-6 pt-6 border-t border-gray-200">
-      <h4 class="text-sm font-medium text-gray-900 mb-2">Help & Documentation</h4>
-      <ul class="text-xs text-gray-600 space-y-1">
+    <div class="mt-6 pt-6 border-t border-slate-200">
+      <h4 class="text-sm font-medium text-slate-900 mb-2">Help & Documentation</h4>
+      <ul class="text-xs text-slate-600 space-y-1">
         <li>
           <a
             href="https://fastgpt.run/docs"
@@ -242,7 +242,7 @@ const connectionStatusClass = computed(() => {
   if (fastgptConnected.value) {
     return 'bg-green-100 text-green-800'
   }
-  return 'bg-gray-100 text-gray-800'
+  return 'bg-slate-100 text-slate-800'
 })
 
 const connectionStatusText = computed(() => {

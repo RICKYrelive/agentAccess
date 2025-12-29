@@ -1,19 +1,28 @@
 <template>
-  <div class="h-full bg-white border-r border-gray-200 flex flex-col">
+  <div class="h-full bg-white border-r border-slate-200 flex flex-col">
     <!-- Logo and App Name -->
-    <div class="p-4 border-b border-gray-200">
+    <div class="p-4 border-b border-slate-200">
       <div class="flex items-center space-x-3">
-        <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M13 10V3L4 14h7v7l9-11h-7z"
-            />
+        <!-- Modern Logo: Abstract "AA" with connection dots -->
+        <div class="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg shadow-primary/30 relative overflow-hidden">
+          <!-- Decorative background pattern -->
+          <div class="absolute inset-0 opacity-20">
+            <svg viewBox="0 0 40 40" class="w-full h-full">
+              <circle cx="8" cy="8" r="6" fill="currentColor" class="text-white"/>
+              <circle cx="32" cy="32" r="4" fill="currentColor" class="text-white"/>
+            </svg>
+          </div>
+          <!-- Main Logo Icon: Stylized "A" with connection node -->
+          <svg class="w-6 h-6 text-white relative z-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3L4 20h3l1.5-4h7l1.5 4h3L12 3z" fill="currentColor" fill-opacity="0.9"/>
+            <circle cx="12" cy="11" r="2" fill="white"/>
+            <circle cx="12" cy="11" r="4" stroke="white" stroke-width="1.5"/>
           </svg>
         </div>
-        <h1 class="text-lg font-semibold text-gray-900">Agent Access</h1>
+        <div class="flex flex-col">
+          <h1 class="text-lg font-display font-bold text-slate-900 leading-tight">AgentAccess</h1>
+          <span class="text-xs text-slate-400 font-medium tracking-wide">AI AGENT PLATFORM</span>
+        </div>
       </div>
     </div>
 
@@ -42,10 +51,10 @@
         <button
           @click="goToHome"
           :class="[
-            'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center space-x-3 transition-colors',
+            'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center space-x-3 transition-all duration-200',
             isShowingHome
-              ? 'bg-primary-100 text-primary-700'
-              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+              ? 'bg-primary/5 text-primary font-semibold'
+              : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
           ]"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,7 +70,7 @@
       </div>
 
       <!-- Separator -->
-      <div class="border-t border-gray-100 my-2"></div>
+      <div class="border-t border-slate-100 my-2"></div>
 
       <!-- Agent Section (No separators between items) -->
       <div class="space-y-1 pb-4">
@@ -69,10 +78,10 @@
         <button
           @click="switchToView('workflow')"
           :class="[
-            'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center space-x-3 transition-colors',
+            'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center space-x-3 transition-all duration-200',
             activeView === 'workflow'
-              ? 'bg-primary-100 text-primary-700'
-              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+              ? 'bg-primary/5 text-primary font-semibold'
+              : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
           ]"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,15 +108,15 @@
         <button
           @click="handleMyAgentsClick"
           :class="[
-            'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center justify-between transition-colors',
+            'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center justify-between transition-all duration-200',
             activeView === 'my-agents'
-              ? 'bg-primary-100 text-primary-700'
-              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+              ? 'bg-primary/5 text-primary font-semibold'
+              : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
           ]"
         >
           <div class="flex items-center space-x-3">
             <svg
-              class="w-5 h-5 text-gray-400"
+              class="w-5 h-5 text-slate-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -123,7 +132,7 @@
           </div>
           <svg
             v-if="recentAgents.length > 0"
-            class="w-4 h-4 text-gray-400 transform transition-transform"
+            class="w-4 h-4 text-slate-400 transform transition-transform"
             :class="{ 'rotate-90': isMyAgentsOpen }"
             fill="none"
             stroke="currentColor"
@@ -143,7 +152,7 @@
           <div
             v-for="agent in recentAgents"
             :key="agent.id"
-            class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer flex items-center space-x-2"
+            class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md cursor-pointer flex items-center space-x-2"
             @click="openAgentInEditor(agent.id)"
             :title="agent.name"
           >
@@ -168,15 +177,15 @@
         <button
           @click="handleTeamAgentsClick"
           :class="[
-            'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center justify-between transition-colors',
+            'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center justify-between transition-all duration-200',
             activeView === 'team-agents'
-              ? 'bg-primary-100 text-primary-700'
-              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+              ? 'bg-primary/5 text-primary font-semibold'
+              : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
           ]"
         >
           <div class="flex items-center space-x-3">
             <svg
-              class="w-5 h-5 text-gray-400"
+              class="w-5 h-5 text-slate-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -192,7 +201,7 @@
           </div>
           <svg
             v-if="myTeams.length > 0"
-            class="w-4 h-4 text-gray-400 transform transition-transform"
+            class="w-4 h-4 text-slate-400 transform transition-transform"
             :class="{ 'rotate-90': isTeamAgentsOpen }"
             fill="none"
             stroke="currentColor"
@@ -212,7 +221,7 @@
           <div
             v-for="team in myTeams"
             :key="team.id"
-            class="px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer flex items-center space-x-2"
+            class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md cursor-pointer flex items-center space-x-2"
             :title="team.description || team.name"
             @click="handleTeamClick(team.id)"
           >
@@ -232,7 +241,7 @@
             <span class="truncate">{{ team.name }}</span>
             <span
               v-if="isTeamAdmin(team.id)"
-              class="text-xs bg-primary-100 text-primary-700 px-1 rounded"
+              class="text-xs bg-primary/5 text-primary font-semibold px-1 rounded"
               title="管理员"
               >管理员</span
             >
@@ -241,7 +250,7 @@
       </div>
 
       <!-- Separator -->
-      <div class="border-t border-gray-100 my-2"></div>
+      <div class="border-t border-slate-100 my-2"></div>
 
       <!-- Tools & Memory Section (No separators between items) -->
       <div class="space-y-1 pb-4">
@@ -250,10 +259,10 @@
           <button
             @click="handleMCPManagementClick"
             :class="[
-              'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center justify-between transition-colors',
+              'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center justify-between transition-all duration-200',
               (activeView === 'mcp-tools' || activeView === 'mcp-gateway')
-                ? 'bg-primary-100 text-primary-700'
-                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+                ? 'bg-primary/5 text-primary font-semibold'
+                : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
             ]"
           >
             <div class="flex items-center space-x-3">
@@ -268,7 +277,7 @@
               <span>MCP 管理</span>
             </div>
             <svg
-              class="w-4 h-4 text-gray-400 transform transition-transform"
+              class="w-4 h-4 text-slate-400 transform transition-transform"
               :class="{ 'rotate-90': isMCPManagementOpen }"
               fill="none"
               stroke="currentColor"
@@ -288,10 +297,10 @@
             <button
               @click="switchToView('mcp-tools')"
               :class="[
-                'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center space-x-3 transition-colors',
+                'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center space-x-3 transition-all duration-200',
                 activeView === 'mcp-tools'
-                  ? 'bg-primary-100 text-primary-700'
-                  : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+                  ? 'bg-primary/5 text-primary font-semibold'
+                  : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
               ]"
             >
               <svg class="w-4 h-4 text-primary-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -302,10 +311,10 @@
             <button
               @click="switchToView('mcp-gateway')"
               :class="[
-                'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center space-x-3 transition-colors',
+                'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center space-x-3 transition-all duration-200',
                 activeView === 'mcp-gateway'
-                  ? 'bg-primary-100 text-primary-700'
-                  : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+                  ? 'bg-primary/5 text-primary font-semibold'
+                  : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
               ]"
             >
               <svg class="w-4 h-4 text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -321,10 +330,10 @@
           <button
             @click="handleSystemToolsClick"
             :class="[
-              'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center justify-between transition-colors',
+              'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center justify-between transition-all duration-200',
               activeView === 'system-tools'
-                ? 'bg-primary-100 text-primary-700'
-                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+                ? 'bg-primary/5 text-primary font-semibold'
+                : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
             ]"
           >
             <div class="flex items-center space-x-3">
@@ -345,7 +354,7 @@
               <span>系统工具</span>
             </div>
             <svg
-              class="w-4 h-4 text-gray-400 transform transition-transform"
+              class="w-4 h-4 text-slate-400 transform transition-transform"
               :class="{ 'rotate-90': isSystemToolsOpen }"
               fill="none"
               stroke="currentColor"
@@ -364,12 +373,12 @@
           <div v-if="isSystemToolsOpen" class="mt-1 ml-8 space-y-1">
             <!-- Sandbox Tools -->
             <div class="px-3 py-2">
-              <div class="text-xs text-gray-500 mb-1">沙箱环境</div>
+              <div class="text-xs text-slate-500 mb-1">沙箱环境</div>
               <div class="space-y-1">
                 <div
                   v-for="tool in sandboxTools"
                   :key="tool.id"
-                  class="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded cursor-pointer flex items-center space-x-2"
+                  class="px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded cursor-pointer flex items-center space-x-2"
                   :title="tool.description"
                 >
                   <svg class="w-4 h-4 flex-shrink-0" :class="tool.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -383,12 +392,12 @@
 
             <!-- Built-in System Tools -->
             <div class="px-3 py-2">
-              <div class="text-xs text-gray-500 mb-1">内置工具</div>
+              <div class="text-xs text-slate-500 mb-1">内置工具</div>
               <div class="space-y-1">
                 <div
                   v-for="tool in builtinSystemTools"
                   :key="tool.id"
-                  class="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded cursor-pointer flex items-center space-x-2"
+                  class="px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded cursor-pointer flex items-center space-x-2"
                   :title="tool.description"
                 >
                   <svg class="w-4 h-4 flex-shrink-0" :class="tool.iconColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -406,10 +415,10 @@
           <button
             @click="handleMemoryClick"
             :class="[
-              'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center justify-between transition-colors',
+              'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center justify-between transition-all duration-200',
               activeView === 'memory'
-                ? 'bg-primary-100 text-primary-700'
-                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+                ? 'bg-primary/5 text-primary font-semibold'
+                : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
             ]"
           >
             <div class="flex items-center space-x-3">
@@ -424,7 +433,7 @@
               <span>记忆体</span>
             </div>
             <svg
-              class="w-4 h-4 text-gray-400 transform transition-transform"
+              class="w-4 h-4 text-slate-400 transform transition-transform"
               :class="{ 'rotate-90': isMemoryOpen }"
               fill="none"
               stroke="currentColor"
@@ -443,12 +452,12 @@
           <div v-if="isMemoryOpen" class="mt-1 ml-8 space-y-1">
             <!-- Memory Types -->
             <div class="px-3 py-2">
-              <div class="text-xs text-gray-500 mb-1">存储类型</div>
+              <div class="text-xs text-slate-500 mb-1">存储类型</div>
               <div class="space-y-1">
                 <div
                   v-for="memory in memoryTypes"
                   :key="memory.id"
-                  class="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded cursor-pointer flex items-center justify-between"
+                  class="px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded cursor-pointer flex items-center justify-between"
                   :title="memory.description"
                 >
                   <div class="flex items-center space-x-2">
@@ -457,7 +466,7 @@
                     </svg>
                     <span class="truncate">{{ memory.name }}</span>
                   </div>
-                  <span class="text-xs text-gray-400">{{ memory.size }}</span>
+                  <span class="text-xs text-slate-400">{{ memory.size }}</span>
                 </div>
               </div>
             </div>
@@ -476,17 +485,17 @@
       </div>
 
       <!-- Separator -->
-      <div class="border-t border-gray-100 my-2"></div>
+      <div class="border-t border-slate-100 my-2"></div>
 
       <!-- Knowledge Base -->
       <div class="space-y-1 pb-4">
         <button
           @click="handleKnowledgeBaseClick"
           :class="[
-            'w-full text-left px-3 py-2 text-sm font-medium rounded-md flex items-center space-x-3 transition-colors',
+            'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center space-x-3 transition-all duration-200',
             activeView === 'knowledge-base'
-              ? 'bg-primary-100 text-primary-700'
-              : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+              ? 'bg-primary/5 text-primary font-semibold'
+              : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
           ]"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -502,17 +511,17 @@
       </div>
 
       <!-- Separator -->
-      <div class="border-t border-gray-100 my-2"></div>
+      <div class="border-t border-slate-100 my-2"></div>
 
       <!-- Recent Conversations -->
       <div class="space-y-1">
         <button
           @click="toggleRecentConversations"
-          class="w-full text-left px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-gray-900 flex items-center justify-between"
+          class="w-full text-left px-3 py-2 text-sm font-medium text-slate-700 rounded-md hover:bg-slate-100 hover:text-slate-900 flex items-center justify-between"
         >
           <div class="flex items-center space-x-3">
             <svg
-              class="w-5 h-5 text-gray-400"
+              class="w-5 h-5 text-slate-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -527,7 +536,7 @@
             <span>最近 Access 会话</span>
           </div>
           <svg
-            class="w-4 h-4 text-gray-400 transform transition-transform"
+            class="w-4 h-4 text-slate-400 transform transition-transform"
             :class="{ 'rotate-90': isRecentConversationsOpen }"
             fill="none"
             stroke="currentColor"
@@ -547,13 +556,13 @@
           <div
             v-for="conv in recentConversations"
             :key="conv.id"
-            class="group px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md cursor-pointer flex items-center justify-between"
+            class="group px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md cursor-pointer flex items-center justify-between"
             @click="selectRecentConversation(conv)"
           >
             <span class="truncate flex-1">{{ conv.title }}</span>
             <button
               @click.stop="deleteRecentConversation(conv.id)"
-              class="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-red-600 transition-opacity flex-shrink-0"
+              class="opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-red-600 transition-opacity flex-shrink-0"
               title="删除 Access 会话"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -571,10 +580,10 @@
     </nav>
 
     <!-- User Profile -->
-    <div class="p-4 border-t border-gray-200">
+    <div class="p-4 border-t border-slate-200">
       <div class="flex items-center space-x-3">
-        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-          <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-8 h-8 bg-slate-300 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -584,13 +593,13 @@
           </svg>
         </div>
         <div class="flex-1">
-          <p class="text-sm font-medium text-gray-900">{{ user.name }}</p>
+          <p class="text-sm font-medium text-slate-900">{{ user.name }}</p>
         </div>
         <!-- User Menu Dropdown -->
         <div class="relative">
           <button
             @click="toggleUserMenu"
-            class="p-1 text-gray-400 hover:text-gray-600"
+            class="p-1 text-slate-400 hover:text-slate-600"
             title="用户菜单"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -606,11 +615,11 @@
           <!-- User Menu Dropdown -->
           <div
             v-if="showUserMenu"
-            class="absolute bottom-full right-0 mb-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50"
+            class="absolute bottom-full right-0 mb-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-50"
           >
             <button
               @click="openUserSettings"
-              class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
+              class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 flex items-center space-x-2"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -628,10 +637,10 @@
               </svg>
               <span>用户设置</span>
             </button>
-            <div class="border-t border-gray-200 my-1"></div>
+            <div class="border-t border-slate-200 my-1"></div>
             <button
               @click="logout"
-              class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
+              class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 flex items-center space-x-2"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -754,7 +763,7 @@ const sandboxTools = ref([
     name: '终端',
     status: '运行中',
     description: 'Shell 命令执行环境',
-    iconColor: 'text-gray-600',
+    iconColor: 'text-slate-600',
     iconPath: 'M8 9l3 3-3 3m0 0l3-3-3-3m3 3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z',
   },
 ])

@@ -4,11 +4,11 @@
     <div v-for="category in toolCategories" :key="category.name">
       <button
         @click="toggleCategory(category.name)"
-        class="w-full flex items-center justify-between p-2 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+        class="w-full flex items-center justify-between p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
       >
-        <span class="text-sm font-medium text-gray-700">{{ category.name }}</span>
+        <span class="text-sm font-medium text-slate-700">{{ category.name }}</span>
         <svg
-          :class="['w-4 h-4 transition-transform text-gray-400', expandedCategories.has(category.name) ? 'rotate-90' : '']"
+          :class="['w-4 h-4 transition-transform text-slate-400', expandedCategories.has(category.name) ? 'rotate-90' : '']"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -22,17 +22,17 @@
         <div
           v-for="tool in category.tools"
           :key="tool.id"
-          class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
+          class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"
         >
           <div class="flex-1">
-            <div class="text-sm font-medium text-gray-900">{{ tool.name }}</div>
-            <div v-if="expandedCategories.has(category.name)" class="text-xs text-gray-500 mt-1">{{ tool.description }}</div>
+            <div class="text-sm font-medium text-slate-900">{{ tool.name }}</div>
+            <div v-if="expandedCategories.has(category.name)" class="text-xs text-slate-500 mt-1">{{ tool.description }}</div>
           </div>
           <button
             @click="toggleTool(tool.id)"
             :class="[
               'relative inline-flex items-center h-6 w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-full',
-              isToolSelected(tool.id) ? 'bg-primary-600' : 'bg-gray-300',
+              isToolSelected(tool.id) ? 'bg-primary-600' : 'bg-slate-300',
             ]"
           >
             <span
@@ -47,7 +47,7 @@
     </div>
 
     <!-- No tools message -->
-    <div v-if="allTools.length === 0" class="text-center py-6 text-gray-500 text-sm">
+    <div v-if="allTools.length === 0" class="text-center py-6 text-slate-500 text-sm">
       暂无 MCP 工具
     </div>
   </div>

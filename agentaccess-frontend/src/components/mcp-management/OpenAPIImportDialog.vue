@@ -3,9 +3,9 @@
     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click.self="emit('close')">
       <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden">
         <!-- Header -->
-        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-          <h3 class="text-lg font-semibold text-gray-900">从 OpenAPI 导入工具</h3>
-          <button @click="emit('close')" class="text-gray-400 hover:text-gray-600">
+        <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+          <h3 class="text-lg font-semibold text-slate-900">从 OpenAPI 导入工具</h3>
+          <button @click="emit('close')" class="text-slate-400 hover:text-slate-600">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -17,7 +17,7 @@
           <!-- Step 1: File Upload -->
           <div v-if="step === 1">
             <div
-              class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary-400 transition-colors"
+              class="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center hover:border-primary-400 transition-colors"
               @dragover.prevent
               @drop.prevent="handleDrop"
               @click="$refs.fileInput?.click()"
@@ -29,11 +29,11 @@
                 class="hidden"
                 @change="handleFileSelect"
               />
-              <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-12 h-12 mx-auto mb-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
-              <p class="text-sm text-gray-600 mb-1">点击上传或拖拽文件到此处</p>
-              <p class="text-xs text-gray-400">支持 .json, .yaml, .yml 格式的 OpenAPI 文件</p>
+              <p class="text-sm text-slate-600 mb-1">点击上传或拖拽文件到此处</p>
+              <p class="text-xs text-slate-400">支持 .json, .yaml, .yml 格式的 OpenAPI 文件</p>
             </div>
 
             <div v-if="error" class="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
@@ -44,24 +44,24 @@
           <!-- Step 2: Preview -->
           <div v-if="step === 2">
             <div class="mb-4">
-              <h4 class="text-sm font-medium text-gray-900 mb-2">解析结果</h4>
-              <p class="text-xs text-gray-500">从 OpenAPI 文件中提取了 {{ endpoints.length }} 个端点，将生成 {{ endpoints.length }} 个 MCP 工具</p>
+              <h4 class="text-sm font-medium text-slate-900 mb-2">解析结果</h4>
+              <p class="text-xs text-slate-500">从 OpenAPI 文件中提取了 {{ endpoints.length }} 个端点，将生成 {{ endpoints.length }} 个 MCP 工具</p>
             </div>
 
-            <div class="border border-gray-200 rounded-lg overflow-hidden">
-              <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
-                <span class="text-sm font-medium text-gray-700">生成的工具列表</span>
+            <div class="border border-slate-200 rounded-lg overflow-hidden">
+              <div class="bg-slate-50 px-4 py-2 border-b border-slate-200">
+                <span class="text-sm font-medium text-slate-700">生成的工具列表</span>
               </div>
               <div class="max-h-60 overflow-y-auto">
-                <div v-for="(endpoint, index) in endpoints" :key="index" class="px-4 py-3 border-b border-gray-100 last:border-b-0">
+                <div v-for="(endpoint, index) in endpoints" :key="index" class="px-4 py-3 border-b border-slate-100 last:border-b-0">
                   <div class="flex items-center space-x-2">
                     <span :class="getMethodBadgeClass(endpoint.method)" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium">
                       {{ endpoint.method }}
                     </span>
-                    <span class="text-sm font-mono text-gray-700">{{ endpoint.path }}</span>
+                    <span class="text-sm font-mono text-slate-700">{{ endpoint.path }}</span>
                   </div>
-                  <p v-if="endpoint.summary" class="text-xs text-gray-500 mt-1 ml-1">{{ endpoint.summary }}</p>
-                  <p class="text-xs text-gray-400 mt-1">工具: {{ generateToolName(endpoint) }}</p>
+                  <p v-if="endpoint.summary" class="text-xs text-slate-500 mt-1 ml-1">{{ endpoint.summary }}</p>
+                  <p class="text-xs text-slate-400 mt-1">工具: {{ generateToolName(endpoint) }}</p>
                 </div>
               </div>
             </div>
@@ -69,18 +69,18 @@
         </div>
 
         <!-- Footer -->
-        <div class="px-6 py-4 border-t border-gray-200 flex justify-between">
+        <div class="px-6 py-4 border-t border-slate-200 flex justify-between">
           <button
             v-if="step === 2"
             @click="step = 1"
-            class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+            class="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-md"
           >
             上一步
           </button>
           <div v-else></div>
 
           <div class="flex space-x-3">
-            <button @click="emit('close')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md">
+            <button @click="emit('close')" class="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-md">
               取消
             </button>
             <button
@@ -215,7 +215,7 @@ const getMethodBadgeClass = (method: string) => {
     DELETE: 'bg-red-100 text-red-800',
     PATCH: 'bg-purple-100 text-purple-800',
   }
-  return classes[method] || 'bg-gray-100 text-gray-800'
+  return classes[method] || 'bg-slate-100 text-slate-800'
 }
 
 const generateToolName = (endpoint: { method: string; path: string }) => {

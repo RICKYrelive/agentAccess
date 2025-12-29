@@ -1,9 +1,13 @@
 <template>
   <Teleport to="body">
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" @click.self="emit('close')">
-      <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+    <template v-if="!showGroupDialog">
+      <div
+        class="fixed inset-0 flex items-center justify-center z-[50] bg-black bg-opacity-50"
+        @click.self="handleOverlayClick($event)"
+      >
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden" @click.stop>
         <!-- Header -->
-        <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+        <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between" @click.stop>
           <h3 class="text-lg font-semibold text-slate-900">{{ gateway ? '编辑' : '创建' }} MCP 网关</h3>
           <button @click="emit('close')" class="text-slate-400 hover:text-slate-600">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -13,7 +17,7 @@
         </div>
 
         <!-- Content -->
-        <div class="px-6 py-4 overflow-y-auto max-h-[70vh]">
+        <div class="px-6 py-4 overflow-y-auto max-h-[70vh]" @click.stop>
           <form @submit.prevent="handleSubmit" class="space-y-6">
             <!-- Basic Info -->
             <div class="space-y-4">
@@ -95,7 +99,7 @@
         </div>
 
         <!-- Footer -->
-        <div class="px-6 py-4 border-t border-slate-200 flex justify-end space-x-3">
+        <div class="px-6 py-4 border-t border-slate-200 flex justify-end space-x-3" @click.stop>
           <button @click="emit('close')" class="px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 rounded-md">
             取消
           </button>
@@ -109,6 +113,7 @@
         </div>
       </div>
     </div>
+    </template>
   </Teleport>
 
   <!-- Load Balancer Group Dialog (separate teleport) -->
@@ -122,7 +127,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 import { useMCPManagementStore } from '@/stores/mcpManagement'
 import ToolSearchFilter from './ToolSearchFilter.vue'
 import ToolList from './ToolList.vue'
@@ -158,6 +163,12 @@ const filterCategory = ref('all')
 // Load balancer group dialog state
 const showGroupDialog = ref(false)
 const editingGroup = ref<LoadBalancerGroup | null>(null)
+
+// Watch showGroupDialog for debugging
+watch(showGroupDialog, (newVal, oldVal) => {
+  console.log('[CreateGatewayDialog] showGroupDialog changed from', oldVal, 'to', newVal)
+  console.trace('[CreateGatewayDialog] showGroupDialog change stack trace')
+})
 
 // Computed: available categories
 const availableCategories = computed(() => {
@@ -201,7 +212,12 @@ onMounted(() => {
     formData.description = props.gateway.description
     formData.baseUrl = props.gateway.baseUrl
     formData.mcpToolIds = [...props.gateway.mcpToolIds]
-    formData.loadBalancerGroups = props.gateway.loadBalancerGroups || []
+    // Deep copy load balancer groups to avoid reference issues
+    formData.loadBalancerGroups = (props.gateway.loadBalancerGroups || []).map(g => ({
+      ...g,
+      toolIds: [...g.toolIds],
+    }))
+    console.log('[CreateGatewayDialog] Loaded loadBalancerGroups:', formData.loadBalancerGroups)
   }
 })
 
@@ -222,8 +238,11 @@ const removeTool = (toolId: string) => {
 }
 
 const openCreateGroupDialog = () => {
+  console.log('[CreateGatewayDialog] openCreateGroupDialog called')
+  console.log('[CreateGatewayDialog] Before set showGroupDialog:', showGroupDialog.value)
   editingGroup.value = null
   showGroupDialog.value = true
+  console.log('[CreateGatewayDialog] After set showGroupDialog:', showGroupDialog.value)
 }
 
 const editGroup = (groupId: string) => {
@@ -255,8 +274,15 @@ const removeToolFromGroup = ({ groupId, toolId }: { groupId: string; toolId: str
 }
 
 const closeGroupDialog = () => {
+  console.log('[CreateGatewayDialog] closeGroupDialog called')
   showGroupDialog.value = false
   editingGroup.value = null
+}
+
+const handleOverlayClick = (event: MouseEvent) => {
+  console.log('[CreateGatewayDialog] handleOverlayClick called')
+  // v-show="!showGroupDialog" already prevents clicks when LoadBalancerGroupDialog is open
+  emit('close')
 }
 
 const saveGroup = (data: LoadBalancerGroupFormData) => {

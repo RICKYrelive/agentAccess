@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4">
+  <div class="space-y-4" @click.stop>
     <!-- Load Balancer Groups Section -->
     <div v-if="loadBalancerGroups.length > 0" class="space-y-3">
       <h4 class="text-sm font-medium text-slate-700">负载均衡组</h4>

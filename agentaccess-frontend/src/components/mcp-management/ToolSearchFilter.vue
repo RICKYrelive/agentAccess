@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-3">
+  <div class="flex items-center gap-3 filter-component">
     <!-- Filter Button -->
     <button
       @click="showFilterMenu = !showFilterMenu"
@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useMCPManagementStore } from '@/stores/mcpManagement'
 
 const store = useMCPManagementStore()
@@ -76,11 +76,24 @@ const closeFilterMenu = () => {
   showFilterMenu.value = false
 }
 
-onMounted(() => {
-  document.addEventListener('click', closeFilterMenu)
+const handleClickOutside = (event: MouseEvent) => {
+  // Only close if clicking outside the filter component
+  const target = event.target as HTMLElement
+  if (!target.closest('.filter-component')) {
+    closeFilterMenu()
+  }
+}
+
+// Only add global listener when filter menu is open
+watch(showFilterMenu, (isOpen) => {
+  if (isOpen) {
+    document.addEventListener('click', handleClickOutside)
+  } else {
+    document.removeEventListener('click', handleClickOutside)
+  }
 })
 
 onUnmounted(() => {
-  document.removeEventListener('click', closeFilterMenu)
+  document.removeEventListener('click', handleClickOutside)
 })
 </script>

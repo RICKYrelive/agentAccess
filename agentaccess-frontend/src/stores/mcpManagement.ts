@@ -158,6 +158,25 @@ export const useMCPManagementStore = defineStore('mcpManagement', () => {
     return result
   })
 
+  // Gateway-related computed for enhanced UI
+  const activeGatewaysCount = computed(() => {
+    return mcpGateways.value.filter((g) => g.status === 'running').length
+  })
+
+  const totalConnectedTools = computed(() => {
+    const allToolIds = mcpGateways.value.flatMap((g) => g.mcpToolIds)
+    const uniqueToolIds = new Set(allToolIds)
+    return uniqueToolIds.size
+  })
+
+  const gatewaySystemStatus = computed(() => {
+    const runningGateways = mcpGateways.value.filter((g) => g.status === 'running')
+    if (runningGateways.length === 0) return 'offline'
+    const errorGateways = mcpGateways.value.filter((g) => g.status === 'error')
+    if (errorGateways.length > 0) return 'degraded'
+    return 'healthy'
+  })
+
   // Actions
   const createMCPTool = (tool: Omit<MCPTool, 'id' | 'createdAt' | 'updatedAt'>) => {
     const newTool: MCPTool = {
@@ -360,6 +379,9 @@ export const useMCPManagementStore = defineStore('mcpManagement', () => {
     activeToolsCount,
     systemStatus,
     filteredTools,
+    activeGatewaysCount,
+    totalConnectedTools,
+    gatewaySystemStatus,
 
     // Tool actions
     createMCPTool,

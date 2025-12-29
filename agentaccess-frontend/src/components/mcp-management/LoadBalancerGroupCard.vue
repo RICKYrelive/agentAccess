@@ -1,5 +1,5 @@
 <template>
-  <div class="border border-purple-200 rounded-lg p-4 bg-purple-50">
+  <div class="border border-purple-200 rounded-lg p-4 bg-purple-50" @click.stop>
     <div class="flex items-center justify-between mb-3">
       <div class="flex items-center space-x-2">
         <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

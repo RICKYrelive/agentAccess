@@ -61,7 +61,7 @@
 import { computed } from 'vue'
 import { useMCPManagementStore } from '@/stores/mcpManagement'
 import LoadBalancerGroupCard from './LoadBalancerGroupCard.vue'
-import type { LoadBalancerGroup } from '../types'
+import type { LoadBalancerGroup } from '@/components/mcp-management/types'
 
 interface Props {
   selectedToolIds: string[]

@@ -129,7 +129,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useMCPManagementStore } from '@/stores/mcpManagement'
-import type { LoadBalancerGroup, LoadBalancerGroupFormData, MCPTool } from '../types'
+import type { LoadBalancerGroup, LoadBalancerGroupFormData, MCPTool } from '@/components/mcp-management/types'
 
 interface Props {
   group?: LoadBalancerGroup | null

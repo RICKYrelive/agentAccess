@@ -73,8 +73,154 @@
           </div>
         </div>
 
-        <!-- Configuration Panel -->
-        <div class="bg-slate-50 rounded-lg p-6">
+        <!-- My Agents and Configuration Panel Side by Side -->
+        <div class="grid grid-cols-2 gap-8">
+          <!-- My Agent Section (Left) -->
+          <div>
+            <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center justify-between">
+              <div class="flex items-center">
+                <svg
+                  class="w-5 h-5 mr-2 text-purple-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+                我的 Agent
+              </div>
+              <span class="text-sm text-slate-500">已选 {{ selectedMyAgents.length }}</span>
+            </h3>
+
+            <!-- Search Input -->
+            <div class="relative mb-4">
+              <input
+                v-model="myAgentSearchQuery"
+                type="text"
+                placeholder="搜索我的 Agent..."
+                class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+              />
+              <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+
+            <!-- Agent List -->
+            <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
+              <div v-if="filteredMyAgents.length > 0" class="divide-y divide-slate-200">
+                <label
+                  v-for="agent in filteredMyAgents"
+                  :key="agent.id"
+                  class="flex items-center p-4 hover:bg-slate-50 cursor-pointer transition-colors"
+                  :class="{ 'bg-purple-50': selectedMyAgents.includes(agent.id) }"
+                >
+                  <input
+                    type="checkbox"
+                    :value="agent.id"
+                    v-model="selectedMyAgents"
+                    class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-slate-300 rounded"
+                  />
+                  <div class="ml-4 flex-1">
+                    <div class="text-sm font-medium text-slate-900">{{ agent.name }}</div>
+                    <div class="text-xs text-slate-500 mt-0.5">{{ agent.description }}</div>
+                  </div>
+                </label>
+              </div>
+              <div v-else class="text-center py-8 text-slate-500 text-sm">
+                {{ myAgentSearchQuery ? '没有找到匹配的 Agent' : '暂无 Agent，请先创建' }}
+              </div>
+            </div>
+
+            <div class="mt-3 flex items-center justify-between">
+              <button
+                @click="goToMyAgentsPage"
+                class="text-sm text-purple-600 hover:text-purple-700 font-medium inline-flex items-center"
+              >
+                查看全部我的 Agent
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Team Agent Section (Below My Agents) -->
+            <div class="mt-8">
+              <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center justify-between">
+                <div class="flex items-center">
+                  <svg
+                    class="w-5 h-5 mr-2 text-primary-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  团队 Agent
+                </div>
+                <span class="text-sm text-slate-500">已选 {{ selectedTeamAgents.length }}</span>
+              </h3>
+
+              <!-- Search Input -->
+              <div class="relative mb-4">
+                <input
+                  v-model="teamAgentSearchQuery"
+                  type="text"
+                  placeholder="搜索团队 Agent..."
+                  class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
+                />
+                <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+
+              <!-- Team Agent List -->
+              <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
+                <div v-if="filteredTeamAgents.length > 0" class="divide-y divide-slate-200">
+                  <label
+                    v-for="agent in filteredTeamAgents"
+                    :key="agent.id"
+                    class="flex items-center p-4 hover:bg-slate-50 cursor-pointer transition-colors"
+                    :class="{ 'bg-primary-50': selectedTeamAgents.includes(agent.id) }"
+                  >
+                    <input
+                      type="checkbox"
+                      :value="agent.id"
+                      v-model="selectedTeamAgents"
+                      class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-slate-300 rounded"
+                    />
+                    <div class="ml-4 flex-1">
+                      <div class="flex items-center">
+                        <div class="text-sm font-medium text-slate-900">{{ agent.name }}</div>
+                        <span
+                          class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                          :class="getAgentBadgeClass(agent.category)"
+                        >
+                          {{ getAgentCategoryName(agent.category) }}
+                        </span>
+                      </div>
+                      <div class="text-xs text-slate-500 mt-0.5">{{ agent.description }}</div>
+                    </div>
+                  </label>
+                </div>
+                <div v-else class="text-center py-8 text-slate-500 text-sm">
+                  {{ teamAgentSearchQuery ? '没有找到匹配的 Agent' : '暂无团队 Agent' }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Configuration Panel (Right) -->
+          <div class="bg-slate-50 rounded-lg p-6">
           <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center">
             <svg
               class="w-5 h-5 mr-2 text-primary-600"
@@ -192,149 +338,6 @@
               @go-to-memory="handleGoToMemory"
             />
           </div>
-        </div>
-
-        <!-- My Agent Section -->
-        <div>
-          <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center justify-between">
-            <div class="flex items-center">
-              <svg
-                class="w-5 h-5 mr-2 text-purple-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-              我的 Agent
-            </div>
-            <span class="text-sm text-slate-500">已选 {{ selectedMyAgents.length }}</span>
-          </h3>
-
-          <!-- Search Input -->
-          <div class="relative mb-4">
-            <input
-              v-model="myAgentSearchQuery"
-              type="text"
-              placeholder="搜索我的 Agent..."
-              class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-            />
-            <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-
-          <!-- Agent List -->
-          <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
-            <div v-if="filteredMyAgents.length > 0" class="divide-y divide-slate-200">
-              <label
-                v-for="agent in filteredMyAgents"
-                :key="agent.id"
-                class="flex items-center p-4 hover:bg-slate-50 cursor-pointer transition-colors"
-                :class="{ 'bg-purple-50': selectedMyAgents.includes(agent.id) }"
-              >
-                <input
-                  type="checkbox"
-                  :value="agent.id"
-                  v-model="selectedMyAgents"
-                  class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-slate-300 rounded"
-                />
-                <div class="ml-4 flex-1">
-                  <div class="text-sm font-medium text-slate-900">{{ agent.name }}</div>
-                  <div class="text-xs text-slate-500 mt-0.5">{{ agent.description }}</div>
-                </div>
-              </label>
-            </div>
-            <div v-else class="text-center py-8 text-slate-500 text-sm">
-              {{ myAgentSearchQuery ? '没有找到匹配的 Agent' : '暂无 Agent，请先创建' }}
-            </div>
-          </div>
-
-          <div class="mt-3 flex items-center justify-between">
-            <button
-              @click="goToMyAgentsPage"
-              class="text-sm text-purple-600 hover:text-purple-700 font-medium inline-flex items-center"
-            >
-              查看全部我的 Agent
-              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Team Agent Section -->
-        <div>
-          <h3 class="text-lg font-medium text-slate-900 mb-4 flex items-center justify-between">
-            <div class="flex items-center">
-              <svg
-                class="w-5 h-5 mr-2 text-primary-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
-              团队 Agent
-            </div>
-            <span class="text-sm text-slate-500">已选 {{ selectedTeamAgents.length }}</span>
-          </h3>
-
-          <!-- Search Input -->
-          <div class="relative mb-4">
-            <input
-              v-model="teamAgentSearchQuery"
-              type="text"
-              placeholder="搜索团队 Agent..."
-              class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm"
-            />
-            <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-
-          <!-- Team Agent List -->
-          <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
-            <div v-if="filteredTeamAgents.length > 0" class="divide-y divide-slate-200">
-              <label
-                v-for="agent in filteredTeamAgents"
-                :key="agent.id"
-                class="flex items-center p-4 hover:bg-slate-50 cursor-pointer transition-colors"
-                :class="{ 'bg-primary-50': selectedTeamAgents.includes(agent.id) }"
-              >
-                <input
-                  type="checkbox"
-                  :value="agent.id"
-                  v-model="selectedTeamAgents"
-                  class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-slate-300 rounded"
-                />
-                <div class="ml-4 flex-1">
-                  <div class="flex items-center">
-                    <div class="text-sm font-medium text-slate-900">{{ agent.name }}</div>
-                    <span
-                      class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
-                      :class="getAgentBadgeClass(agent.category)"
-                    >
-                      {{ getAgentCategoryName(agent.category) }}
-                    </span>
-                  </div>
-                  <div class="text-xs text-slate-500 mt-0.5">{{ agent.description }}</div>
-                </div>
-              </label>
-            </div>
-            <div v-else class="text-center py-8 text-slate-500 text-sm">
-              {{ teamAgentSearchQuery ? '没有找到匹配的 Agent' : '暂无团队 Agent' }}
-            </div>
           </div>
         </div>
       </div>

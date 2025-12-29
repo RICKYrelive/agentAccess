@@ -3,6 +3,7 @@
     <!-- Header -->
     <div class="mb-6">
       <h1 class="text-2xl font-bold text-slate-900">我的Agent</h1>
+      <p class="text-slate-500 mt-1">创建和管理您的个性化 AI Agent</p>
     </div>
 
     <!-- Agent Creation Bar -->

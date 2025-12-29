@@ -128,7 +128,7 @@ import ToolSearchFilter from './ToolSearchFilter.vue'
 import ToolList from './ToolList.vue'
 import SelectedToolsPane from './SelectedToolsPane.vue'
 import LoadBalancerGroupDialog from './LoadBalancerGroupDialog.vue'
-import type { MCPGateway, MCPToolType, LoadBalancerGroup, LoadBalancerGroupFormData } from '../types'
+import type { MCPGateway, MCPToolType, LoadBalancerGroup, LoadBalancerGroupFormData } from '@/components/mcp-management/types'
 
 interface Props {
   gateway?: MCPGateway | null

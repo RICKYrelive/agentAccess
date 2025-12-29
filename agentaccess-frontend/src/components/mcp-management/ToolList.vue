@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MCPTool, MCPToolType } from '../types'
+import type { MCPTool, MCPToolType } from '@/components/mcp-management/types'
 
 interface Props {
   tools: MCPTool[]

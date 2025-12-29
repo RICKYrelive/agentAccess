@@ -9,6 +9,7 @@ import type {
   LoadBalancerGroup,
   LoadBalancerGroupFormData,
   HealthCheckConfig,
+  DatabaseConnectionFormData,
 } from '@/components/mcp-management/types'
 
 // Builtin tools catalog (available for import)
@@ -103,6 +104,17 @@ export const useMCPManagementStore = defineStore('mcpManagement', () => {
     },
   ])
 
+  // Filter state for table
+  const searchQuery = ref('')
+  const typeFilter = ref<MCPToolType | 'all'>('all')
+  const statusFilter = ref<MCPToolStatus | 'all'>('all')
+
+  // Usage metrics placeholder
+  const usageMetrics = ref<{ daily: number; lastUpdated: Date | null }>({
+    daily: 0,
+    lastUpdated: null,
+  })
+
   // Computed
   const activeTools = computed(() => mcpTools.value.filter((t) => t.isEnabled))
   const builtinTools = computed(() => mcpTools.value.filter((t) => t.type === 'builtin'))
@@ -110,6 +122,41 @@ export const useMCPManagementStore = defineStore('mcpManagement', () => {
   const imageTools = computed(() =>
     mcpTools.value.filter((t) => t.type === 'npx' || t.type === 'uvx'),
   )
+
+  // New computed for enhanced UI
+  const activeToolsCount = computed(() => activeTools.value.length)
+
+  const systemStatus = computed(() => {
+    const enabledTools = mcpTools.value.filter((t) => t.isEnabled)
+    if (enabledTools.length === 0) return 'offline'
+    const errorTools = enabledTools.filter((t) => t.status === 'error')
+    if (errorTools.length > 0) return 'degraded'
+    return 'operational'
+  })
+
+  const filteredTools = computed(() => {
+    let result = mcpTools.value
+
+    // Apply search filter
+    if (searchQuery.value.trim()) {
+      const query = searchQuery.value.toLowerCase()
+      result = result.filter((t) =>
+        t.name.toLowerCase().includes(query) || t.description.toLowerCase().includes(query),
+      )
+    }
+
+    // Apply type filter
+    if (typeFilter.value !== 'all') {
+      result = result.filter((t) => t.type === typeFilter.value)
+    }
+
+    // Apply status filter
+    if (statusFilter.value !== 'all') {
+      result = result.filter((t) => t.status === statusFilter.value)
+    }
+
+    return result
+  })
 
   // Actions
   const createMCPTool = (tool: Omit<MCPTool, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -260,17 +307,59 @@ export const useMCPManagementStore = defineStore('mcpManagement', () => {
     return updateLoadBalancerGroup(group, {})
   }
 
+  // Database tool creation
+  const createDatabaseTool = (formData: DatabaseConnectionFormData) => {
+    const config: MCPToolConfig = {
+      databaseType: formData.databaseType,
+      host: formData.host,
+      port: formData.port,
+      username: formData.username,
+      password: formData.password,
+      databaseName: formData.databaseName,
+    }
+    return createMCPTool({
+      name: formData.name,
+      description: formData.description,
+      type: 'database',
+      category: 'database',
+      isEnabled: true,
+      status: 'active',
+      config,
+      lastSync: new Date(),
+    })
+  }
+
+  // Filter setters
+  const setSearchQuery = (query: string) => {
+    searchQuery.value = query
+  }
+
+  const setTypeFilter = (type: MCPToolType | 'all') => {
+    typeFilter.value = type
+  }
+
+  const setStatusFilter = (status: MCPToolStatus | 'all') => {
+    statusFilter.value = status
+  }
+
   return {
     // State
     mcpTools,
     mcpGateways,
     BUILTIN_TOOLS,
+    searchQuery,
+    typeFilter,
+    statusFilter,
+    usageMetrics,
 
     // Computed
     activeTools,
     builtinTools,
     customTools,
     imageTools,
+    activeToolsCount,
+    systemStatus,
+    filteredTools,
 
     // Tool actions
     createMCPTool,
@@ -279,6 +368,12 @@ export const useMCPManagementStore = defineStore('mcpManagement', () => {
     toggleMCPTool,
     importBuiltinTool,
     getTool,
+    createDatabaseTool,
+
+    // Filter setters
+    setSearchQuery,
+    setTypeFilter,
+    setStatusFilter,
 
     // Gateway actions
     createGateway,

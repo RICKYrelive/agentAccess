@@ -1,6 +1,6 @@
 // MCP Tool types
-export type MCPToolType = 'builtin' | 'custom' | 'npx' | 'uvx'
-export type MCPToolStatus = 'active' | 'inactive' | 'error'
+export type MCPToolType = 'builtin' | 'custom' | 'npx' | 'uvx' | 'database'
+export type MCPToolStatus = 'active' | 'inactive' | 'error' | 'updating'
 export type GatewayStatus = 'running' | 'stopped' | 'error'
 export type AuthType = 'none' | 'apikey' | 'bearer'
 export type LoadBalancerStrategy = 'round-robin' | 'random' | 'least-used'
@@ -15,6 +15,16 @@ export interface MCPToolConfig {
   packageName?: string
   version?: string
   author?: string
+  // Database config
+  databaseType?: 'postgresql' | 'mysql' | 'mongodb'
+  host?: string
+  port?: number
+  username?: string
+  password?: string
+  databaseName?: string
+  // Handler config
+  handlerType?: 'python' | 'typescript'
+  handlerCode?: string
 }
 
 export interface MCPTool {
@@ -28,6 +38,10 @@ export interface MCPTool {
   config: MCPToolConfig
   createdAt: Date
   updatedAt: Date
+  // New fields for enhanced UI
+  latency?: number // in milliseconds
+  lastSync?: Date
+  usageCount?: number
 }
 
 export interface MCPGateway {
@@ -75,6 +89,19 @@ export interface CustomToolFormData {
   authType: AuthType
   apiKey?: string
   bearerToken?: string
+  handlerType?: 'python' | 'typescript'
+  handlerCode?: string
+}
+
+export interface DatabaseConnectionFormData {
+  name: string
+  description: string
+  databaseType: 'postgresql' | 'mysql' | 'mongodb'
+  host: string
+  port: number
+  username: string
+  password: string
+  databaseName: string
 }
 
 export interface ImageDeploymentFormData {

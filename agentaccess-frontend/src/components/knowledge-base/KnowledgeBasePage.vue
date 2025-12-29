@@ -3,6 +3,7 @@
     <!-- Header -->
     <div class="mb-6">
       <h1 class="text-2xl font-bold text-slate-900">知识库管理</h1>
+      <p class="text-slate-500 mt-1">统一管理文本、表格和数据库知识库</p>
     </div>
 
     <!-- Creation Section -->

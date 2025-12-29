@@ -77,7 +77,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useMCPManagementStore } from '@/stores/mcpManagement'
-import type { LoadBalancerGroup } from '../types'
+import type { LoadBalancerGroup } from '@/components/mcp-management/types'
 
 interface Props {
   group: LoadBalancerGroup

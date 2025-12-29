@@ -2,7 +2,10 @@
   <div class="h-full bg-white overflow-y-auto p-6">
     <!-- Header -->
     <div class="mb-6 flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-slate-900">团队Agent</h1>
+      <div>
+        <h1 class="text-2xl font-bold text-slate-900">团队Agent</h1>
+        <p class="text-slate-500 mt-1">与团队协作创建和管理 AI Agent</p>
+      </div>
       <button
         @click="showCreateTeamDialog = true"
         class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md flex items-center space-x-2 transition-colors"

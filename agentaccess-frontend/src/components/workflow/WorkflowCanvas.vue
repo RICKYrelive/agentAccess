@@ -2,12 +2,12 @@
   <div class="h-full flex flex-col bg-slate-50">
     <!-- Toolbar -->
     <div class="bg-white border-b border-slate-200 px-4 py-3">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-4">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-4 min-w-0 flex-1">
           <!-- Agent Name Editor -->
-          <div class="flex items-center space-x-2">
+          <div class="flex items-center gap-2 min-w-0">
             <svg
-              class="w-5 h-5 text-slate-600"
+              class="w-5 h-5 text-slate-600 flex-shrink-0"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -19,13 +19,13 @@
                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
               />
             </svg>
-            <div v-if="!isEditingName" class="flex items-center space-x-2">
-              <h3 class="text-lg font-medium text-slate-900">
+            <div v-if="!isEditingName" class="flex items-center gap-2 min-w-0">
+              <h3 class="text-lg font-medium text-slate-900 max-w-[200px] truncate">
                 {{ currentWorkflow?.name || '新Agent' }}
               </h3>
               <button
                 @click="startEditingName"
-                class="text-slate-400 hover:text-slate-600"
+                class="text-slate-400 hover:text-slate-600 flex-shrink-0"
                 title="重命名"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,19 +45,19 @@
               @blur="saveName"
               @keyup.enter="saveName"
               @keyup.esc="cancelEditName"
-              class="text-lg font-medium text-slate-900 border border-primary-500 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              class="text-lg font-medium text-slate-900 border border-primary-500 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-500 flex-shrink-0"
               style="width: 200px"
             />
           </div>
-          <div class="flex items-center space-x-2 text-sm text-slate-500">
+          <div class="flex items-center gap-2 text-sm text-slate-500 whitespace-nowrap">
             <span>节点: {{ currentNodes.length }}</span>
             <span>•</span>
             <span>连接: {{ currentConnections.length }}</span>
           </div>
         </div>
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center gap-2 flex-shrink-0">
           <!-- Save Button -->
-          <button @click="saveAgent" class="btn-primary text-sm flex items-center space-x-1">
+          <button @click="saveAgent" class="btn-primary text-sm flex items-center gap-1">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
@@ -72,7 +72,7 @@
           <!-- FastGPT Status -->
           <div
             v-if="fastgptConnected"
-            class="flex items-center space-x-1 px-2 py-1 bg-green-50 border border-green-200 rounded-md"
+            class="flex items-center gap-1 px-2 py-1 bg-green-50 border border-green-200 rounded-md"
           >
             <div class="w-2 h-2 bg-green-500 rounded-full"></div>
             <span class="text-xs text-green-700">FastGPT已连接</span>

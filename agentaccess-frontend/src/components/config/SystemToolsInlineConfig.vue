@@ -1,25 +1,28 @@
 <template>
-  <div class="space-y-3 max-h-[400px] overflow-y-auto pr-2">
-    <!-- Sandbox Tools Section -->
-    <div>
-      <button
-        @click="toggleSection('sandbox')"
-        class="w-full flex items-center justify-between p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
-      >
-        <span class="text-sm font-medium text-slate-700">沙箱环境</span>
-        <svg
-          :class="['w-4 h-4 transition-transform text-slate-400', expandedSections.has('sandbox') ? 'rotate-90' : '']"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
+  <div class="space-y-3 max-h-[550px] overflow-y-auto pr-2">
+    <!-- Search Bar -->
+    <div class="relative">
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="搜索系统工具..."
+        class="w-full pl-9 pr-4 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+      />
+      <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    </div>
 
-      <div v-if="expandedSections.has('sandbox')" class="mt-2 ml-2 space-y-2">
+    <!-- Sandbox Tools Section - always expanded -->
+    <div v-if="filteredSandboxTools.length > 0">
+      <div class="w-full flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200">
+        <span class="text-sm font-medium text-slate-700">沙箱环境</span>
+        <span class="text-xs text-slate-500">{{ filteredSandboxTools.length }} 个工具</span>
+      </div>
+
+      <div class="mt-2 ml-2 space-y-2">
         <div
-          v-for="tool in sandboxTools"
+          v-for="tool in filteredSandboxTools"
           :key="tool.id"
           class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"
         >
@@ -52,26 +55,16 @@
       </div>
     </div>
 
-    <!-- Builtin Tools Section -->
-    <div>
-      <button
-        @click="toggleSection('builtin')"
-        class="w-full flex items-center justify-between p-2 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors"
-      >
+    <!-- Builtin Tools Section - always expanded -->
+    <div v-if="filteredBuiltinTools.length > 0">
+      <div class="w-full flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200">
         <span class="text-sm font-medium text-slate-700">内置工具</span>
-        <svg
-          :class="['w-4 h-4 transition-transform text-slate-400', expandedSections.has('builtin') ? 'rotate-90' : '']"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
+        <span class="text-xs text-slate-500">{{ filteredBuiltinTools.length }} 个工具</span>
+      </div>
 
-      <div v-if="expandedSections.has('builtin')" class="mt-2 ml-2 space-y-2">
+      <div class="mt-2 ml-2 space-y-2">
         <div
-          v-for="tool in builtinTools"
+          v-for="tool in filteredBuiltinTools"
           :key="tool.id"
           class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"
         >
@@ -102,12 +95,17 @@
           </button>
         </div>
       </div>
+    </div>
+
+    <!-- No tools message -->
+    <div v-if="filteredSandboxTools.length === 0 && filteredBuiltinTools.length === 0" class="text-center py-6 text-slate-500 text-sm">
+      {{ searchQuery ? '没有找到匹配的系统工具' : '暂无可用工具' }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 interface SystemTool {
   id: string
@@ -132,7 +130,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>()
 
-const expandedSections = ref<Set<string>>(new Set(['sandbox', 'builtin']))
+// Search state
+const searchQuery = ref('')
 
 const sandboxTools: SystemTool[] = [
   {
@@ -188,15 +187,25 @@ const builtinTools: SystemTool[] = [
   },
 ]
 
-const allTools = [...sandboxTools, ...builtinTools]
+// Filter sandbox tools by search query
+const filteredSandboxTools = computed(() => {
+  if (!searchQuery.value) return sandboxTools
+  const query = searchQuery.value.toLowerCase()
+  return sandboxTools.filter(tool =>
+    tool.name.toLowerCase().includes(query) ||
+    tool.description.toLowerCase().includes(query)
+  )
+})
 
-const toggleSection = (section: string) => {
-  if (expandedSections.value.has(section)) {
-    expandedSections.value.delete(section)
-  } else {
-    expandedSections.value.add(section)
-  }
-}
+// Filter builtin tools by search query
+const filteredBuiltinTools = computed(() => {
+  if (!searchQuery.value) return builtinTools
+  const query = searchQuery.value.toLowerCase()
+  return builtinTools.filter(tool =>
+    tool.name.toLowerCase().includes(query) ||
+    tool.description.toLowerCase().includes(query)
+  )
+})
 
 const isToolSelected = (toolId: string) => {
   return props.selectedTools.includes(toolId)

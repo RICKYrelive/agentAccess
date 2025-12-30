@@ -295,26 +295,46 @@
           <!-- Tab Content -->
           <div>
             <!-- Knowledge Base Settings -->
-            <div v-if="activeTab === 'knowledge'">
-              <h4 class="text-sm font-medium text-slate-900 mb-3">选择知识库</h4>
-              <div class="space-y-2">
-                <div
-                  v-for="kb in knowledgeBases"
-                  :key="kb.id"
-                  class="flex items-center space-x-3 p-3 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer"
-                >
-                  <input
-                    type="radio"
-                    :id="'kb-' + kb.id"
-                    name="knowledge-base"
-                    :value="kb.id"
-                    v-model="selectedKnowledgeBase"
-                    class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-slate-300"
-                  />
-                  <label :for="'kb-' + kb.id" class="flex-1 cursor-pointer">
-                    <div class="text-sm font-medium text-slate-900">{{ kb.name }}</div>
-                    <div class="text-xs text-slate-500">{{ kb.documentCount }} 个文档</div>
-                  </label>
+            <div v-if="activeTab === 'knowledge'" class="space-y-3 max-h-[550px] overflow-y-auto pr-2">
+              <!-- Search Bar -->
+              <div class="relative">
+                <input
+                  v-model="kbSearchQuery"
+                  type="text"
+                  placeholder="搜索知识库..."
+                  class="w-full pl-9 pr-4 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+                <svg class="absolute left-3 top-2.5 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+
+              <div>
+                <h4 class="text-sm font-medium text-slate-900 mb-3">选择知识库</h4>
+                <div class="space-y-2">
+                  <div
+                    v-for="kb in filteredKnowledgeBases"
+                    :key="kb.id"
+                    class="flex items-center space-x-3 p-3 bg-white rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      :id="'kb-' + kb.id"
+                      name="knowledge-base"
+                      :value="kb.id"
+                      v-model="selectedKnowledgeBase"
+                      class="w-4 h-4 text-primary-600 focus:ring-primary-500 border-slate-300"
+                    />
+                    <label :for="'kb-' + kb.id" class="flex-1 cursor-pointer">
+                      <div class="text-sm font-medium text-slate-900">{{ kb.name }}</div>
+                      <div class="text-xs text-slate-500">{{ kb.documentCount }} 个文档</div>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Empty state -->
+                <div v-if="filteredKnowledgeBases.length === 0" class="text-center py-6 text-slate-500 text-sm">
+                  {{ kbSearchQuery ? '没有找到匹配的知识库' : '暂无可用知识库' }}
                 </div>
               </div>
             </div>
@@ -517,6 +537,18 @@ const knowledgeBases = [
     documentCount: 67,
   },
 ]
+
+// Knowledge Base search
+const kbSearchQuery = ref('')
+
+// Filtered knowledge bases
+const filteredKnowledgeBases = computed(() => {
+  if (!kbSearchQuery.value) return knowledgeBases
+  const query = kbSearchQuery.value.toLowerCase()
+  return knowledgeBases.filter(kb =>
+    kb.name.toLowerCase().includes(query)
+  )
+})
 
 // 是否有输入内容，用于触发箭头跳动
 const hasInput = computed(() => messageInput.value.trim().length > 0)

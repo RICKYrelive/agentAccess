@@ -29,6 +29,7 @@
           class="flex-1 h-full overflow-hidden"
           @open-settings="openSettingsPanel"
           @message-sent="onMessageSent"
+          @view-change="handleViewChange"
         />
 
         <!-- Home Page (shown when no active conversation) -->
@@ -116,6 +117,12 @@
         @back="handleBackFromKnowledgeBaseDetail"
         @edit-knowledge-base="handleEditKnowledgeBase"
       />
+
+      <!-- Access Template Management Page View -->
+      <AccessTemplateManagementPage
+        v-else-if="activeView === 'template-management'"
+        class="flex-1 h-full overflow-hidden"
+      />
     </div>
 
     <!-- Right Panels -->
@@ -177,6 +184,7 @@ import MCPGatewayPage from '../mcp-management/MCPGatewayPage.vue'
 import SandboxedEnvironmentsPage from '../system-tools/SandboxedEnvironmentsPage.vue'
 import BuiltInToolsPage from '../system-tools/BuiltInToolsPage.vue'
 import MemoryPage from '../memory-management/MemoryPage.vue'
+import AccessTemplateManagementPage from '../access-template/AccessTemplateManagementPage.vue'
 
 const activeView = ref<
   | 'home'
@@ -191,6 +199,7 @@ const activeView = ref<
   | 'memory'
   | 'knowledge-base'
   | 'knowledge-base-detail'
+  | 'template-management'
 >('home')
 const selectedTeamId = ref<string | null>(null)
 const selectedKnowledgeBaseId = ref<string | null>(null)
@@ -234,7 +243,8 @@ const handleViewChange = (
     | 'sandboxed-environments'
     | 'builtin-tools'
     | 'memory'
-    | 'knowledge-base',
+    | 'knowledge-base'
+    | 'template-management',
 ) => {
   activeView.value = view
 }

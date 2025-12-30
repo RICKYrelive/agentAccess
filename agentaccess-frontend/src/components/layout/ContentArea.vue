@@ -1,10 +1,19 @@
 <template>
   <div class="h-full flex flex-col bg-white">
     <!-- Welcome Header -->
-    <div class="px-8 py-6 border-b border-slate-200">
+    <div class="px-8 py-6 border-b border-slate-200 flex items-center justify-between">
       <h2 class="text-2xl font-semibold text-slate-900">
         你好，我是Agent Access! 有哪些工作要处理？
       </h2>
+      <button
+        @click="handleOpenTemplateManagement"
+        class="px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition-colors inline-flex items-center gap-2"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+        管理分享
+      </button>
     </div>
 
     <!-- Main Content Area -->
@@ -45,7 +54,19 @@
               <div class="absolute bottom-3 right-3 text-xs text-slate-400">Ctrl + Enter 发送</div>
             </div>
 
-            <div class="flex justify-end">
+            <div class="flex justify-end items-center gap-3">
+              <!-- Apply Template Button -->
+              <button
+                @click="showApplyTemplateDialog = true"
+                class="px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition-colors inline-flex items-center gap-2 border border-blue-200"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                应用模板
+              </button>
+
+              <!-- Send Button -->
               <button
                 @click="sendMessage"
                 :disabled="!messageInput.trim()"
@@ -362,6 +383,12 @@
         </div>
       </div>
     </div>
+
+    <!-- Template Dialogs -->
+    <ApplyTemplateDialog
+      v-model:open="showApplyTemplateDialog"
+      @apply="handleApplyTemplate"
+    />
   </div>
 </template>
 
@@ -369,9 +396,11 @@
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useChatStore } from '@/stores/chat'
 import { useAgentsStore } from '@/stores/agents'
+import { useAccessTemplateStore, type AccessTemplate } from '@/stores/accessTemplate'
 import MCPInlineConfig from '@/components/config/MCPInlineConfig.vue'
 import SystemToolsInlineConfig from '@/components/config/SystemToolsInlineConfig.vue'
 import MemoryInlineConfig from '@/components/config/MemoryInlineConfig.vue'
+import ApplyTemplateDialog from '@/components/access-template/ApplyTemplateDialog.vue'
 
 interface Emits {
   (e: 'open-settings'): void
@@ -383,6 +412,10 @@ const emit = defineEmits<Emits>()
 
 const agentsStore = useAgentsStore()
 const chatStore = useChatStore()
+const templateStore = useAccessTemplateStore()
+
+// Template dialogs
+const showApplyTemplateDialog = ref(false)
 
 // Typewriter effect
 const exampleQuestions = [
@@ -669,6 +702,21 @@ const handleMcpTabClick = () => {
 
 const handleGoToMemory = () => {
   emit('view-change', 'memory')
+}
+
+// Template functions
+const handleApplyTemplate = (template: AccessTemplate) => {
+  // Apply template configuration to current selections
+  // Note: myAgents is NOT included in templates
+  selectedTeamAgents.value = [...template.config.teamAgents]
+  selectedKnowledgeBase.value = template.config.knowledgeBase || ''
+  selectedMcpTools.value = template.config.mcpTools || []
+  selectedSystemTools.value = template.config.systemTools || []
+  selectedMemory.value = template.config.memory || ''
+}
+
+const handleOpenTemplateManagement = () => {
+  emit('view-change', 'template-management')
 }
 </script>
 

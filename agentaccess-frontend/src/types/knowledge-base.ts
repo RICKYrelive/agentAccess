@@ -1,5 +1,7 @@
 export type KnowledgeBaseType = 'text' | 'spreadsheet' | 'database'
 
+export type KnowledgeBaseStatus = 'ready' | 'processing' | 'syncing' | 'error'
+
 export type DatabaseType = 'mysql' | 'postgresql'
 
 // Embedding models
@@ -21,6 +23,23 @@ export type ReRankModel =
 
 // Sync frequency for database
 export type SyncFrequency = 'realtime' | 'hourly' | 'daily' | 'manual'
+
+// Knowledge base category
+export type KnowledgeBaseCategory = 'personal' | 'team'
+
+// Knowledge base permission type
+export type KnowledgeBasePermission = 'owner' | 'team' | 'public' | 'specific'
+
+// Team sharing permission level
+export type TeamSharingPermission = 'read' | 'write'
+
+export interface TeamSharing {
+  teamId: string
+  teamName: string
+  permission: TeamSharingPermission
+  addedAt: Date
+  addedBy: string
+}
 
 export interface FileInfo {
   id: string
@@ -129,10 +148,16 @@ export interface KnowledgeBase {
   name: string
   description: string
   type: KnowledgeBaseType
+  status?: KnowledgeBaseStatus
   sourceInfo: KnowledgeBaseSourceInfo
   config: KnowledgeBaseConfig
   createdAt: Date
   updatedAt: Date
+  // Team sharing fields
+  owner: string
+  category: KnowledgeBaseCategory
+  sharedTeams?: TeamSharing[]
+  permission: KnowledgeBasePermission
 }
 
 export interface TextImportForm {
@@ -141,6 +166,9 @@ export interface TextImportForm {
   files: File[]
   encoding: string
   language: string
+  category?: KnowledgeBaseCategory
+  sharedTeams?: TeamSharing[]
+  permission?: KnowledgeBasePermission
 }
 
 export interface SpreadsheetImportForm {
@@ -149,6 +177,9 @@ export interface SpreadsheetImportForm {
   files: File[]
   hasHeader: boolean
   encoding: string
+  category?: KnowledgeBaseCategory
+  sharedTeams?: TeamSharing[]
+  permission?: KnowledgeBasePermission
 }
 
 export interface DatabaseImportForm {
@@ -161,6 +192,9 @@ export interface DatabaseImportForm {
   password: string
   database: string
   tables: string[]
+  category?: KnowledgeBaseCategory
+  sharedTeams?: TeamSharing[]
+  permission?: KnowledgeBasePermission
 }
 
 export interface DatabaseConnectionTest {

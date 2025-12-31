@@ -10,6 +10,42 @@
           <span :class="['px-2 py-0.5 text-xs font-medium rounded-full', typeBadgeClass]">
             {{ typeLabel }}
           </span>
+          <!-- Read-only badge -->
+          <span
+            v-if="!props.canEdit && props.knowledgeBase.category === 'team'"
+            class="px-2 py-0.5 text-xs font-medium rounded-full bg-slate-100 text-slate-600"
+          >
+            只读
+          </span>
+        </div>
+
+        <!-- Team badges -->
+        <div
+          v-if="props.knowledgeBase.sharedTeams && props.knowledgeBase.sharedTeams.length > 0"
+          class="flex flex-wrap gap-1 mb-2"
+        >
+          <span
+            v-for="team in displayTeams"
+            :key="team.teamId"
+            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-50 text-indigo-700"
+          >
+            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+              />
+            </svg>
+            {{ team.teamName }}
+          </span>
+          <span
+            v-if="props.knowledgeBase.sharedTeams.length > 3"
+            class="text-xs text-slate-500"
+            :title="props.knowledgeBase.sharedTeams.map(t => t.teamName).join(', ')"
+          >
+            +{{ props.knowledgeBase.sharedTeams.length - 3 }}
+          </span>
         </div>
         <p v-if="props.knowledgeBase.description" class="text-sm text-slate-600 mb-2 line-clamp-2">
           {{ props.knowledgeBase.description }}
@@ -107,6 +143,7 @@
       </div>
       <div class="flex space-x-2 ml-4 flex-shrink-0">
         <button
+          v-if="props.canEdit"
           @click.stop="$emit('edit', props.knowledgeBase.id)"
           class="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
           title="编辑"
@@ -121,6 +158,7 @@
           </svg>
         </button>
         <button
+          v-if="props.canEdit"
           @click.stop="$emit('delete', props.knowledgeBase.id)"
           class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
           title="删除"
@@ -145,6 +183,7 @@ import type { KnowledgeBase, FileInfo } from '@/types/knowledge-base'
 
 interface Props {
   knowledgeBase: KnowledgeBase
+  canEdit?: boolean
 }
 
 interface Emits {
@@ -153,7 +192,9 @@ interface Emits {
   (e: 'view', id: string): void
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  canEdit: true,
+})
 const emit = defineEmits<Emits>()
 
 const handleClick = () => {
@@ -168,6 +209,11 @@ const displayFiles = computed(() => {
 const displayTables = computed(() => {
   const tables = props.knowledgeBase.sourceInfo.tables
   return tables ? tables.slice(0, 5) : []
+})
+
+const displayTeams = computed(() => {
+  const teams = props.knowledgeBase.sharedTeams
+  return teams ? teams.slice(0, 3) : []
 })
 
 const typeLabel = computed(() => {

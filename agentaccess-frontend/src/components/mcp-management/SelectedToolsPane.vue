@@ -9,7 +9,7 @@
         :group="group"
         @edit="$emit('edit-group', group.id)"
         @delete="$emit('delete-group', group.id)"
-        @remove-tool="$emit('remove-tool-from-group', $event)"
+        @remove-tool="(groupId, toolId) => $emit('remove-tool-from-group', groupId, toolId)"
       />
     </div>
 
@@ -74,7 +74,7 @@ defineEmits<{
   'remove-tool': [toolId: string]
   'edit-group': [groupId: string]
   'delete-group': [groupId: string]
-  'remove-tool-from-group': [{ groupId: string; toolId: string }]
+  'remove-tool-from-group': [groupId: string, toolId: string]
   'create-group': []
 }>()
 

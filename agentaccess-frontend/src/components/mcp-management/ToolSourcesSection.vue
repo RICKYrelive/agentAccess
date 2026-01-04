@@ -4,7 +4,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
       <!-- Builtin Import -->
       <button
-        @click="$emit('open-builtin')"
+        @click="openBuiltin"
         class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-dashed border-primary-300 dark:border-primary-700 hover:border-primary-400 dark:hover:border-primary-500 hover:shadow-md transition-all text-left group"
       >
         <div class="w-10 h-10 rounded-lg bg-primary-50 dark:bg-primary-900/30 border border-primary-100 dark:border-primary-800 flex items-center justify-center text-primary-500 dark:text-primary-400 mb-4 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/50 transition-colors">
@@ -18,7 +18,7 @@
 
       <!-- Custom Tool -->
       <button
-        @click="$emit('open-custom')"
+        @click="openCustom"
         class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-dashed border-purple-300 dark:border-purple-700 hover:border-purple-400 dark:hover:border-purple-500 hover:shadow-md transition-all text-left group"
       >
         <div class="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-900/30 border border-purple-100 dark:border-purple-800 flex items-center justify-center text-purple-500 dark:text-purple-400 mb-4 group-hover:bg-purple-100 dark:group-hover:bg-purple-900/50 transition-colors">
@@ -32,7 +32,7 @@
 
       <!-- Image Deployment -->
       <button
-        @click="$emit('open-image')"
+        @click="openImage"
         class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-dashed border-blue-300 dark:border-blue-700 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md transition-all text-left group"
       >
         <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 flex items-center justify-center text-blue-500 dark:text-blue-400 mb-4 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors">
@@ -46,7 +46,7 @@
 
       <!-- OpenAPI Import -->
       <button
-        @click="$emit('open-openapi')"
+        @click="openOpenapi"
         class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-dashed border-green-300 dark:border-green-700 hover:border-green-400 dark:hover:border-green-500 hover:shadow-md transition-all text-left group"
       >
         <div class="w-10 h-10 rounded-lg bg-green-50 dark:bg-green-900/30 border border-green-100 dark:border-green-800 flex items-center justify-center text-green-500 dark:text-green-400 mb-4 group-hover:bg-green-100 dark:group-hover:bg-green-900/50 transition-colors">
@@ -62,10 +62,15 @@
 </template>
 
 <script setup lang="ts">
-defineEmits<{
+const emit = defineEmits<{
   openBuiltin: []
   openCustom: []
   openImage: []
   openOpenapi: []
 }>()
+
+const openBuiltin = () => emit('openBuiltin')
+const openCustom = () => emit('openCustom')
+const openImage = () => emit('openImage')
+const openOpenapi = () => emit('openOpenapi')
 </script>

@@ -344,7 +344,7 @@ const handleFileChange = (event: Event) => {
 
       // Validate file type
       const validExtensions = ['.pdf', '.docx', '.txt']
-      const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase()
+      const fileExtension = '.' + (file.name.split('.').pop()?.toLowerCase() || '')
       if (!validExtensions.includes(fileExtension)) {
         errors.value.file = `文件 ${file.name} 格式不支持，请上传 PDF, DOCX 或 TXT 文件`
         return

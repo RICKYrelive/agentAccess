@@ -101,6 +101,8 @@
 import { ref } from 'vue'
 import { useMCPManagementStore } from '@/stores/mcpManagement'
 
+type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
+
 const emit = defineEmits<{
   close: []
 }>()
@@ -109,7 +111,7 @@ const store = useMCPManagementStore()
 
 const step = ref(1)
 const error = ref('')
-const endpoints = ref<Array<{ method: string; path: string; summary?: string }>>([])
+const endpoints = ref<Array<{ method: HTTPMethod; path: string; summary?: string }>>([])
 const fileInput = ref<HTMLInputElement | null>(null)
 
 const handleFileSelect = (event: Event) => {
@@ -141,14 +143,14 @@ const parseFile = async (file: File) => {
     }
 
     // Extract endpoints from OpenAPI spec
-    const extracted: Array<{ method: string; path: string; summary?: string }> = []
+    const extracted: Array<{ method: HTTPMethod; path: string; summary?: string }> = []
     const paths = spec.paths || {}
 
     for (const [path, methods] of Object.entries(paths)) {
       for (const [method, details] of Object.entries(methods as Record<string, any>)) {
         if (['get', 'post', 'put', 'delete', 'patch'].includes(method)) {
           extracted.push({
-            method: method.toUpperCase(),
+            method: method.toUpperCase() as HTTPMethod,
             path,
             summary: (details as any).summary || (details as any).description,
           })
@@ -207,18 +209,18 @@ const parseYAML = (text: string): any => {
   }
 }
 
-const getMethodBadgeClass = (method: string) => {
-  const classes = {
+const getMethodBadgeClass = (method: HTTPMethod) => {
+  const classes: Record<HTTPMethod, string> = {
     GET: 'bg-green-100 text-green-800',
     POST: 'bg-blue-100 text-blue-800',
     PUT: 'bg-yellow-100 text-yellow-800',
     DELETE: 'bg-red-100 text-red-800',
     PATCH: 'bg-purple-100 text-purple-800',
   }
-  return classes[method] || 'bg-slate-100 text-slate-800'
+  return classes[method]
 }
 
-const generateToolName = (endpoint: { method: string; path: string }) => {
+const generateToolName = (endpoint: { method: HTTPMethod; path: string }) => {
   const pathParts = endpoint.path.split('/').filter(Boolean)
   const resource = pathParts[pathParts.length - 1] || pathParts[0] || 'api'
   return `${endpoint.method.toLowerCase()}_${resource}`

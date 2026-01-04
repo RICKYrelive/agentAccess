@@ -358,7 +358,7 @@ const handleFileChange = (event: Event) => {
 
       // Validate file type
       const validExtensions = ['.xlsx', '.xls', '.csv']
-      const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase()
+      const fileExtension = '.' + (file.name.split('.').pop()?.toLowerCase() || '')
       if (!validExtensions.includes(fileExtension)) {
         errors.value.file = `文件 ${file.name} 格式不支持，请上传 Excel 或 CSV 文件`
         return

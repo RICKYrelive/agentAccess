@@ -77,7 +77,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useMCPManagementStore } from '@/stores/mcpManagement'
-import type { LoadBalancerGroup } from '@/components/mcp-management/types'
+import type { LoadBalancerGroup, LoadBalancerStrategy } from '@/components/mcp-management/types'
 
 interface Props {
   group: LoadBalancerGroup
@@ -93,13 +93,13 @@ defineEmits<{
 const store = useMCPManagementStore()
 const isExpanded = ref(false)
 
-const getStrategyName = (strategy: string) => {
-  const names = {
+const getStrategyName = (strategy: LoadBalancerStrategy) => {
+  const names: Record<LoadBalancerStrategy, string> = {
     'round-robin': '轮询',
     'random': '随机',
     'least-used': '最少调用',
   }
-  return names[strategy] || strategy
+  return names[strategy]
 }
 
 const getToolName = (toolId: string) => {

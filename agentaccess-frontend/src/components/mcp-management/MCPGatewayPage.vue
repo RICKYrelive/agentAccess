@@ -138,7 +138,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useMCPManagementStore } from '@/stores/mcpManagement'
-import type { MCPGateway } from '@/components/mcp-management/types'
+import type { MCPGateway, GatewayStatus } from '@/components/mcp-management/types'
 import MCPGatewayStatusCards from './MCPGatewayStatusCards.vue'
 import CreateGatewayDialog from './CreateGatewayDialog.vue'
 
@@ -147,22 +147,22 @@ const store = useMCPManagementStore()
 const showCreateDialog = ref(false)
 const editingGateway = ref<MCPGateway | null>(null)
 
-const getStatusName = (status: string) => {
-  const names = {
+const getStatusName = (status: GatewayStatus) => {
+  const names: Record<GatewayStatus, string> = {
     running: '运行中',
     stopped: '已停止',
     error: '错误',
   }
-  return names[status] || status
+  return names[status]
 }
 
-const getStatusBadgeClass = (status: string) => {
-  const classes = {
+const getStatusBadgeClass = (status: GatewayStatus) => {
+  const classes: Record<GatewayStatus, string> = {
     running: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800',
     stopped: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400 border border-slate-200 dark:border-slate-700',
     error: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800',
   }
-  return classes[status] || 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-400 border border-slate-200 dark:border-slate-700'
+  return classes[status]
 }
 
 const editGateway = (gateway: MCPGateway) => {

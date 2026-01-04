@@ -134,7 +134,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useMCPManagementStore } from '@/stores/mcpManagement'
-import type { LoadBalancerGroup, LoadBalancerGroupFormData, MCPTool } from '@/components/mcp-management/types'
+import type { LoadBalancerGroup, LoadBalancerGroupFormData, MCPTool, LoadBalancerStrategy } from '@/components/mcp-management/types'
 
 interface Props {
   group?: LoadBalancerGroup | null
@@ -171,13 +171,13 @@ onMounted(() => {
   console.log('[LoadBalancerGroupDialog] onMounted complete, formData:', formData)
 })
 
-const getStrategyDescription = (strategy: string) => {
-  const descriptions = {
+const getStrategyDescription = (strategy: LoadBalancerStrategy) => {
+  const descriptions: Record<LoadBalancerStrategy, string> = {
     'round-robin': '按顺序依次调用每个工具',
     'random': '随机选择一个工具进行调用',
     'least-used': '选择当前使用最少的工具',
   }
-  return descriptions[strategy] || ''
+  return descriptions[strategy]
 }
 
 const handleSubmit = () => {

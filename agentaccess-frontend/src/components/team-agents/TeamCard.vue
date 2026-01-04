@@ -132,12 +132,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { Team, ExtendedAgent } from '@/types'
+import type { Team, ExtendedAgent, Agent } from '@/types'
 import { useKnowledgeBaseStore } from '@/stores/knowledgeBase'
 
 interface Props {
   team: Team
-  agents: ExtendedAgent[]
+  agents: (ExtendedAgent | Agent)[]
   isAdmin: boolean
   showJoinButton?: boolean
   hasPendingRequest?: boolean

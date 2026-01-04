@@ -67,8 +67,7 @@ export class DatabaseService {
       this.createTables()
 
       // Check if we have any providers
-      const providerCount = this.db!.exec('SELECT COUNT(*) as count FROM model_providers')[0]
-        .values[0][0] as number
+      const providerCount = (this.db!.exec('SELECT COUNT(*) as count FROM model_providers')[0]?.values[0]?.[0] ?? 0) as number
       console.log('📊 Existing provider count:', providerCount)
 
       if (providerCount === 0 || shouldCreateDefaultProviders) {
@@ -89,7 +88,8 @@ export class DatabaseService {
         console.log('✅ Fallback database created')
       } catch (fallbackError) {
         console.error('❌ Fallback initialization also failed:', fallbackError)
-        throw new Error(`Database initialization failed: ${error.message}`)
+        const err = error instanceof Error ? error : new Error(String(error))
+        throw new Error(`Database initialization failed: ${err.message}`)
       }
     } finally {
       this.initPromise = null
@@ -285,7 +285,7 @@ export class DatabaseService {
     try {
       console.log('🗑️ Deleting provider from DB:', providerId)
       const stmt = this.db.prepare('DELETE FROM model_providers WHERE id = ?')
-      const result = stmt.run([providerId])
+      const result = stmt.run([providerId]) as { changes: number }
       stmt.free()
 
       console.log('🗑️ Delete result:', result)
@@ -372,10 +372,10 @@ export class DatabaseService {
 
     try {
       const stmt = this.db.prepare('SELECT * FROM mcp_services ORDER BY created_at DESC')
-      const result = stmt.getAsObject([])
+      const result = stmt.getAsObject([]) as any[]
       stmt.free()
 
-      return result.map((row: any) => ({
+      return (Array.isArray(result) ? result : [result]).map((row: any) => ({
         ...row,
         isActive: Boolean(row.is_active),
         config: JSON.parse(row.config || '{}'),

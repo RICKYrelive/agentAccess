@@ -16,12 +16,12 @@ app.use(router)
 app.mount('#app')
 
 // Export to window for debugging
-window.dbService = dbService
+; (window as any).dbService = dbService
 
 // Export settings store when it's available
 import { useSettingsStore } from '@/stores/settings'
 setTimeout(() => {
   const settingsStore = useSettingsStore()
-  window.settingsStore = settingsStore
+  ; (window as any).settingsStore = settingsStore
   console.log('🔧 Debug: Settings store and DB service exported to window')
 }, 100)

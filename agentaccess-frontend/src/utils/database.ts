@@ -285,7 +285,7 @@ export class DatabaseService {
     try {
       console.log('🗑️ Deleting provider from DB:', providerId)
       const stmt = this.db.prepare('DELETE FROM model_providers WHERE id = ?')
-      const result = stmt.run([providerId]) as { changes: number }
+      const result = stmt.run([providerId]) as unknown as { changes: number }
       stmt.free()
 
       console.log('🗑️ Delete result:', result)
@@ -372,7 +372,8 @@ export class DatabaseService {
 
     try {
       const stmt = this.db.prepare('SELECT * FROM mcp_services ORDER BY created_at DESC')
-      const result = stmt.getAsObject([]) as any[]
+      const resultRaw = stmt.getAsObject([] as any)
+      const result = (resultRaw as any) as any[]
       stmt.free()
 
       return (Array.isArray(result) ? result : [result]).map((row: any) => ({

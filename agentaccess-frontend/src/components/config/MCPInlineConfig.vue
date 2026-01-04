@@ -138,7 +138,7 @@ const toolTypeDisplayNames: Record<string, string> = {
 const toolTypes = computed(() => {
   const types = new Map<string, typeof allTools.value>()
 
-  allTools.value.forEach(tool => {
+  allTools.value.forEach((tool) => {
     if (!types.has(tool.type)) {
       types.set(tool.type, [])
     }
@@ -147,7 +147,7 @@ const toolTypes = computed(() => {
 
   return Array.from(types.entries()).map(([type, tools]) => ({
     name: type,
-    displayName: toolTypeDisplayNames[type] || type,
+    displayName: toolTypeDisplayNames[type] ?? type,
     tools,
   }))
 })
@@ -156,7 +156,7 @@ const toolTypes = computed(() => {
 const filteredGateways = computed(() => {
   if (!searchQuery.value) return allGateways.value
   const query = searchQuery.value.toLowerCase()
-  return allGateways.value.filter(gateway =>
+  return allGateways.value.filter((gateway) =>
     gateway.name.toLowerCase().includes(query) ||
     gateway.description.toLowerCase().includes(query)
   )

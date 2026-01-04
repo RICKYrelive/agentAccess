@@ -61,12 +61,14 @@ const statusBadgeConfig = {
     label: '处理中',
     bgColor: 'bg-blue-100',
     textColor: 'text-blue-700',
+    dotColor: 'bg-blue-500',
     icon: 'sync'
   },
   syncing: {
     label: '同步中',
     bgColor: 'bg-amber-100',
     textColor: 'text-amber-700',
+    dotColor: 'bg-amber-500',
     icon: 'sync'
   },
   error: {

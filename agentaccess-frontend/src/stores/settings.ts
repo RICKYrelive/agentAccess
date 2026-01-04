@@ -131,8 +131,8 @@ export const useSettingsStore = defineStore('settings', () => {
           selectedProviderId.value = activeProvider.id
           console.log('✅ Selected active provider:', activeProvider.id)
         } else if (providers.value.length > 0) {
-          selectedProviderId.value = providers.value[0].id
-          console.log('✅ Selected first provider:', providers.value[0].id)
+          selectedProviderId.value = providers.value[0]?.id ?? ''
+          console.log('✅ Selected first provider:', providers.value[0]?.id)
         }
       }
 
@@ -146,7 +146,8 @@ export const useSettingsStore = defineStore('settings', () => {
       )
     } catch (error) {
       console.error('❌ Failed to initialize settings store:', error)
-      console.error('❌ Stack trace:', error.stack)
+      const err = error instanceof Error ? error : new Error(String(error))
+      console.error('❌ Stack trace:', err.stack)
       // In case of error, create a fallback default provider
       try {
         console.log('🔄 Attempting to create fallback provider...')
@@ -286,7 +287,7 @@ export const useSettingsStore = defineStore('settings', () => {
       if (selectedProviderId.value === providerId) {
         const remainingActiveProviders = providers.value.filter((p) => p.isActive)
         selectedProviderId.value =
-          remainingActiveProviders.length > 0 ? remainingActiveProviders[0].id : ''
+          remainingActiveProviders.length > 0 ? (remainingActiveProviders[0]?.id ?? '') : ''
         console.log('Selected provider updated to:', selectedProviderId.value)
       }
     } catch (error) {
@@ -333,7 +334,7 @@ export const useSettingsStore = defineStore('settings', () => {
           const remainingActiveProviders = providers.value.filter(
             (p) => p.isActive && p.id !== providerId,
           )
-          if (remainingActiveProviders.length > 0) {
+          if (remainingActiveProviders.length > 0 && remainingActiveProviders[0]?.id) {
             await selectProvider(remainingActiveProviders[0].id)
           } else {
             selectedProviderId.value = ''
@@ -448,8 +449,8 @@ export const useSettingsStore = defineStore('settings', () => {
           'agentaccess-active-provider:',
           localStorage.getItem('agentaccess-active-provider'),
         )
-        console.log('DB initialized:', !!dbService.db)
-        console.log('DB initialized flag:', dbService.initialized)
+        console.log('DB initialized:', !!(dbService as any).db)
+        console.log('DB initialized flag:', (dbService as any).initialized)
       }
     },
   }

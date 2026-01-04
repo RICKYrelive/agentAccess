@@ -13,6 +13,8 @@ import type {
   TeamSharing,
   KnowledgeBaseCategory,
   KnowledgeBasePermission,
+  EmbeddingModel,
+  ReRankModel,
 } from '@/types/knowledge-base'
 
 const KNOWLEDGE_BASES_STORAGE_KEY = 'agentaccess-knowledge-bases'
@@ -25,7 +27,7 @@ const CURRENT_USER_TEAMS = ['team-dev', 'team-product'] // Mock user's teams
 
 // Get default config for a knowledge base type
 const getDefaultConfig = (type: KnowledgeBaseType): KnowledgeBaseConfig => {
-  const baseConfig = {
+  const baseConfig: KnowledgeBaseConfig = {
     settings: {
       isPublic: false,
       isEnabled: true,
@@ -33,12 +35,12 @@ const getDefaultConfig = (type: KnowledgeBaseType): KnowledgeBaseConfig => {
     },
     embedding: {
       enabled: true,
-      model: 'bge-large-zh',
+      model: 'bge-large-zh' as EmbeddingModel,
       dimension: 1024,
     },
     rerank: {
       enabled: false,
-      model: 'bge-reranker-large',
+      model: 'bge-reranker-large' as ReRankModel,
       topK: 5,
       scoreThreshold: 0.5,
     },

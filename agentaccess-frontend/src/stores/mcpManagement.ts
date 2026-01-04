@@ -5,6 +5,7 @@ import type {
   MCPGateway,
   MCPToolConfig,
   MCPToolType,
+  MCPToolStatus,
   BuiltinToolDefinition,
   LoadBalancerGroup,
   LoadBalancerGroupFormData,

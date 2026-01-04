@@ -175,6 +175,13 @@ export class SafariStorageService {
     }
   }
 
+  // Public init method for window global type compatibility
+  init(): void {
+    this.initialize().catch((error) => {
+      console.error('Failed to initialize Safari storage:', error)
+    })
+  }
+
   // Model Provider operations
   async getModelProviders(): Promise<ModelProvider[]> {
     await this.initialize()

@@ -1,6 +1,11 @@
 // Storage monitoring utility for debugging localStorage issues
 
 export class StorageMonitor {
+  static init(): void {
+    // Log storage info on initialization
+    StorageMonitor.logStorageInfo()
+  }
+
   static logStorageInfo(): void {
     console.group('🔍 Storage Monitor')
 

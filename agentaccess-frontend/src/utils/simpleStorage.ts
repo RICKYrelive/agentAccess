@@ -170,6 +170,12 @@ export class SimpleStorageService {
       console.log('📥 Imported active provider')
     }
   }
+
+  // Public init method for window global type compatibility
+  init(): void {
+    // SimpleStorage doesn't need initialization, but we provide this for compatibility
+    console.log('🔧 SimpleStorage init called (no-op)')
+  }
 }
 
 // Create singleton instance

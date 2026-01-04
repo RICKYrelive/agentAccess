@@ -360,7 +360,7 @@ import { storeToRefs } from 'pinia'
 import { useWorkflowStore } from '@/stores/workflow'
 import { downloadWorkflowAsJson } from '@/utils/workflowExport'
 import type {
-  WorkflowNode,
+  WorkflowNode as WorkflowNodeType,
   WorkflowNodeType as NodeOptionType,
 } from '@/types/workflow'
 import WorkflowNode from './WorkflowNode.vue'
@@ -835,7 +835,7 @@ const getSelectedNode = () => {
   return workflowStore.getSelectedNode()
 }
 
-const updateNode = (nodeId: string, updates: Partial<WorkflowNode>) => {
+const updateNode = (nodeId: string, updates: Partial<WorkflowNodeType>) => {
   workflowStore.updateNode(nodeId, updates)
 }
 
@@ -1163,7 +1163,7 @@ const handleCanvasKeydown = (event: KeyboardEvent) => {
   }
 }
 
-const showNodeContextMenu = (event: MouseEvent, node: WorkflowNode) => {
+const showNodeContextMenu = (event: MouseEvent, node: WorkflowNodeType) => {
   // TODO: Implement context menu
   console.log('Context menu for node:', node)
 }

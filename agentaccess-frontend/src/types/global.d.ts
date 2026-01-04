@@ -5,6 +5,7 @@ declare global {
     dbService?: {
       db: any
       initialized: boolean
+      clearAllData: () => Promise<void>
     }
     settingsStore?: {
       saveSettings: () => Promise<void>

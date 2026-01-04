@@ -633,6 +633,9 @@ const handleResetAndCreateDefault = async () => {
 
       // Step 1: Clear all data
       console.log('🧹 Step 1: Clearing all data...')
+      if (!window.dbService) {
+        throw new Error('dbService is not available')
+      }
       await window.dbService.clearAllData()
       console.log('✅ Data cleared')
 
@@ -663,8 +666,9 @@ const handleResetAndCreateDefault = async () => {
       }
     } catch (error) {
       console.error('❌ Reset failed:', error)
-      console.error('❌ Stack trace:', error.stack)
-      alert(`重置失败: ${error instanceof Error ? error.message : '未知错误'}`)
+      const err = error instanceof Error ? error : new Error(String(error))
+      console.error('❌ Stack trace:', err.stack)
+      alert(`重置失败: ${err.message}`)
     }
   } else {
     console.log('🚫 Reset cancelled by user')

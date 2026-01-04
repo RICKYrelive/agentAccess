@@ -444,6 +444,7 @@ export const useSystemToolsStore = defineStore('systemTools', () => {
       status: 'running',
       resources: { cpuPercent: 0, memoryPercent: 0, diskPercent: 0 },
       createdAt: new Date(),
+      envVars: {},
     }
     sandboxType.instances.push(newInstance)
     return newInstance

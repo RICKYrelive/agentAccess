@@ -455,7 +455,7 @@ const startTypewriter = () => {
   let isDeleting = false
 
   const type = () => {
-    const currentQuestion = exampleQuestions[questionIndex] || exampleQuestions[0]
+    const currentQuestion = exampleQuestions[questionIndex] ?? exampleQuestions[0] ?? ''
 
     if (isDeleting) {
       typewriterText.value = currentQuestion.substring(0, charIndex - 1)
@@ -546,7 +546,7 @@ const filteredMyAgents = computed(() => {
   const query = myAgentSearchQuery.value.toLowerCase()
   return allMyAgents.value.filter(agent =>
     agent.name.toLowerCase().includes(query) ||
-    agent.description.toLowerCase().includes(query)
+    (agent.description?.toLowerCase().includes(query) ?? false)
   )
 })
 
@@ -555,7 +555,7 @@ const filteredTeamAgents = computed(() => {
   const query = teamAgentSearchQuery.value.toLowerCase()
   return allTeamAgents.value.filter(agent =>
     agent.name.toLowerCase().includes(query) ||
-    agent.description.toLowerCase().includes(query)
+    (agent.description?.toLowerCase().includes(query) ?? false)
   )
 })
 

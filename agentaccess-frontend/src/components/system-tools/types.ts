@@ -14,6 +14,7 @@ export interface SandboxInstance {
     diskPercent: number
   }
   port?: number
+  url?: string
   envVars: Record<string, string>
   createdAt: Date
 }

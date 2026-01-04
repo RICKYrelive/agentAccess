@@ -178,7 +178,7 @@ const availableCategories = computed(() => {
 
 // Computed: filtered tools
 const filteredTools = computed(() => {
-  return store.mcpTools.filter((tool: { name: string; description: string; type: string; isEnabled: boolean }) => {
+  return store.mcpTools.filter((tool: { name: string; description: string; type: string; isEnabled: boolean; category: string }) => {
     // Search filter
     if (searchQuery.value) {
       const query = searchQuery.value.toLowerCase()
@@ -263,7 +263,7 @@ const deleteGroup = (groupId: string) => {
   }
 }
 
-const removeToolFromGroup = ({ groupId, toolId }: { groupId: string; toolId: string }) => {
+const removeToolFromGroup = (groupId: string, toolId: string) => {
   const group = formData.loadBalancerGroups.find(g => g.id === groupId)
   if (!group) return
 

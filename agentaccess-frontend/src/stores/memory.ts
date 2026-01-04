@@ -144,7 +144,7 @@ export const useMemoryStore = defineStore('memory', () => {
         ...memoryBases.value[index],
         ...updates,
         updatedAt: new Date(),
-      }
+      } as MemoryBase
       return memoryBases.value[index]
     }
     return null
@@ -177,6 +177,7 @@ export const useMemoryStore = defineStore('memory', () => {
     const newBase: MemoryBase = {
       ...data.memoryBase,
       id: newId,
+      status: 'active',
       memoryCount: data.memories.length,
       lastUsedAt: null,
       createdAt: new Date(),
@@ -222,7 +223,7 @@ export const useMemoryStore = defineStore('memory', () => {
 
   const currentRecallRate = computed(() => {
     if (recallMetrics.value.length === 0) return 0
-    return recallMetrics.value[recallMetrics.value.length - 1].recallRate
+    return recallMetrics.value[recallMetrics.value.length - 1]?.recallRate ?? 0
   })
 
   const recallRateChartData = computed((): RecallRateDataPoint[] => {

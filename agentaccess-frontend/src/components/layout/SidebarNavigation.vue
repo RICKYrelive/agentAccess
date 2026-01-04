@@ -752,7 +752,8 @@ const switchToView = (
     | 'sandboxed-environments'
     | 'builtin-tools'
     | 'memory'
-    | 'knowledge-base',
+    | 'knowledge-base'
+    | 'template-management',
 ) => {
   emit('view-change', view)
 }

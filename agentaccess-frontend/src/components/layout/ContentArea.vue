@@ -405,7 +405,21 @@ import ApplyTemplateDialog from '@/components/access-template/ApplyTemplateDialo
 interface Emits {
   (e: 'open-settings'): void
   (e: 'message-sent'): void
-  (e: 'view-change', view: string): void
+  (
+    e: 'view-change',
+    view:
+      | 'home'
+      | 'workflow'
+      | 'my-agents'
+      | 'team-agents'
+      | 'mcp-tools'
+      | 'mcp-gateway'
+      | 'sandboxed-environments'
+      | 'builtin-tools'
+      | 'memory'
+      | 'knowledge-base'
+      | 'template-management',
+  ): void
 }
 
 const emit = defineEmits<Emits>()

@@ -455,7 +455,7 @@ const startTypewriter = () => {
   let isDeleting = false
 
   const type = () => {
-    const currentQuestion = exampleQuestions[questionIndex]
+    const currentQuestion = exampleQuestions[questionIndex] || exampleQuestions[0]
 
     if (isDeleting) {
       typewriterText.value = currentQuestion.substring(0, charIndex - 1)
@@ -640,7 +640,7 @@ const getAgentIconColorClass = (category: string) => {
   }
 }
 
-const getAgentBadgeClass = (category: string) => {
+const getAgentBadgeClass = (category?: string) => {
   switch (category) {
     case 'analysis':
       return 'bg-blue-100 text-blue-800'
@@ -653,7 +653,7 @@ const getAgentBadgeClass = (category: string) => {
   }
 }
 
-const getAgentCategoryName = (category: string) => {
+const getAgentCategoryName = (category?: string) => {
   switch (category) {
     case 'analysis':
       return '数据分析'

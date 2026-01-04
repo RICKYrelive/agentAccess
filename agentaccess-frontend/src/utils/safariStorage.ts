@@ -215,7 +215,7 @@ export class SafariStorageService {
     // Clear active provider if it was deleted
     if (this.memoryActiveProviderId === providerId) {
       this.memoryActiveProviderId =
-        this.memoryProviders.length > 0 ? this.memoryProviders[0].id : ''
+        this.memoryProviders.length > 0 ? (this.memoryProviders[0]?.id ?? '') : ''
     }
 
     // Immediate save

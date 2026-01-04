@@ -676,12 +676,12 @@ const sendMessage = async () => {
     console.log('Getting chat store...')
     const chatStore = useChatStore()
 
-    // Build configuration payload
+    // Build configuration payload - map to ChatConversation settings format
     const config = {
-      knowledgeBase: selectedKnowledgeBase.value || undefined,
-      mcpTools: selectedMcpTools.value.length > 0 ? selectedMcpTools.value : undefined,
-      systemTools: selectedSystemTools.value.length > 0 ? selectedSystemTools.value : undefined,
-      memory: selectedMemory.value || undefined,
+      knowledgeBaseId: selectedKnowledgeBase.value || undefined,
+      mcpServiceIds: selectedMcpTools.value.length > 0 ? selectedMcpTools.value : undefined,
+      systemToolIds: selectedSystemTools.value.length > 0 ? selectedSystemTools.value : undefined,
+      memoryType: selectedMemory.value || undefined,
     }
 
     console.log('📋 Configuration payload:', config)

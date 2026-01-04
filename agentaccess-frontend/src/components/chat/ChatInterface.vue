@@ -482,25 +482,24 @@ const emergencyReset = async () => {
 const getCurrentConfig = () => {
   const settings = currentConversation.value?.settings
   return {
-    teamAgents: settings?.teamAgents || [],
-    knowledgeBase: settings?.knowledgeBase,
-    mcpTools: settings?.mcpTools,
-    systemTools: settings?.systemTools,
-    memory: settings?.memory,
+    teamAgents: [], // teamAgents is not stored in ChatConversation settings
+    knowledgeBase: settings?.knowledgeBaseId,
+    mcpTools: settings?.mcpServiceIds,
+    systemTools: settings?.systemToolIds,
+    memory: settings?.memoryType,
   }
 }
 
 // Handle edit config save
 const handleEditConfigSave = async (config: any) => {
-  // Update the chat store settings
+  // Update the chat store settings - map template config to ChatConversation settings format
   if (currentConversation.value) {
     currentConversation.value.settings = {
       ...currentConversation.value.settings,
-      teamAgents: config.teamAgents,
-      knowledgeBase: config.knowledgeBase,
-      mcpTools: config.mcpTools,
-      systemTools: config.systemTools,
-      memory: config.memory,
+      knowledgeBaseId: config.knowledgeBase,
+      mcpServiceIds: config.mcpTools,
+      systemToolIds: config.systemTools,
+      memoryType: config.memory,
     }
   }
 

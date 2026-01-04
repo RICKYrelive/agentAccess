@@ -462,7 +462,7 @@ const formatTime = (date: Date) => {
   }).format(date)
 }
 
-const getAgentBorderClass = (category: string) => {
+const getAgentBorderClass = (category?: string) => {
   switch (category) {
     case 'analysis':
       return 'border-blue-500'
@@ -475,7 +475,7 @@ const getAgentBorderClass = (category: string) => {
   }
 }
 
-const getAgentBgClass = (category: string) => {
+const getAgentBgClass = (category?: string) => {
   switch (category) {
     case 'analysis':
       return 'bg-blue-100'
@@ -488,7 +488,7 @@ const getAgentBgClass = (category: string) => {
   }
 }
 
-const getAgentIconClass = (category: string) => {
+const getAgentIconClass = (category?: string) => {
   switch (category) {
     case 'analysis':
       return 'text-blue-600'
@@ -501,7 +501,7 @@ const getAgentIconClass = (category: string) => {
   }
 }
 
-const getAgentCategoryName = (category: string) => {
+const getAgentCategoryName = (category?: string) => {
   switch (category) {
     case 'analysis':
       return '数据分析'

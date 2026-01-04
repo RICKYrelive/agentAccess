@@ -154,7 +154,7 @@
                 </p>
               </div>
 
-              <p v-if="selectedTeams.length === 0" class="text-xs text-slate-500">
+              <p v-if="selectedTeams.size === 0" class="text-xs text-slate-500">
                 至少需要选择一个团队
               </p>
             </div>

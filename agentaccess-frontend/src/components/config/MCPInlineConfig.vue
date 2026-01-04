@@ -138,7 +138,7 @@ const toolTypeDisplayNames: Record<string, string> = {
 const toolTypes = computed(() => {
   const types = new Map<string, typeof allTools.value>()
 
-  allTools.value.forEach((tool) => {
+  allTools.value.forEach((tool: typeof allTools.value[number]) => {
     if (!types.has(tool.type)) {
       types.set(tool.type, [])
     }
@@ -156,7 +156,7 @@ const toolTypes = computed(() => {
 const filteredGateways = computed(() => {
   if (!searchQuery.value) return allGateways.value
   const query = searchQuery.value.toLowerCase()
-  return allGateways.value.filter((gateway) =>
+  return allGateways.value.filter((gateway: typeof allGateways.value[number]) =>
     gateway.name.toLowerCase().includes(query) ||
     gateway.description.toLowerCase().includes(query)
   )
@@ -168,15 +168,15 @@ const filteredToolTypes = computed(() => {
 
   const query = searchQuery.value.toLowerCase()
   return toolTypes.value
-    .map(typeItem => ({
+    .map((typeItem) => ({
       name: typeItem.name,
       displayName: typeItem.displayName,
-      tools: typeItem.tools.filter(tool =>
+      tools: typeItem.tools.filter((tool: typeof typeItem.tools[number]) =>
         tool.name.toLowerCase().includes(query) ||
         tool.description.toLowerCase().includes(query)
       ),
     }))
-    .filter(typeItem => typeItem.tools.length > 0)
+    .filter((typeItem) => typeItem.tools.length > 0)
 })
 
 const isToolSelected = (toolId: string) => {

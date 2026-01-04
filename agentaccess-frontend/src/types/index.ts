@@ -58,3 +58,7 @@ export interface ApiResponse<T> {
   message?: string
   error?: string
 }
+
+// Re-export commonly used types from other modules
+export type { Team, TeamMember } from '@/stores/teams'
+export type { KnowledgeBase, KnowledgeBaseType, KnowledgeBaseConfig, KnowledgeBaseSourceInfo } from '@/types/knowledge-base'

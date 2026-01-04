@@ -335,6 +335,7 @@ const handleFileChange = (event: Event) => {
     // Validate and add each file
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
+      if (!file) continue
 
       // Validate file size (10MB max)
       if (file.size > 10 * 1024 * 1024) {
@@ -360,7 +361,10 @@ const handleFileChange = (event: Event) => {
     errors.value.file = ''
     // Add all new files
     for (let i = 0; i < files.length; i++) {
-      form.value.files.push(files[i])
+      const file = files[i]
+      if (file) {
+        form.value.files.push(file)
+      }
     }
   }
 

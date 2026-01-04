@@ -31,9 +31,16 @@ export interface WorkflowConnection {
 
 export type WorkflowNodeType =
   | 'start'
+  | 'input'
+  | 'web-search'
   | 'annotated-data-retrieval'
   | 'question-rewrite'
   | 'knowledge-retrieval'
+  | 'llm-call'
+  | 'data-processing'
+  | 'condition'
+  | 'code-execution'
+  | 'output'
   | 'answer-generation'
   | 'end'
 

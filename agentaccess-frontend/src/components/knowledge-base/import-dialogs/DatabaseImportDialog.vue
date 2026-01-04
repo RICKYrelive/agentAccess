@@ -457,7 +457,6 @@ const testConnection = async () => {
       username: form.value.username,
       password: form.value.password,
       database: form.value.database,
-      tables: [],
     })
 
     connectionTestResult.value = result

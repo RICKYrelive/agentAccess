@@ -20,7 +20,7 @@
               class="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center hover:border-primary-400 transition-colors"
               @dragover.prevent
               @drop.prevent="handleDrop"
-              @click="$refs.fileInput?.click()"
+              @click="fileInput?.click()"
             >
               <input
                 ref="fileInput"

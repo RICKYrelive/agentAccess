@@ -74,7 +74,7 @@ defineEmits<{
 const store = useMCPManagementStore()
 
 const isToolImported = (toolId: string) => {
-  return store.builtinTools.some(t => t.name === store.BUILTIN_TOOLS.find(bt => bt.id === toolId)?.name)
+  return store.builtinTools.some((t: { name: string }) => t.name === store.BUILTIN_TOOLS.find((bt: { id: string; name: string }) => bt.id === toolId)?.name)
 }
 
 const importTool = (toolId: string) => {

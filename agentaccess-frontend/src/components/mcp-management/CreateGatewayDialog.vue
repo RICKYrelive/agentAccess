@@ -172,13 +172,13 @@ watch(showGroupDialog, (newVal, oldVal) => {
 
 // Computed: available categories
 const availableCategories = computed(() => {
-  const categories = new Set(store.mcpTools.map(t => t.category))
+  const categories = new Set(store.mcpTools.map((t: { category: string }) => t.category))
   return Array.from(categories).sort()
 })
 
 // Computed: filtered tools
 const filteredTools = computed(() => {
-  return store.mcpTools.filter(tool => {
+  return store.mcpTools.filter((tool: { name: string; description: string; type: string; isEnabled: boolean }) => {
     // Search filter
     if (searchQuery.value) {
       const query = searchQuery.value.toLowerCase()

@@ -1,8 +1,14 @@
+export interface MCPServiceCategoryRef {
+  id: string
+  name: string
+  description: string
+}
+
 export interface MCPService {
   id: string
   name: string
   description: string
-  category: MCPServiceCategory
+  category: MCPServiceCategoryRef | MCPServiceCategory
   isEnabled: boolean
   configuration?: MCPServiceConfig
   status: 'active' | 'inactive' | 'error'

@@ -67,7 +67,7 @@
     </div>
 
     <!-- Agents section -->
-    <div>
+    <div class="mb-8">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-lg font-semibold text-slate-900">团队 Agent ({{ teamAgents.length }})</h2>
       </div>
@@ -162,6 +162,73 @@
         </div>
       </div>
     </div>
+
+    <!-- Team Knowledge Bases section -->
+    <div>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold text-slate-900">团队知识库 ({{ teamKnowledgeBases.length }})</h2>
+      </div>
+
+      <!-- Empty state -->
+      <div
+        v-if="teamKnowledgeBases.length === 0"
+        class="text-center py-12 bg-slate-50 rounded-lg border-2 border-dashed border-slate-200"
+      >
+        <svg
+          class="w-16 h-16 mx-auto text-slate-300 mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+          />
+        </svg>
+        <p class="text-slate-500 mb-2">该团队还没有共享的知识库</p>
+        <p class="text-sm text-slate-400">团队成员可以将他们的知识库共享到此团队</p>
+      </div>
+
+      <!-- Knowledge base cards grid -->
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div
+          v-for="kb in teamKnowledgeBases"
+          :key="kb.id"
+          class="bg-white border border-slate-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+        >
+          <div class="flex items-start space-x-3">
+            <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                />
+              </svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-slate-900 truncate">{{ kb.name }}</h3>
+              <p v-if="kb.description" class="text-sm text-slate-500 truncate mt-1">
+                {{ kb.description }}
+              </p>
+              <div class="flex items-center space-x-2 mt-2">
+                <span
+                  :class="`text-xs px-2 py-1 rounded-full ${getTypeBadgeClass(kb.type)}`"
+                >
+                  {{ getTypeName(kb.type) }}
+                </span>
+                <span class="text-xs text-slate-400">
+                  {{ formatKBSize(kb) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -170,7 +237,8 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useTeamsStore } from '@/stores/teams'
 import { useAgentsStore } from '@/stores/agents'
-import type { ExtendedAgent, Agent } from '@/types'
+import { useKnowledgeBaseStore } from '@/stores/knowledgeBase'
+import type { ExtendedAgent, Agent, KnowledgeBase, KnowledgeBaseType } from '@/types'
 
 interface Props {
   teamId: string
@@ -186,7 +254,9 @@ const emit = defineEmits<Emits>()
 
 const teamsStore = useTeamsStore()
 const agentsStore = useAgentsStore()
+const knowledgeBaseStore = useKnowledgeBaseStore()
 const { myAgents } = storeToRefs(agentsStore)
+const { teamKnowledgeBases: allTeamKnowledgeBases } = storeToRefs(knowledgeBaseStore)
 
 // Get team by ID
 const team = computed(() => {
@@ -197,6 +267,14 @@ const team = computed(() => {
 const teamAgents = computed<(ExtendedAgent | Agent)[]>(() => {
   if (!team.value) return []
   return teamsStore.getAgentsInTeam(props.teamId, myAgents.value)
+})
+
+// Get knowledge bases shared with this team
+const teamKnowledgeBases = computed<KnowledgeBase[]>(() => {
+  if (!team.value) return []
+  return allTeamKnowledgeBases.value.filter((kb) =>
+    kb.sharedTeams?.some((st) => st.teamId === props.teamId)
+  )
 })
 
 // Type guard to check if agent is ExtendedAgent
@@ -298,5 +376,49 @@ const getCategoryName = (category?: string) => {
     default:
       return '通用助手'
   }
+}
+
+// Knowledge base helper functions
+const getTypeBadgeClass = (type?: KnowledgeBaseType) => {
+  switch (type) {
+    case 'text':
+      return 'bg-green-100 text-green-700'
+    case 'spreadsheet':
+      return 'bg-blue-100 text-blue-700'
+    case 'database':
+      return 'bg-purple-100 text-purple-700'
+    default:
+      return 'bg-slate-100 text-slate-700'
+  }
+}
+
+const getTypeName = (type?: KnowledgeBaseType) => {
+  switch (type) {
+    case 'text':
+      return '文本'
+    case 'spreadsheet':
+      return '表格'
+    case 'database':
+      return '数据库'
+    default:
+      return '未知'
+  }
+}
+
+const formatKBSize = (kb: KnowledgeBase): string => {
+  if (kb.type === 'database') {
+    const tableCount = kb.sourceInfo.tables?.length || 0
+    return `${tableCount} 个表`
+  }
+
+  // For text and spreadsheet, calculate total file size
+  const totalBytes =
+    kb.sourceInfo.files?.reduce((sum, file) => sum + (file.fileSize || 0), 0) || 0
+  if (totalBytes === 0) return '0 B'
+
+  const k = 1024
+  const sizes = ['B', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(totalBytes) / Math.log(k))
+  return parseFloat((totalBytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
 }
 </script>

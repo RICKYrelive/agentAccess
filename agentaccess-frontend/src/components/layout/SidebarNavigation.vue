@@ -255,81 +255,6 @@
             <span class="truncate">{{ agent.name }}</span>
           </div>
         </div>
-
-        <!-- Team Agents -->
-        <button
-          @click="handleTeamAgentsClick"
-          :class="[
-            'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center justify-between transition-all duration-200 group',
-            activeView === 'team-agents'
-              ? 'bg-primary/5 text-primary font-semibold'
-              : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
-          ]"
-        >
-          <div class="flex items-center space-x-3">
-            <svg
-              class="w-5 h-5 text-slate-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
-              />
-            </svg>
-            <span class="transition-transform duration-200 group-hover:scale-105 inline-block">团队 Agent</span>
-          </div>
-          <svg
-            v-if="myTeams.length > 0"
-            class="w-4 h-4 text-slate-400 transform transition-transform"
-            :class="{ 'rotate-90': isTeamAgentsOpen }"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
-
-        <!-- Team Items (my teams) -->
-        <div v-if="myTeams.length > 0 && isTeamAgentsOpen" class="mt-1 ml-8 space-y-1">
-          <div
-            v-for="team in myTeams"
-            :key="team.id"
-            class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md cursor-pointer flex items-center space-x-2"
-            :title="team.description || team.name"
-            @click="handleTeamClick(team.id)"
-          >
-            <svg
-              class="w-4 h-4 text-primary-500 flex-shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-              />
-            </svg>
-            <span class="truncate">{{ team.name }}</span>
-            <span
-              v-if="isTeamAdmin(team.id)"
-              class="text-xs bg-primary/5 text-primary font-semibold px-1 rounded"
-              title="管理员"
-              >管理员</span
-            >
-          </div>
-        </div>
       </div>
 
       <!-- Separator -->
@@ -536,6 +461,86 @@
           <span class="transition-transform duration-200 group-hover:scale-105 inline-block">知识库</span>
         </button>
       </div>
+
+      <!-- Separator -->
+      <div class="border-t border-slate-100 my-2"></div>
+
+      <!-- Team Management Section -->
+      <div class="space-y-1 pb-4">
+        <button
+          @click="handleTeamManagementClick"
+          :class="[
+            'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center justify-between transition-all duration-200 group',
+            activeView === 'team-agents'
+              ? 'bg-primary/5 text-primary font-semibold'
+              : 'text-slate-500 hover:bg-slate-50 hover:text-primary',
+          ]"
+        >
+          <div class="flex items-center space-x-3">
+            <svg
+              class="w-5 h-5 text-slate-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+              />
+            </svg>
+            <span class="transition-transform duration-200 group-hover:scale-105 inline-block">团队管理</span>
+          </div>
+          <svg
+            v-if="myTeams.length > 0"
+            class="w-4 h-4 text-slate-400 transform transition-transform"
+            :class="{ 'rotate-90': isTeamManagementOpen }"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+
+        <!-- Team Items (my teams) -->
+        <div v-if="myTeams.length > 0 && isTeamManagementOpen" class="mt-1 ml-8 space-y-1">
+          <div
+            v-for="team in myTeams"
+            :key="team.id"
+            class="px-3 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-md cursor-pointer flex items-center space-x-2"
+            :title="team.description || team.name"
+            @click="handleTeamClick(team.id)"
+          >
+            <svg
+              class="w-4 h-4 text-primary-500 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+              />
+            </svg>
+            <span class="truncate">{{ team.name }}</span>
+            <span
+              v-if="isTeamAdmin(team.id)"
+              class="text-xs bg-primary/5 text-primary font-semibold px-1 rounded"
+              title="管理员"
+              >管理员</span
+            >
+          </div>
+        </div>
+      </div>
     </nav>
 
     <!-- User Profile -->
@@ -697,7 +702,7 @@ const isRecentConversationsOpen = ref(false)
 const isMCPManagementOpen = ref(false)
 const isSystemToolsOpen = ref(false)
 const isMemoryOpen = ref(false)
-const isTeamAgentsOpen = ref(false)
+const isTeamManagementOpen = ref(false)
 const isMyAgentsOpen = ref(false)
 const showUserMenu = ref(false)
 
@@ -802,7 +807,7 @@ const toggleRecentConversations = () => {
 }
 
 const toggleTeamAgents = () => {
-  isTeamAgentsOpen.value = !isTeamAgentsOpen.value
+  isTeamManagementOpen.value = !isTeamManagementOpen.value
 }
 
 const handleMyAgentsClick = () => {
@@ -811,7 +816,7 @@ const handleMyAgentsClick = () => {
   // Submenu will auto-expand via watch
 }
 
-const handleTeamAgentsClick = () => {
+const handleTeamManagementClick = () => {
   // Always switch to team-agents view
   switchToView('team-agents')
   // Submenu will auto-expand via watch
@@ -883,10 +888,10 @@ watch(
 
     if (newView === 'team-agents' || newView === 'team-detail') {
       // Auto-expand when entering team-agents or team-detail view
-      isTeamAgentsOpen.value = true
+      isTeamManagementOpen.value = true
     } else {
       // Auto-collapse when leaving team views
-      isTeamAgentsOpen.value = false
+      isTeamManagementOpen.value = false
     }
 
     if (newView === 'mcp-tools' || newView === 'mcp-gateway') {

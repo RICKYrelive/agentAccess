@@ -58,6 +58,17 @@
         </svg>
         <span>{{ agents.length }} Agent</span>
       </div>
+      <div class="flex items-center space-x-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+          />
+        </svg>
+        <span>{{ teamKBCount }} 知识库</span>
+      </div>
     </div>
 
     <!-- Agents preview (max 3) -->
@@ -119,7 +130,10 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import type { Team, ExtendedAgent } from '@/types'
+import { useKnowledgeBaseStore } from '@/stores/knowledgeBase'
 
 interface Props {
   team: Team
@@ -142,6 +156,16 @@ const props = withDefaults(defineProps<Props>(), {
   hasPendingRequest: false,
 })
 const emit = defineEmits<Emits>()
+
+// Get knowledge base count for this team
+const knowledgeBaseStore = useKnowledgeBaseStore()
+const { teamKnowledgeBases } = storeToRefs(knowledgeBaseStore)
+
+const teamKBCount = computed(() => {
+  return teamKnowledgeBases.value.filter((kb) =>
+    kb.sharedTeams?.some((st) => st.teamId === props.team.id)
+  ).length
+})
 
 // Handle card click - only navigate to team detail if already a member
 const handleCardClick = () => {

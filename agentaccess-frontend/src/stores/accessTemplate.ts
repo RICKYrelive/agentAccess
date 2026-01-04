@@ -178,7 +178,7 @@ export const useAccessTemplateStore = defineStore('accessTemplate', () => {
       {
         name: '客户支持配置',
         description: '客户支持团队使用的配置',
-        category: 'specific',
+        category: 'team',
         config: {
           teamAgents: ['team-agent-knowledge-base'],
           knowledgeBase: 'kb-support-docs',
@@ -251,7 +251,7 @@ export const useAccessTemplateStore = defineStore('accessTemplate', () => {
       ...updates,
       id, // Ensure ID doesn't change
       updatedAt: new Date(),
-    }
+    } as AccessTemplate
     return templates.value[index]
   }
 

@@ -77,7 +77,7 @@ const isToolSelected = (id: string) => {
 }
 
 const getTypeName = (type: MCPToolType) => {
-  const names = { builtin: '内置', custom: '自定义', npx: 'npx', uvx: 'uvx' }
+  const names = { builtin: '内置', custom: '自定义', npx: 'npx', uvx: 'uvx', database: '数据库' }
   return names[type] || type
 }
 
@@ -87,6 +87,7 @@ const getTypeBadgeClass = (type: MCPToolType) => {
     custom: 'bg-purple-100 text-purple-700',
     npx: 'bg-green-100 text-green-700',
     uvx: 'bg-yellow-100 text-yellow-700',
+    database: 'bg-orange-100 text-orange-700',
   }
   return classes[type] || 'bg-slate-100 text-slate-700'
 }
@@ -96,12 +97,12 @@ const getStatusBadgeClass = (enabled: boolean) => {
 }
 
 const getToolIconClass = (type: MCPToolType) => {
-  const classes = { builtin: 'bg-blue-100', custom: 'bg-purple-100', npx: 'bg-green-100', uvx: 'bg-yellow-100' }
+  const classes = { builtin: 'bg-blue-100', custom: 'bg-purple-100', npx: 'bg-green-100', uvx: 'bg-yellow-100', database: 'bg-orange-100' }
   return classes[type] || 'bg-slate-100'
 }
 
 const getToolIconColorClass = (type: MCPToolType) => {
-  const classes = { builtin: 'text-blue-600', custom: 'text-purple-600', npx: 'text-green-600', uvx: 'text-yellow-600' }
+  const classes = { builtin: 'text-blue-600', custom: 'text-purple-600', npx: 'text-green-600', uvx: 'text-yellow-600', database: 'text-orange-600' }
   return classes[type] || 'text-slate-600'
 }
 
@@ -111,6 +112,7 @@ const getToolIconPath = (type: MCPToolType) => {
     custom: 'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1',
     npx: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
     uvx: 'M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12',
+    database: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s-8 1.79-8 4',
   }
   return paths[type] || 'M5 13l4 4L19 7'
 }

@@ -71,7 +71,7 @@
 
         <!-- Access Template Management -->
         <button
-          @click="switchToView('template-management')"
+          @click="handleTemplateManagementClick"
           :class="[
             'w-full text-left px-4 py-3 text-sm font-display font-medium rounded-xl flex items-center space-x-3 transition-all duration-200 group',
             activeView === 'template-management'
@@ -802,6 +802,10 @@ const handleSystemToolsClick = () => {
 
 const handleMemoryClick = () => {
   switchToView('memory')
+}
+
+const handleTemplateManagementClick = () => {
+  switchToView('template-management')
 }
 
 const toggleRecentConversations = () => {

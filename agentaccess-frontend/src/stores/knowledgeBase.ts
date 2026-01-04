@@ -560,7 +560,7 @@ export const useKnowledgeBaseStore = defineStore('knowledgeBase', () => {
   const updateKnowledgeBaseConfig = (id: string, config: Partial<KnowledgeBaseConfig>) => {
     const index = knowledgeBases.value.findIndex((kb) => kb.id === id)
     if (index > -1) {
-      const kb = knowledgeBases.value[index]
+      const kb = knowledgeBases.value[index]!
       knowledgeBases.value[index] = {
         ...kb,
         config: {

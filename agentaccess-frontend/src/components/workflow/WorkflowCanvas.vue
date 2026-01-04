@@ -359,6 +359,7 @@ import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useWorkflowStore } from '@/stores/workflow'
 import { downloadWorkflowAsJson } from '@/utils/workflowExport'
+import { getFastGPTService } from '@/services/fastgpt'
 import type {
   WorkflowNode as WorkflowNodeType,
   WorkflowNodeType as NodeOptionType,
@@ -479,11 +480,13 @@ const lineIntersectsNode = (
     const q = [x1 - nodeLeft, nodeRight - x1, y1 - nodeTop, nodeBottom - y1]
 
     for (let i = 0; i < 4; i++) {
-      if (p[i] === 0) {
-        if (q[i] < 0) return null // Line is parallel and outside
+      const pi = p[i]!
+      const qi = q[i]!
+      if (pi === 0) {
+        if (qi < 0) return null // Line is parallel and outside
       } else {
-        const t = q[i] / p[i]
-        if (p[i] < 0) {
+        const t = qi / pi
+        if (pi < 0) {
           if (t > t1) return null
           if (t > t0) t0 = t
         } else {
@@ -601,7 +604,7 @@ const generateAvoidancePath = (
     }
 
     // Try going below all blocking nodes
-    const maxBottom = Math.max(...blockingNodes.map((n) => n.position.y + nodeHeight))
+    const maxBottom = Math.max(...blockingNodes.map((n) => n.position.y + getNodeDimensions(n.id).height))
     const belowY = maxBottom + padding + 30
 
     if (!isHorizontalSegmentBlocked(startX, endX, belowY)) {
@@ -1200,7 +1203,12 @@ const importFromFastGPT = async () => {
       alert('工作流已从FastGPT导入')
     } else {
       // List available workflows
-      const workflows = await workflowStore.fastgptService?.listWorkflows()
+      const service = getFastGPTService()
+      if (!service) {
+        alert('FastGPT服务未连接')
+        return
+      }
+      const workflows = await service.listWorkflows()
       if (workflows && workflows.length > 0) {
         const workflowList = workflows.map((w) => `${w.id}: ${w.name}`).join('\n')
         alert(`可用的FastGPT工作流:\n${workflowList}`)

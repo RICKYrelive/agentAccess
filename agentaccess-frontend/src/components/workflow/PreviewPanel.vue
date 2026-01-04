@@ -102,7 +102,7 @@
             </div>
             <div class="flex items-center space-x-2">
               <button
-                v-if="test.status === 'completed'"
+                v-if="test.status === 'passed'"
                 @click="rerunTest(test)"
                 class="text-sm text-primary-600 hover:text-primary-700"
               >

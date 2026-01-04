@@ -134,7 +134,7 @@ const addMember = () => {
 
   // Generate a random ID and name from email
   const memberId = `user-${Date.now()}`
-  const memberName = newMemberEmail.value.split('@')[0]
+  const memberName = newMemberEmail.value.split('@')[0] || newMemberEmail.value
 
   addTeamMember(props.team!.id, memberId, memberName, 'member')
   newMemberEmail.value = ''

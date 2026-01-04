@@ -29,6 +29,7 @@ export const useSystemToolsStore = defineStore('systemTools', () => {
             resources: { cpuPercent: 15, memoryPercent: 45, diskPercent: 20 },
             port: 8001,
             url: 'https://code-interpreter-1.agentaccess.internal',
+            envVars: {},
             createdAt: new Date(),
           },
           {
@@ -39,6 +40,7 @@ export const useSystemToolsStore = defineStore('systemTools', () => {
             resources: { cpuPercent: 22, memoryPercent: 38, diskPercent: 25 },
             port: 8002,
             url: 'https://code-interpreter-2.agentaccess.internal',
+            envVars: {},
             createdAt: new Date(),
           },
         ],
@@ -62,6 +64,7 @@ export const useSystemToolsStore = defineStore('systemTools', () => {
             resources: { cpuPercent: 35, memoryPercent: 62, diskPercent: 18 },
             port: 9001,
             url: 'https://browser-1.agentaccess.internal',
+            envVars: {},
             createdAt: new Date(),
           },
         ],

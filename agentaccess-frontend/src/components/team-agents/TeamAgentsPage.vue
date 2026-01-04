@@ -157,7 +157,7 @@ import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useTeamsStore } from '@/stores/teams'
 import { useAgentsStore } from '@/stores/agents'
-import type { Team, ExtendedAgent } from '@/types'
+import type { Team, ExtendedAgent, Agent } from '@/types'
 import TeamCard from './TeamCard.vue'
 import TeamManagementDialog from './TeamManagementDialog.vue'
 
@@ -198,7 +198,7 @@ const showToast = (message: string) => {
 }
 
 // Get agents in a team
-const getAgentsInTeam = (teamId: string): ExtendedAgent[] => {
+const getAgentsInTeam = (teamId: string): (ExtendedAgent | Agent)[] => {
   return teamsStore.getAgentsInTeam(teamId, myAgents.value)
 }
 

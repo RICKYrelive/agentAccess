@@ -104,9 +104,10 @@ export const useChatStore = defineStore('chat', () => {
       let response
       try {
         // 使用真实的API
+        const baseUrl = provider.baseUrl ?? ''
         const apiUrl =
-          provider.baseUrl.includes('localhost') || provider.baseUrl.includes('127.0.0.1')
-            ? `${provider.baseUrl}/chat/completions`
+          baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1')
+            ? `${baseUrl}/chat/completions`
             : `/api/chat/completions`
 
         console.log('🌐 Request URL:', apiUrl)

@@ -251,7 +251,7 @@ export const useSettingsStore = defineStore('settings', () => {
       ...providers.value[providerIndex],
       ...updates,
       updatedAt: new Date(),
-    }
+    } as ModelProvider
 
     try {
       if (useSafariStorage.value) {

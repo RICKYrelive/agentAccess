@@ -553,7 +553,7 @@ export const useChatStore = defineStore('chat', () => {
         // But preserve the original createdAt and updatedAt timestamps
         const originalCreatedAt = exists.createdAt
         const originalUpdatedAt = exists.updatedAt
-        exists.messages = demoConv.messages
+        exists.messages = demoConv.messages as ChatMessage[]
         exists.settings = demoConv.settings
         exists.title = demoConv.title
         exists.createdAt = originalCreatedAt
@@ -732,11 +732,17 @@ export const useChatStore = defineStore('chat', () => {
         if (toolBlockIndex !== -1) {
           const toolBlock = lastMessage.blocks[toolBlockIndex] as ToolCallsBlock
           if (toolBlock.toolCalls && toolBlock.toolCalls.length > 0) {
+            const originalCall = toolBlock.toolCalls[0]
+            if (!originalCall) return
             // Create completed tool call with new reference
             const completedToolCall: ToolCall = {
-              ...toolBlock.toolCalls[0],
+              id: originalCall.id ?? `tool-call-${Date.now()}`,
+              type: originalCall.type ?? 'web_search',
+              name: originalCall.name ?? 'unknown',
               status: 'completed',
+              startTime: originalCall.startTime ?? new Date(),
               endTime: new Date(),
+              input: originalCall.input,
               result: {
                 translation: 'Tool completed successfully',
                 confidence: 0.95,

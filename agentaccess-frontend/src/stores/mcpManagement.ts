@@ -197,7 +197,7 @@ export const useMCPManagementStore = defineStore('mcpManagement', () => {
         ...mcpTools.value[index],
         ...updates,
         updatedAt: new Date(),
-      }
+      } as MCPTool
     }
   }
 
@@ -267,7 +267,7 @@ export const useMCPManagementStore = defineStore('mcpManagement', () => {
         ...mcpGateways.value[index],
         ...updates,
         updatedAt: new Date(),
-      }
+      } as MCPGateway
     }
   }
 

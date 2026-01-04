@@ -287,7 +287,10 @@ const selectedTeamId = ref<string>(availableTeams.value[0]?.id || '')
 // Update selected team when available teams change
 watch(availableTeams, (newTeams) => {
   if (newTeams.length > 0 && !selectedTeamId.value) {
-    selectedTeamId.value = newTeams[0].id
+    const firstTeam = newTeams[0]
+    if (firstTeam) {
+      selectedTeamId.value = firstTeam.id
+    }
   }
 }, { immediate: true })
 

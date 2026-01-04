@@ -646,6 +646,7 @@ interface Props {
     | 'memory'
     | 'knowledge-base'
     | 'knowledge-base-detail'
+    | 'template-management'
   isShowingHome: boolean
 }
 
@@ -662,7 +663,8 @@ interface Emits {
       | 'sandboxed-environments'
       | 'builtin-tools'
       | 'memory'
-      | 'knowledge-base',
+      | 'knowledge-base'
+      | 'template-management',
   ): void
   (e: 'open-user-settings'): void
   (e: 'start-new-conversation'): void
